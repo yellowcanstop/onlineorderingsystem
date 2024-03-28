@@ -1,36 +1,42 @@
 <?php
-    session_start(); // preserve account details to remember logged-in users
+    session_start();
+    include 'functions.php';
     
-    // variables reflect mysql database credentials
-    require_once 'protected/logindbconfig.php';
-    $con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-    if ( mysqli_connect_errno() ) {
-        // If there is an error with the connection, stop the script and display the error.
-        exit('Failed to connect to MySQL: ' . mysqli_connect_error());
-    }
-    
+    $pdo = pdo_connect_mysql();
     
     // ensure form data exists
     if ( !isset($_POST['username'], $_POST['password']) ) {
-        exit('Reenter username and password fields');
+    
+        $_SESSION['error'] = 'Missing credentials!';
+        header('Location: login.php');
+        exit();
+        
     }
+    
+    
 
-    // todo check password hashing
+    // admin1, test
+    // test2, test2
     // prepare sql statement to prevent sql injection
-    if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?')) {
-        // Bind parameters (s = string, i = int, b = blob, etc)
-        $stmt->bind_param('s', $_POST['username']);
+    // PDO supports named parameters which makes code more readable and maintainable.
+    // Hence our choice of using PDO instead of MySQLi to interact with our database.
+    if ($stmt = $pdo->prepare('SELECT account_id, password FROM accounts WHERE username = :username')) {
+        $stmt->bindValue(':username', $_POST['username'], PDO::PARAM_STR);
         $stmt->execute();
-        // Store the result so we can check if the account exists in the database.
-        $stmt->store_result();
+        $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // returns an array of rows. each row is an associative array.
+        
 
-        if ($stmt->num_rows > 0) {
-            $stmt->bind_result($id, $password);
-            $stmt->fetch();
+        //if ($user && (array_key_exists('password', $user)))
+        //if ($user && $user['status'] == 'active') {
+        if ($user) {
+        //if ($stmt->num_rows > 0) {
+            //$stmt->bind_result($account_id, $password);
+            //$stmt->fetch();
             // Account exists, now we verify the password.
             // Note: remember to use password_hash in your registration file to store the hashed passwords.
             // only passwords created with password_hash function will work
-            if (password_verify($_POST['password'], $password)) {
+            if (password_verify($_POST['password'], $user[0]['password'])) {
                 // Verification success! User has logged-in!
                 // Create sessions, so we know the user is logged in, 
                 // they basically act like cookies but remember the data on the server.
@@ -48,19 +54,25 @@
                 
                 $_SESSION['loggedin'] = TRUE;
                 $_SESSION['name'] = $_POST['username'];
-                $_SESSION['id'] = $id;
-                // redirect to home page
-                header('Location: home.php');
+                $_SESSION['account_id'] = $user[0]['account_id'];
+                //$_SESSION['role'] = $role;
+                header('Location: index.php');
             } else {
                 // Incorrect password
-                header('Location: error.php');
+                $_SESSION['error'] = 'Incorrect credentials!';
+                header('Location: login.php');
+                exit();
+                
             }
         } else {
             // Incorrect username
-            header('Location: error.php');
+            
+            $_SESSION['error'] = 'Incorrect credentials!';
+            header('Location: login.php');
+            exit();
+            
         }
-
-        $stmt->close();
+        //$stmt->close();
     }
         
     
