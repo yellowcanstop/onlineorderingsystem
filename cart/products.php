@@ -58,7 +58,8 @@ $total_products = count($dishes);
 <div class="products content-wrapper">
     <h1>Products</h1>
     <p><?=$total_products?> Products</p>
-    <form method="get" action="products.php">
+    <form method="get" action="index.php?page=products">
+        <input type="hidden" name="page" value="products">
         <input type="hidden" name="cid" value="<?=isset($_GET['cid']) ? $_GET['cid'] : ''?>">
         <input type="hidden" name="p" value="<?=isset($_GET['p']) ? $_GET['p'] : ''?>">
         <select name="sort" onchange="this.form.submit()">

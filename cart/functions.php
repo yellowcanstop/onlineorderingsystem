@@ -13,7 +13,7 @@ function pdo_connect_mysql() {
     }
 }
 
-// Template header: cart icon shows #unique item. to show totalqty, it only shows on cart page.
+// Template header
 function template_header($title) {
 $num_items_in_cart = isset($_SESSION['cart']) ? ($_SESSION['cart']['num_items_in_cart']) : 0;
 echo <<<EOT
