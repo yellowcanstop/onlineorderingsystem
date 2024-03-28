@@ -10,14 +10,14 @@ $selected_sort = isset($_GET['sort']) ? $_GET['sort'] : false;
 
 if (isset($_GET['cid'])) {
     if ($selected_sort && ($_GET['sort'] == 'price_asc')) {
-        $stmt = $pdo->prepare('SELECT * FROM dishes WHERE category_id = ? ORDER BY price ASC LIMIT ?,?');
+        $stmt = $pdo->prepare('SELECT * FROM dishes WHERE category_id = :id ORDER BY price ASC LIMIT :current_page, :record_per_page');
     }
     else {
-        $stmt = $pdo->prepare('SELECT * FROM dishes WHERE category_id = ? ORDER BY price DESC LIMIT ?,?');
+        $stmt = $pdo->prepare('SELECT * FROM dishes WHERE category_id = :id ORDER BY price DESC LIMIT :current_page, :record_per_page');
     }
-    $stmt->bindValue(1, $_GET['cid'], PDO::PARAM_INT);
-    $stmt->bindValue(2, ($current_page - 1) * $num_products_on_each_page, PDO::PARAM_INT);
-    $stmt->bindValue(3, $num_products_on_each_page, PDO::PARAM_INT);
+    $stmt->bindValue(':id', $_GET['cid'], PDO::PARAM_INT);
+    $stmt->bindValue(':current_page', ($current_page - 1) * $num_products_on_each_page, PDO::PARAM_INT);
+    $stmt->bindValue(':record_per_page', $num_products_on_each_page, PDO::PARAM_INT);
     $stmt->execute();
     $dishes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     if (!$dishes) {
@@ -26,13 +26,13 @@ if (isset($_GET['cid'])) {
 }
 else {
     if ($selected_sort && ($_GET['sort'] == 'price_asc')) {
-        $stmt = $pdo->prepare('SELECT * FROM dishes ORDER BY price ASC LIMIT ?,?');
+        $stmt = $pdo->prepare('SELECT * FROM dishes ORDER BY price ASC LIMIT :current_page, :record_per_page');
     }
     else {
-        $stmt = $pdo->prepare('SELECT * FROM dishes ORDER BY price DESC LIMIT ?,?');
+        $stmt = $pdo->prepare('SELECT * FROM dishes ORDER BY price DESC LIMIT :current_page, :record_per_page');
     }
-    $stmt->bindValue(1, ($current_page - 1) * $num_products_on_each_page, PDO::PARAM_INT);
-    $stmt->bindValue(2, $num_products_on_each_page, PDO::PARAM_INT);
+    $stmt->bindValue(':current_page', ($current_page - 1) * $num_products_on_each_page, PDO::PARAM_INT);
+    $stmt->bindValue(':record_per_page', $num_products_on_each_page, PDO::PARAM_INT);
     $stmt->execute();
     $dishes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     if (!$dishes) {
