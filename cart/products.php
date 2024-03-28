@@ -8,9 +8,13 @@ $current_page = isset($_GET['p']) && is_numeric($_GET['p']) ? (int)$_GET['p'] : 
 // get selected sort option from the GET parameters
 $selected_sort = isset($_GET['sort']) ? $_GET['sort'] : false;
 
-// Check to make sure the category id parameter is specified in the URL
-if (isset($_GET['cid']) && ($_GET['sort'] == 'price_asc')) {
-    $stmt = $pdo->prepare('SELECT * FROM dishes WHERE category_id = ? ORDER BY price ASC LIMIT ?,?');
+if (isset($_GET['cid'])) {
+    if ($selected_sort && ($_GET['sort'] == 'price_asc')) {
+        $stmt = $pdo->prepare('SELECT * FROM dishes WHERE category_id = ? ORDER BY price ASC LIMIT ?,?');
+    }
+    else {
+        $stmt = $pdo->prepare('SELECT * FROM dishes WHERE category_id = ? ORDER BY price DESC LIMIT ?,?');
+    }
     $stmt->bindValue(1, $_GET['cid'], PDO::PARAM_INT);
     $stmt->bindValue(2, ($current_page - 1) * $num_products_on_each_page, PDO::PARAM_INT);
     $stmt->bindValue(3, $num_products_on_each_page, PDO::PARAM_INT);
@@ -20,27 +24,15 @@ if (isset($_GET['cid']) && ($_GET['sort'] == 'price_asc')) {
         exit('Dishes in this category do not exist!');
     }
 }
-elseif (isset($_GET['cid']) && ($selected_sort == 'price_desc')) {
-    $stmt = $pdo->prepare('SELECT * FROM dishes WHERE category_id = ? ORDER BY price DESC LIMIT ?,?');
-    $stmt->bindValue(1, $_GET['cid'], PDO::PARAM_INT);
-    $stmt->bindValue(2, ($current_page - 1) * $num_products_on_each_page, PDO::PARAM_INT);
-    $stmt->bindValue(3, $num_products_on_each_page, PDO::PARAM_INT);
-    $stmt->execute();
-    $dishes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    if (!$dishes) {
-        exit('Dishes in this category do not exist!');
+else {
+    if ($selected_sort && ($_GET['sort'] == 'price_asc')) {
+        $stmt = $pdo->prepare('SELECT * FROM dishes ORDER BY price ASC LIMIT ?,?');
     }
-}
-elseif (!isset($_GET['cid'])) {
-    $stmt = $pdo->prepare('SELECT * FROM dishes');
-    $stmt->execute();
-    $dishes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} else {
-    $stmt = $pdo->prepare('SELECT * FROM dishes WHERE category_id = ? LIMIT ?,?');
-    
-    $stmt->bindValue(1, $_GET['cid'], PDO::PARAM_INT);
-    $stmt->bindValue(2, ($current_page - 1) * $num_products_on_each_page, PDO::PARAM_INT);
-    $stmt->bindValue(3, $num_products_on_each_page, PDO::PARAM_INT);
+    else {
+        $stmt = $pdo->prepare('SELECT * FROM dishes ORDER BY price DESC LIMIT ?,?');
+    }
+    $stmt->bindValue(1, ($current_page - 1) * $num_products_on_each_page, PDO::PARAM_INT);
+    $stmt->bindValue(2, $num_products_on_each_page, PDO::PARAM_INT);
     $stmt->execute();
     $dishes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     if (!$dishes) {
@@ -59,9 +51,14 @@ $total_products = count($dishes);
     <h1>Products</h1>
     <p><?=$total_products?> Products</p>
     <form method="get" action="index.php?page=products">
+        <!-- better practice to not include parameter at all if no data to send -->
         <input type="hidden" name="page" value="products">
-        <input type="hidden" name="cid" value="<?=isset($_GET['cid']) ? $_GET['cid'] : ''?>">
-        <input type="hidden" name="p" value="<?=isset($_GET['p']) ? $_GET['p'] : ''?>">
+        <?php if(isset($_GET['cid'])): ?>
+        <input type="hidden" name="cid" value="<?=$_GET['cid']?>">
+        <?php endif; ?>
+        <?php if(isset($_GET['p'])): ?>
+            <input type="hidden" name="p" value="<?=$_GET['p']?>">
+        <?php endif; ?>
         <select name="sort" onchange="this.form.submit()">
             <option value="">Sort By</option>
             <option value="price_asc">Price (Low to High)</option>
