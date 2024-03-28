@@ -2,8 +2,9 @@
 
 
 // Include functions and connect to the database using PDO MySQL
-session_start();
+//session_start();
 include 'functions.php';
+start_session();
 $pdo = pdo_connect_mysql();
 
 /*

@@ -13,9 +13,22 @@ function pdo_connect_mysql() {
     }
 }
 
+// session
+function start_session() {
+    
+    // We need to use sessions, so you should always start sessions using the below code.
+    session_start();
+    // If the user is not logged in redirect to the login page...
+    if (!isset($_SESSION['loggedin'])) {
+        header('Location: login.php');
+        exit;
+    }
+}
+
 // Template header
 function template_header($title) {
 $num_items_in_cart = isset($_SESSION['cart']) ? ($_SESSION['cart']['num_items_in_cart']) : 0;
+$greeting = isset($_SESSION['name']) ? (htmlspecialchars($_SESSION['name'], ENT_QUOTES)) : "there";
 echo <<<EOT
 <!DOCTYPE html>
 <html>
@@ -28,7 +41,7 @@ echo <<<EOT
 	<body>
         <header>
             <div class="content-wrapper">
-                <h1>Shopping Cart System</h1>
+                <h1>Hi $greeting, <br>what are you craving?</h1>
                 <nav>
                     <a href="index.php">Home</a>
                     <a href="index.php?page=products">Products</a>
@@ -38,6 +51,12 @@ echo <<<EOT
 						<i class="fas fa-shopping-cart"></i>
                         <span>$num_items_in_cart</span>
 					</a>
+                </div>
+                <div class="link-icons">
+                    <a href="logout.php">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                    </a>
                 </div>
             </div>
         </header>

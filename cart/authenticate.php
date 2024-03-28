@@ -7,7 +7,7 @@
     // ensure form data exists
     if ( !isset($_POST['username'], $_POST['password']) ) {
     
-        $_SESSION['error'] = 'Missing credentials!';
+        echo('Missing credentials!');
         header('Location: login.php');
         exit();
         
@@ -59,7 +59,7 @@
                 header('Location: index.php');
             } else {
                 // Incorrect password
-                $_SESSION['error'] = 'Incorrect credentials!';
+                echo('Incorrect credentials!');
                 header('Location: login.php');
                 exit();
                 
@@ -67,7 +67,7 @@
         } else {
             // Incorrect username
             
-            $_SESSION['error'] = 'Incorrect credentials!';
+            echo('Incorrect credentials!');
             header('Location: login.php');
             exit();
             

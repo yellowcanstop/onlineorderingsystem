@@ -1,4 +1,5 @@
 <?php
+//start_session();
 // <?= is a shorthand for <?php echo, to output result directly to page
 // tweak this to order by popularity? (most orders?)
 // since products.php will show all dishes

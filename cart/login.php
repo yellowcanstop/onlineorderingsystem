@@ -3,14 +3,6 @@
 <body>
 	<div class="login">
 		<h1>Login</h1>
-		<div>
-			<?php
-			if(isset($_SESSION['error'])) {
-				echo $_SESSION['error'];
-				unset($_SESSION['error']); // remove it after displaying the message
-			}
-			?>
-		</div>
 		<!-- when the form is submitted, the data is sent to authenticate.php -->
 		<form action="authenticate.php" method="post">
 			<label for="username">
@@ -26,7 +18,7 @@
 		</form>
 	</div>
 	<div>
-		<p>Don't have an account? <a href="index.php?page=register">Register</a></p>
+		<p>Don't have an account? <a href="register.php">Register</a></p>
 	</div>
 </body>
 <?= template_footer('Login') ?>
