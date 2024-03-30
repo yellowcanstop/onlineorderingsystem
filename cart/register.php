@@ -8,12 +8,15 @@ if (isset($_SESSION['error'])) {
 ?>
 <?= template_header('Register') ?>
 <body>
+    <!-- include jquery to do AJAX requests to server as user types in username field -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<div>
 		<h1>Register</h1>
 		<!-- when the form is submitted, the data is sent to authenticate.php -->
 		<form action="adduser.php" method="post" autocomplete="off">
             <label for="username">Username:</label>
-			<input type="text" name="username" placeholder="Username" id="username" required>
+			<input type="text" name="username" placeholder="Username" id="username" oninput="checkUsername()" required>
+            <p id="usernameError"></p>
             <br>
             <label for="firstname">Name:</label>
 			<input type="text" name="firstname" placeholder="First Name" id="firstname" required>
@@ -26,7 +29,7 @@ if (isset($_SESSION['error'])) {
             <br>
             <label for="confirm_password">Confirm Password:</label>
             <input type="password" name="confirm_password" placeholder="Confirm Password" id="confirm_password" oninput="validatePassword()" required>
-            <p id="passwordError" style="color:red;"></p>
+            <p id="passwordError"></p>
 
 
             <label for="email">Email:</label>
@@ -34,7 +37,7 @@ if (isset($_SESSION['error'])) {
             <br>
             <label for="confirm_email">Confirm Email:</label>
             <input type="email" name="confirm_email" placeholder="Confirm Email" id="confirm_email" oninput="validateEmail()" required>
-            <p id="emailError" style="color:red;"></p>
+            <p id="emailError"></p>
 
             <label for="phone">Phone:</label>
             <input type="text" name="phone" placeholder="Phone" id="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" title="Format: 123-456-7890" required>
@@ -49,6 +52,26 @@ if (isset($_SESSION['error'])) {
 	</div>
 </body>
 <script>
+function checkUsername() {
+    // send AJAX request to server to check if username already exists
+    let username = $('#username').val();
+    $.ajax({
+        url: 'checkusername.php',
+        type: 'POST',
+        data: {username: username},
+        success: function(response) {
+            if (response == 'taken') {
+                $('#username').css('border', '3px solid red');
+                usernameError.textContent = 'Username is already taken!';
+                usernameError.style.color = 'red';
+            } else {
+                $('#username').css('border', '3px solid green');
+                usernameError.textContent = 'Username is available!';
+                usernameError.style.color = 'green';
+            }
+        }
+    });
+}
 function validateEmail() {
     // variables not being reassigned after initial assignment
     const email = document.getElementById('email').value;
@@ -57,8 +80,10 @@ function validateEmail() {
 
     if (email != confirm_email) {
         emailError.textContent = 'Emails do not match!';
+        emailError.style.color = 'red';
     } else {
-        emailError.textContent = '';
+        emailError.textContent = 'Emails match.';
+        emailError.style.color = 'green';
     }
 }
 function validatePassword() {
@@ -68,8 +93,10 @@ function validatePassword() {
 
     if (password !== confirm_password) {
         passwordError.textContent = 'Passwords do not match!';
+        passwordError.style.color = 'red';
     } else {
-        passwordError.textContent = '';
+        passwordError.textContent = 'Passwords match.';
+        passwordError.style.color = 'green';
     }
 }
 </script>
