@@ -23,10 +23,12 @@ if (isset($_SESSION['error'])) {
             <label for="lastname"></label>
 			<input type="text" name="lastname" placeholder="Last Name" id="lastname" required>
             <br>
-            <p> Password must be between 8 and 20 characters long, contain letters, numbers and at least one special character!</p>
+            
+            
 			<label for="password">Password:</label>
-            <input type="password" name="password" placeholder="Password" id="password" required>
-            <br>
+            <input type="password" name="password" placeholder="Password" id="password" oninput="checkPassword()" required>
+            <p id="passwordCheck"></p>
+            
             <label for="confirm_password">Confirm Password:</label>
             <input type="password" name="confirm_password" placeholder="Confirm Password" id="confirm_password" oninput="validatePassword()" required>
             <p id="passwordError"></p>
@@ -68,6 +70,26 @@ function checkUsername() {
                 $('#username').css('border', '3px solid green');
                 usernameError.textContent = 'Username is available!';
                 usernameError.style.color = 'green';
+            }
+        }
+    });
+}
+function checkPassword() {
+    // send AJAX request to server to check if username already exists
+    let password = $('#password').val();
+    $.ajax({
+        url: 'checkpassword.php',
+        type: 'POST',
+        data: {password: password},
+        success: function(response) {
+            if (response == 'invalid') {
+                $('#password').css('border', '3px solid red');
+                passwordCheck.textContent = 'Password must be between 8 and 20 characters long, contain letters, numbers and at least one special character!';
+                passwordCheck.style.color = 'red';
+            } else {
+                $('#password').css('border', '3px solid green');
+                passwordCheck.textContent = 'Valid password!';
+                passwordCheck.style.color = 'green';
             }
         }
     });
