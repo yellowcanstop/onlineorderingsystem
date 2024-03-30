@@ -1,9 +1,19 @@
-<?php include 'functions.php' ?>
+<?php 
+session_start();
+include 'functions.php'; 
+?>
 <?= template_header('Login') ?>
 <body>
 	<div class="login">
 		<h1>Login</h1>
-		<!-- when the form is submitted, the data is sent to authenticate.php -->
+		<div>
+		<?php
+		if (isset($_SESSION['error'])) {
+			echo $_SESSION['error'];
+			unset($_SESSION['error']); // unset error message after display
+		}
+		?>
+		</div>
 		<form action="authenticate.php" method="post">
 			<label for="username">
 				<i class="fas fa-user"></i>

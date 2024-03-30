@@ -1,10 +1,6 @@
 <?php 
 session_start();
 include 'functions.php';
-if (isset($_SESSION['error'])) {
-    echo $_SESSION['error'];
-    unset($_SESSION['error']); // unset error message after display
-}
 ?>
 <?= template_header('Register') ?>
 <body>
@@ -12,6 +8,14 @@ if (isset($_SESSION['error'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<div>
 		<h1>Register</h1>
+        <div>
+            <?php
+            if (isset($_SESSION['error'])) {
+                echo $_SESSION['error'];
+                unset($_SESSION['error']); // unset error message after display
+            }
+            ?>
+        </div>
 		<!-- when the form is submitted, the data is sent to authenticate.php -->
 		<form action="adduser.php" method="post" autocomplete="off">
             <label for="username">Username:</label>

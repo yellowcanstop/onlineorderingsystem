@@ -1,6 +1,5 @@
 <?php
 function pdo_connect_mysql() {
-    // Update the details below with your MySQL details
     $DATABASE_HOST = 'localhost';
     $DATABASE_USER = 'root';
     $DATABASE_PASS = '';
@@ -8,27 +7,25 @@ function pdo_connect_mysql() {
     try {
     	return new PDO('mysql:host=' . $DATABASE_HOST . ';dbname=' . $DATABASE_NAME . ';charset=utf8', $DATABASE_USER, $DATABASE_PASS);
     } catch (PDOException $exception) {
-    	// If there is an error with the connection, stop the script and display the error.
-    	exit('Failed to connect to database!');
+    	error_log('Failed to connect to database!');
+        exit();
     }
 }
 
-// session
+
+// start session when already logged in
 function start_session() {
-    
-    // We need to use sessions, so you should always start sessions using the below code.
     session_start();
-    // If the user is not logged in redirect to the login page...
     if (!isset($_SESSION['loggedin'])) {
         header('Location: login.php');
-        exit;
+        exit();
     }
 }
 
-// Template header
+
 function template_header($title) {
 $num_items_in_cart = isset($_SESSION['cart']) ? ($_SESSION['cart']['num_items_in_cart']) : 0;
-$name = isset($_SESSION['name']) ? (htmlspecialchars($_SESSION['name'], ENT_QUOTES)) : "";
+$name = isset($_SESSION['username']) ? (htmlspecialchars($_SESSION['username'], ENT_QUOTES)) : "";
 $greeting = isset($_SESSION['loggedin']) ? "<h2>Hi $name, what are you craving?</h2>" : "";
 $home = isset($_SESSION['loggedin']) ? "<a href=\"index.php\">Home</a>" : "";
 $products = isset($_SESSION['loggedin']) ? "<a href=\"index.php?page=products\">Products</a>" : "";
@@ -65,14 +62,15 @@ echo <<<EOT
         <main>
 EOT;
 }
-// Template footer
+
+
 function template_footer() {
 $year = date('Y');
 echo <<<EOT
         </main>
         <footer>
             <div class="content-wrapper">
-                <p>&copy; $year, Very Good Food Inc Online Food Ordering System</p>
+                <p>&copy; $year, Very Good Food Inc, Online Food Ordering System</p>
             </div>
         </footer>
     </body>
