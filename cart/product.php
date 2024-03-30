@@ -30,7 +30,7 @@ if (isset($_GET['id'])) {
         </span>
         <form action="index.php?page=cart" method="post">
             <input type="number" name="quantity" value="1" min="1" max="<?=$dish['quantity']?>" placeholder="Quantity" required>
-            <input type="hidden" name="product_id" value="<?=$dish['id']?>">
+            <input type="hidden" name="id" value="<?=$dish['id']?>">
             <input type="submit" value="Add To Cart">
         </form>
         <div class="description">

@@ -1,76 +1,65 @@
 <?php
-// If the user clicked the add to cart button on the product page we can check for the form data
-if (isset($_POST['product_id'], $_POST['quantity']) && is_numeric($_POST['product_id']) && is_numeric($_POST['quantity'])) {
-    // Set the post variables so we easily identify them, also make sure they are integer
-    $product_id = (int)$_POST['product_id'];
+// validate form fields
+if (isset($_POST['id'], $_POST['quantity']) && is_numeric($_POST['id']) && is_numeric($_POST['quantity'])) {
+    $id = (int)$_POST['id'];
     $quantity = (int)$_POST['quantity'];
-    // Prepare the SQL statement, we basically are checking if the product exists in our database
+    // check if dish exists in database
     $stmt = $pdo->prepare('SELECT * FROM dishes WHERE id = ?');
-    $stmt->execute([$_POST['product_id']]);
-    // Fetch the product from the database and return the result as an Array
+    $stmt->execute([$_POST['id']]);
     $product = $stmt->fetch(PDO::FETCH_ASSOC);
-    // Check if the product exists (array is not empty)
     if ($product && $quantity > 0) {
-        // Product exists in database, now we can create/update the session variable for the cart
-        // use sessions to remember cart products
-        // session variable cart is an associated array of products
-        // array key will be product id, value will be quantity
-        // if product already exists in cart, update the quantity
+        // use session variable to remember items in cart
+        // session variable cart is an associated array with key as product id and value as quantity
         if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
-            if (array_key_exists($product_id, $_SESSION['cart'])) {
-                // Product exists in cart so just update the quanity
-                $_SESSION['cart'][$product_id] += $quantity;
+            if (array_key_exists($id, $_SESSION['cart'])) {
+                // if dish already in cart, update the quantity
+                $_SESSION['cart'][$id] += $quantity;
             } else {
-                // Product is not in cart so add it
-                $_SESSION['cart'][$product_id] = $quantity;
+                // if dish not in cart, add it to cart
+                $_SESSION['cart'][$id] = $quantity;
             }
         } else {
-            // There are no products in cart, this will add the first product to cart
-            $_SESSION['cart'] = array($product_id => $quantity);
+            // add first dish to cart
+            $_SESSION['cart'] = array($id => $quantity);
         }
     }
-    // Prevent form resubmission...
+    // prevent form resubmission
     header('location: index.php?page=cart');
     exit;
 }
 
-// Remove product from cart, check for the URL param "remove", this is the product id, make sure it's a number and check if it's in the cart
-// index.php?page=cart&remove=1
+// remove dish in cart by its id. example url: index.php?page=cart&remove=1
 if (isset($_GET['remove']) && is_numeric($_GET['remove']) && isset($_SESSION['cart']) && isset($_SESSION['cart'][$_GET['remove']])) {
-    // Remove the product from the shopping cart
     unset($_SESSION['cart'][$_GET['remove']]);
 }
 
-// Update product quantities in cart if the user clicks the "Update" button on the shopping cart page
+// update quantities in cart
 if (isset($_POST['update']) && isset($_SESSION['cart'])) {
-    // Loop through the post data so we can update the quantities for every product in cart
+    // loop through the post data so we can update the quantities for every product in cart
     foreach ($_POST as $k => $v) {
+        // check if the key is quantity and the value is numeric
         if (strpos($k, 'quantity') !== false && is_numeric($v)) {
+            // get cleaned up id by removing 'quantity-' from the key
             $id = str_replace('quantity-', '', $k);
             $quantity = (int)$v;
-            // Always do checks and validation
             if (is_numeric($id) && isset($_SESSION['cart'][$id]) && $quantity > 0) {
-                // Update new quantity
+                // update new quantity
                 $_SESSION['cart'][$id] = $quantity;
             }
         }
     }
-    // Prevent form resubmission...
+    // prevent form resubmission
     header('location: index.php?page=cart');
     exit;
 }
 
-
-// Check the session variable for products in cart
+// check the session variable for products in cart
 $products_in_cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
 $products = array();
 $subtotal = 0.00;
 $num_items_in_cart = 0;
-// If there are products in cart
-// before we didnt store info (name, desc, image, price) in session variable
 if ($products_in_cart) {
-    // There are products in the cart so we need to select those products from the database
-    // Products in cart array to question mark string array, we need the SQL statement to include IN (?,?,?,...etc)
+    // replace question mark with actual id in the sql query
     $array_to_question_marks = implode(',', array_fill(0, count($products_in_cart), '?'));
     $stmt = $pdo->prepare('SELECT * FROM dishes WHERE id IN (' . $array_to_question_marks . ')');
     // We only need the array keys, not the values, the keys are the id's of the products
