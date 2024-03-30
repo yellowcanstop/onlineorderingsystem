@@ -28,7 +28,15 @@ function start_session() {
 // Template header
 function template_header($title) {
 $num_items_in_cart = isset($_SESSION['cart']) ? ($_SESSION['cart']['num_items_in_cart']) : 0;
-$greeting = isset($_SESSION['name']) ? (htmlspecialchars($_SESSION['name'], ENT_QUOTES)) : "there";
+$name = isset($_SESSION['name']) ? (htmlspecialchars($_SESSION['name'], ENT_QUOTES)) : "";
+$greeting = isset($_SESSION['loggedin']) ? "<h2>Hi $name, what are you craving?</h2>" : "";
+$home = isset($_SESSION['loggedin']) ? "<a href=\"index.php\">Home</a>" : "";
+$products = isset($_SESSION['loggedin']) ? "<a href=\"index.php?page=products\">Products</a>" : "";
+$profile = isset($_SESSION['loggedin']) ? "<a href=\"index.php?page=profile\">Profile</a>" : "";
+$register = isset($_SESSION['loggedin']) ? "" : "<a href=\"register.php\">Register</a>";
+$login = isset($_SESSION['loggedin']) ? "" : "<a href=\"login.php\">Login</a>";
+$logout = isset($_SESSION['loggedin']) ? "<a href=\"logout.php\"><i class=\"fas fa-sign-out-alt\"></i>Logout</a>" : "";
+$cart = isset($_SESSION['loggedin']) ? "<a href=\"index.php?page=cart\"><i class=\"fas fa-shopping-cart\"></i><span>$num_items_in_cart</span></a>" : "";
 echo <<<EOT
 <!DOCTYPE html>
 <html>
@@ -41,24 +49,18 @@ echo <<<EOT
 	<body>
         <header>
             <div class="content-wrapper">
-                <h1>Hi $greeting, <br>what are you craving?</h1>
+                <h1>Very Good Food Inc</h1>
                 <nav>
-                    <a href="index.php">Home</a>
-                    <a href="index.php?page=products">Products</a>
+                    $home
+                    $products
+                    $profile
+                    $login
+                    $register
                 </nav>
-                <div class="link-icons">
-                    <a href="index.php?page=cart">
-						<i class="fas fa-shopping-cart"></i>
-                        <span>$num_items_in_cart</span>
-					</a>
-                </div>
-                <div class="link-icons">
-                    <a href="logout.php">
-                            <i class="fas fa-sign-out-alt"></i>
-                            Logout
-                    </a>
-                </div>
+                <div class="link-icons">$cart</div>
+                <div class="link-icons">$logout</div>
             </div>
+            <div class="content-wrapper">$greeting</div>
         </header>
         <main>
 EOT;
@@ -70,7 +72,7 @@ echo <<<EOT
         </main>
         <footer>
             <div class="content-wrapper">
-                <p>&copy; $year, Shopping Cart System</p>
+                <p>&copy; $year, Very Good Food Inc Online Food Ordering System</p>
             </div>
         </footer>
     </body>
