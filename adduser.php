@@ -28,6 +28,54 @@ if (preg_match('/^[a-zA-Z0-9]+$/', $_POST['username']) == 0) {
 if (preg_match('/^[a-zA-Z0-9]{5,20}$/', $_POST['password']) == 0) {
     exit('Password is not valid! It must be between 5 and 20 characters long and contain letters and numbers!');
 }
+/*
+<script>
+function validatePassword() {
+    const password = document.getElementById('password').value;
+    const confirm_password = document.getElementById('confirm_password').value;
+
+    // Check if passwords match
+    if (password !== confirm_password) {
+        alert('Passwords do not match!');
+        return false;
+    }
+
+    // Check for minimum length
+    if (password.length < 8) {
+        alert('Password should be at least 8 characters long!');
+        return false;
+    }
+
+    // Check for at least one uppercase letter
+    if (!/[A-Z]/.test(password)) {
+        alert('Password should contain at least one uppercase letter!');
+        return false;
+    }
+
+    // Check for at least one lowercase letter
+    if (!/[a-z]/.test(password)) {
+        alert('Password should contain at least one lowercase letter!');
+        return false;
+    }
+
+    // Check for at least one number
+    if (!/[0-9]/.test(password)) {
+        alert('Password should contain at least one number!');
+        return false;
+    }
+
+    // Check for at least one special character
+    if (!/[!@#$%^&*]/.test(password)) {
+        alert('Password should contain at least one special character!');
+        return false;
+    }
+
+    // If all checks pass
+    return true;
+}
+</script>
+
+*/
 // We need to check if the account with that username exists.
 if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?')) {
 	// Bind parameters (s = string, i = int, b = blob, etc), hash the password using the PHP password_hash function.

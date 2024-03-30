@@ -23,6 +23,7 @@
     if ($stmt = $pdo->prepare('SELECT account_id, password FROM accounts WHERE username = :username')) {
         $stmt->bindValue(':username', $_POST['username'], PDO::PARAM_STR);
         $stmt->execute();
+        // todo: change fetchAll to fetch 
         $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
         // returns an array of rows. each row is an associative array.
         
