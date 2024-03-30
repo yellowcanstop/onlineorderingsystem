@@ -1,4 +1,11 @@
-<?php include 'functions.php' ?>
+<?php 
+session_start();
+include 'functions.php';
+if (isset($_SESSION['error'])) {
+    echo $_SESSION['error'];
+    unset($_SESSION['error']); // unset error message after display
+}
+?>
 <?= template_header('Register') ?>
 <body>
 	<div>
