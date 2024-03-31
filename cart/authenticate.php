@@ -24,6 +24,7 @@ if ($stmt = $pdo->prepare('SELECT account_id, password, email, role, status FROM
             // use session_regenerate_id() to prevent session fixation attacks
             // see: https://stackoverflow.com/a/22965580
             session_regenerate_id();
+            // // only save less-sensitive information in session variables to maintain state between requests
             $_SESSION['loggedin'] = TRUE;
             $_SESSION['username'] = $_POST['username'];
             $_SESSION['account_id'] = $user['account_id'];
@@ -44,5 +45,3 @@ if ($stmt = $pdo->prepare('SELECT account_id, password, email, role, status FROM
     error_log("Cannot prepare sql statement for accounts table.");
     exit();
 }
-        
-    

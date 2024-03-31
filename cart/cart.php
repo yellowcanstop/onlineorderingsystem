@@ -88,7 +88,7 @@ if (isset($_POST['confirmorder']) && isset($_SESSION['cart']) && !empty($_SESSIO
 
 <?=template_header('Cart')?>
 <div class="cart content-wrapper">
-    <h1>Shopping Cart</h1>
+    <h1>Order:</h1>
     <form action="index.php?page=cart" method="post">
         <table>
             <thead>
