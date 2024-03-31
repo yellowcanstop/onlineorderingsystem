@@ -58,8 +58,8 @@ include 'functions.php';
 	</div>
 </body>
 <script>
+// send AJAX request to server to check if username already exists
 function checkUsername() {
-    // send AJAX request to server to check if username already exists
     let username = $('#username').val();
     $.ajax({
         url: 'checkusername.php',
@@ -78,8 +78,10 @@ function checkUsername() {
         }
     });
 }
+
+
+// send AJAX request to server to check if username already exists
 function checkPassword() {
-    // send AJAX request to server to check if username already exists
     let password = $('#password').val();
     $.ajax({
         url: 'checkpassword.php',
@@ -98,8 +100,10 @@ function checkPassword() {
         }
     });
 }
+
+
+// check if matching emails are entered
 function validateEmail() {
-    // variables not being reassigned after initial assignment
     const email = document.getElementById('email').value;
     const confirm_email = document.getElementById('confirm_email').value;
     const emailError = document.getElementById('emailError');
@@ -112,6 +116,9 @@ function validateEmail() {
         emailError.style.color = 'green';
     }
 }
+
+
+// check if matching passwords are entered
 function validatePassword() {
     const password = document.getElementById('password').value;
     const confirm_password = document.getElementById('confirm_password').value;

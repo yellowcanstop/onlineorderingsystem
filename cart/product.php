@@ -5,16 +5,15 @@ if (isset($_GET['id'])) {
     $dish = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$dish) {
         error_page('Dish not found', 'The dish with the ID of ' . $_GET['id'] . ' does not exist.');
-        error_log('Dish selected does not exist. ID: ' . $_GET['id']);
         exit();
     }
 } else {
-    // Simple error to display if the id wasn't specified
-    exit('ID was not specified');
+    error_page('Dish ID not specified', 'The dish ID is required to display a dish.');
+    exit();
 }
 ?>
-<?=template_header('Product')?>
 
+<?=template_header($dish['name'])?>
 <div class="product content-wrapper">
     <img src="imgs/<?=$dish['img']?>" width="500" height="500" alt="<?=$dish['name']?>">
     <div>
@@ -35,5 +34,4 @@ if (isset($_GET['id'])) {
         </div>
     </div>
 </div>
-
 <?=template_footer()?>
