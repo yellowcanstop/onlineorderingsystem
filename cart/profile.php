@@ -23,11 +23,31 @@ if ($_SESSION['role'] == 'customer') {
 
 if (isset($_POST['new_email'])) {
 	$new_email = $_POST['new_email'];
-	if ($stmt = $pdo -> prepare('UPDATE accounts SET email = :email WHERE account_id = :account_id')) {
-		$stmt->bindValue(':email', $new_email, PDO::PARAM_STR);
-		$stmt->bindValue(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+	// check if email already exists
+	if ($new_email == $_SESSION['email']) {
+		$_SESSION['error'] = 'Email is the same as your old one. Please try again.';
+		header('Location: index.php?page=profile');
+		exit();
+	}
+	if ($stmt = $pdo->prepare('SELECT email FROM accounts WHERE email = :email')) {
+		$stmt->bindValue(':email', $_POST['new_email'], PDO::PARAM_STR);
 		$stmt->execute();
-		$_SESSION['email'] = $new_email;
+		$email = $stmt->fetch(PDO::FETCH_ASSOC);
+		if ($_POST['new_email'] == $email['email']) {
+			$_SESSION['error'] = 'Email already exists.';
+			header('Location: index.php/page=profile');
+			exit();
+		} else {
+			if ($stmt = $pdo -> prepare('UPDATE accounts SET email = :email WHERE account_id = :account_id')) {
+				$stmt->bindValue(':email', $new_email, PDO::PARAM_STR);
+				$stmt->bindValue(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+				$stmt->execute();
+				$_SESSION['email'] = $new_email;
+			} else {
+				error_log('Cannot prepare sql statement for accounts table.');
+				exit();
+			}
+		}
 	} else {
 		error_log('Cannot prepare sql statement for accounts table.');
 		exit();
@@ -50,10 +70,12 @@ if (isset($POST['new_password'])) {
 				$_SESSION['error'] = 'Cannot update password. Please try again.';
 				header('Location: index.php/page=profile');
 				error_log('Cannot prepare sql statement for accounts table.');
+				exit();
 			}
 		} else {
 			$_SESSION['error'] = 'Your current password is incorrect or your new password is the same as your old one. Please try again.';
 			header('Location: index.php/page=profile');
+			exit();
 		}
 	}
 }
