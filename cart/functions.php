@@ -77,4 +77,18 @@ echo <<<EOT
 </html>
 EOT;
 }
+
+
+function error_page($title, $message) {
+template_header('Error');
+echo <<<EOT
+    <div class="content-wrapper">
+        <h1>Error:</h1>
+        <h2>$title</h2>
+        <p>$message</p>
+    </div>
+EOT;
+}
+template_footer();
+  
 ?>

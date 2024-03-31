@@ -54,40 +54,39 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
 }
 
 // check the session variable for products in cart
-$products_in_cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
+$dishes_in_cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
 $products = array();
 $subtotal = 0.00;
 $num_items_in_cart = 0;
-if ($products_in_cart) {
-    // replace question mark with actual id in the sql query
-    $array_to_question_marks = implode(',', array_fill(0, count($products_in_cart), '?'));
+if ($dishes_in_cart) {
+    // create array of '?' based on the number of dishes in cart
+    // then use implode() to convert an array into a comma separated string
+    $array_to_question_marks = implode(',', array_fill(0, count($dishes_in_cart), '?'));
     $stmt = $pdo->prepare('SELECT * FROM dishes WHERE id IN (' . $array_to_question_marks . ')');
-    // We only need the array keys, not the values, the keys are the id's of the products
-    $stmt->execute(array_keys($products_in_cart));
-    // Fetch the products from the database and return the result as an Array
+    // execute the query using dish ids (key)
+    $stmt->execute(array_keys($dishes_in_cart));
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $_SESSION['cart']['products'] = $products;
-    // Calculate the subtotal
+    // calculate the subtotal
     foreach ($products as $product) {
-        $subtotal += (float)$product['price'] * (int)$products_in_cart[$product['id']];
+        $subtotal += (float)$product['price'] * (int)$dishes_in_cart[$product['id']];
     }
     $_SESSION['cart']['subtotal'] = $subtotal;
-    // Calculate total quantity
+    // calculate total quantity (shown in cart icon in header)
     foreach ($products as $product) {
-        $num_items_in_cart += (int)$products_in_cart[$product['id']];
+        $num_items_in_cart += (int)$dishes_in_cart[$product['id']];
     }
     $_SESSION['cart']['num_items_in_cart'] = $num_items_in_cart;
 }
 
-// Send the user to the confirm order page if they click the Place Order button, also the cart should not be empty
+// when click place order button, redirect to confirmorder page
 if (isset($_POST['confirmorder']) && isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     header('Location: index.php?page=confirmorder');
     exit;
 }
-
 ?>
-<?=template_header('Cart')?>
 
+<?=template_header('Cart')?>
 <div class="cart content-wrapper">
     <h1>Shopping Cart</h1>
     <form action="index.php?page=cart" method="post">
@@ -120,9 +119,9 @@ if (isset($_POST['confirmorder']) && isset($_SESSION['cart']) && !empty($_SESSIO
                     </td>
                     <td class="price">&dollar;<?=$product['price']?></td>
                     <td class="quantity">
-                        <input type="number" name="quantity-<?=$product['id']?>" value="<?=$products_in_cart[$product['id']]?>" min="1" max="<?=$product['quantity']?>" placeholder="Quantity" required>
+                        <input type="number" name="quantity-<?=$product['id']?>" value="<?=$dishes_in_cart[$product['id']]?>" min="1" max="<?=$product['quantity']?>" placeholder="Quantity" required>
                     </td>
-                    <td class="price">&dollar;<?=$product['price'] * $products_in_cart[$product['id']]?></td>
+                    <td class="price">&dollar;<?=$product['price'] * $dishes_in_cart[$product['id']]?></td>
                 </tr>
                 <?php endforeach; ?>
                 <?php endif; ?>
@@ -138,5 +137,4 @@ if (isset($_POST['confirmorder']) && isset($_SESSION['cart']) && !empty($_SESSIO
         </div>
     </form>
 </div>
-
 <?=template_footer()?>

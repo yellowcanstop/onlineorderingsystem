@@ -1,22 +1,6 @@
 <?php
 $products = $_SESSION['cart']['products'];
-
-/*
-// header redirections in php replaced by js setFormAction(page)
-if (isset($_POST['backtocart']) && !isset($_POST['placeorder'])) {
-    header('Location: index.php?page=cart');
-    exit;
-}
-
-// Send the user to the confirm order page if they click the Place Order button, also the cart should not be empty
-if (isset($_POST['placeorder']) && !isset($_POST['backtocart']) && isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-    header('Location: index.php?page=placeorder');
-    exit;
-}
-*/
-
 ?>
-
 
 <?=template_header('Place Order')?>
 
@@ -67,6 +51,5 @@ if (isset($_POST['placeorder']) && !isset($_POST['backtocart']) && isset($_SESSI
     }
     </script>
 </div>
-
 
 <?=template_footer()?>

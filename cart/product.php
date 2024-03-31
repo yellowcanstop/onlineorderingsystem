@@ -1,15 +1,12 @@
 <?php
-// Check to make sure the id parameter is specified in the URL
 if (isset($_GET['id'])) {
-    // Prepare statement and execute, prevents SQL injection
     $stmt = $pdo->prepare('SELECT * FROM dishes WHERE id = ?');
     $stmt->execute([$_GET['id']]);
-    // Fetch the product from the database and return the result as an Array
     $dish = $stmt->fetch(PDO::FETCH_ASSOC);
-    // Check if the product exists (array is not empty)
     if (!$dish) {
-        // Simple error to display if the id for the product doesn't exists (array is empty)
-        exit('Dish does not exist!');
+        error_page('Dish not found', 'The dish with the ID of ' . $_GET['id'] . ' does not exist.');
+        error_log('Dish selected does not exist. ID: ' . $_GET['id']);
+        exit();
     }
 } else {
     // Simple error to display if the id wasn't specified

@@ -1,14 +1,10 @@
 <?php
-//start_session();
-// <?= is a shorthand for <?php echo, to output result directly to page
-// tweak this to order by popularity? (most orders?)
-// since products.php will show all dishes
-$stmt = $pdo->prepare('SELECT * FROM categories ORDER BY id LIMIT 3');
+$stmt = $pdo->prepare('SELECT * FROM categories ORDER BY id');
 $stmt->execute();
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
-<?=template_header('Home')?>
 
+<?=template_header('Home')?>
 <div class="featured">
     <h2>Categories</h2>
     <p>Our best offerings for you</p>
@@ -24,5 +20,4 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endforeach; ?>
     </div>
 </div>
-
 <?=template_footer()?>
