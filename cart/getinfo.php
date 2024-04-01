@@ -4,6 +4,10 @@
 // server-side validation after form is submitted
 // prevent user from disabling js on browser, bypassing any client-side validation
 
+// generate automatically an order ID
+
+
+
 $msg = '';
 // Check if POST data is not empty
 // htmlspecialchars(): convert special characters to their HTML entities (prevent XSS attacks)

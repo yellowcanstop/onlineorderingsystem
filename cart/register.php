@@ -80,7 +80,7 @@ function checkUsername() {
 }
 
 
-// send AJAX request to server to check if username already exists
+// send AJAX request to server to check password
 function checkPassword() {
     let password = $('#password').val();
     $.ajax({
