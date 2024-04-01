@@ -46,7 +46,7 @@ include 'functions.php';
             <p id="emailError"></p>
 
             <label for="phone">Phone:</label>
-            <input type="text" name="phone" placeholder="Phone" id="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" title="Format: 123-456-7890" required>
+            <input type="tel" name="phone" placeholder="Phone" id="phone" pattern="[0-9]{10}" title="Format: 0107998888" required>
 
             <input type="hidden" name="date_of_register" value="<?= time() ?>" id="date_of_register">
 

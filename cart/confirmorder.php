@@ -42,7 +42,7 @@ $products = $_SESSION['cart']['products'];
         </div>
         <div class="buttons">
             <input type="submit" value="Back To Cart" onclick="setFormAction('cart')" name="backtocart">
-            <input type="submit" value="Place Order" onclick="setFormAction('placeorder')" name="placeorder">
+            <input type="submit" value="Checkout" onclick="setFormAction('getinfo')" name="getinfo">
         </div>
     </form>
     <script>
