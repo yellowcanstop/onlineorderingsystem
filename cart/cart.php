@@ -93,7 +93,7 @@ if (isset($_POST['confirmorder']) && isset($_SESSION['cart']) && !empty($_SESSIO
         <table>
             <thead>
                 <tr>
-                    <td colspan="2">Product</td>
+                    <td colspan="2">Item</td>
                     <td>Price</td>
                     <td>Quantity</td>
                     <td>Total</td>
@@ -102,7 +102,7 @@ if (isset($_POST['confirmorder']) && isset($_SESSION['cart']) && !empty($_SESSIO
             <tbody>
                 <?php if (empty($products)): ?>
                 <tr>
-                    <td colspan="5" style="text-align:center;">You have no products added in your Shopping Cart</td>
+                    <td colspan="5" style="text-align:center;">You have no dishes added in your cart</td>
                 </tr>
                 <?php else: ?>
                 <?php foreach ($products as $product): ?>

@@ -30,6 +30,7 @@ $greeting = isset($_SESSION['loggedin']) ? "<h2>Hi $name, what are you craving?<
 $home = isset($_SESSION['loggedin']) ? "<a href=\"index.php\">Menu</a>" : "";
 $products = isset($_SESSION['loggedin']) ? "<a href=\"index.php?page=products\">Dishes</a>" : "";
 $profile = isset($_SESSION['loggedin']) ? "<a href=\"index.php?page=profile\">Profile</a>" : "";
+$orders = isset($_SESSION['loggedin']) ? "<a href=\"index.php?page=orders\">Orders</a>" : "";
 $register = isset($_SESSION['loggedin']) ? "" : "<a href=\"register.php\">Register</a>";
 $login = isset($_SESSION['loggedin']) ? "" : "<a href=\"login.php\">Login</a>";
 $logout = isset($_SESSION['loggedin']) ? "<a href=\"logout.php\"><i class=\"fas fa-sign-out-alt\"></i>Logout</a>" : "";
@@ -51,6 +52,7 @@ echo <<<EOT
                     $home
                     $products
                     $profile
+                    $orders
                     $login
                     $register
                 </nav>
