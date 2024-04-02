@@ -27,8 +27,8 @@ function template_header($title) {
 $num_items_in_cart = isset($_SESSION['cart']) ? ($_SESSION['cart']['num_items_in_cart']) : 0;
 $name = isset($_SESSION['username']) ? (htmlspecialchars($_SESSION['username'], ENT_QUOTES)) : "";
 $greeting = isset($_SESSION['loggedin']) ? "<h2>Hi $name, what are you craving?</h2>" : "";
-$home = isset($_SESSION['loggedin']) ? "<a href=\"index.php\">Home</a>" : "";
-$products = isset($_SESSION['loggedin']) ? "<a href=\"index.php?page=products\">Products</a>" : "";
+$home = isset($_SESSION['loggedin']) ? "<a href=\"index.php\">Menu</a>" : "";
+$products = isset($_SESSION['loggedin']) ? "<a href=\"index.php?page=products\">Dishes</a>" : "";
 $profile = isset($_SESSION['loggedin']) ? "<a href=\"index.php?page=profile\">Profile</a>" : "";
 $register = isset($_SESSION['loggedin']) ? "" : "<a href=\"register.php\">Register</a>";
 $login = isset($_SESSION['loggedin']) ? "" : "<a href=\"login.php\">Login</a>";
