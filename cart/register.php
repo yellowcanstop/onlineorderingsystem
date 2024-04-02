@@ -61,19 +61,24 @@ include 'functions.php';
 // send AJAX request to server to check if username already exists
 function checkUsername() {
     let username = $('#username').val();
+    let usernameError = document.getElementById('usernameError');
     $.ajax({
         url: 'checkusername.php',
         type: 'POST',
         data: {username: username},
+        dataType: 'text', // ensure jquery treats response as text (insead of JSON or XML)
         success: function(response) {
-            if (response == 'taken') {
-                $('#username').css('border', '3px solid red');
-                usernameError.textContent = 'Username is already taken!';
-                usernameError.style.color = 'red';
-            } else {
+            response = response.trim(); // remove any whitespace
+            console.log(response); // to check in console that response is correct
+            if (response == 'available') {
                 $('#username').css('border', '3px solid green');
                 usernameError.textContent = 'Username is available!';
                 usernameError.style.color = 'green';
+                
+            } else {
+                $('#username').css('border', '3px solid red');
+                usernameError.textContent = 'Username is already taken!';
+                usernameError.style.color = 'red';
             }
         }
     });
@@ -132,6 +137,14 @@ function validatePassword() {
         passwordError.style.color = 'green';
     }
 }
+
+// call checkUsername() when username input field changes
+$(document).ready(function() {
+    $('#username').on('input', function() {
+        checkUsername();
+    });
+});
+
 </script>
 
 
