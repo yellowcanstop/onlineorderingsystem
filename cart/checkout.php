@@ -13,6 +13,13 @@ if (preg_match('/^[a-zA-Z]+[a-zA-Z ]*$/', $_POST['name']) == 0) {
 // sanitize phone number input by removing any non-digit characters
 $_POST['phone'] = preg_replace('/[^0-9]/', '', $_POST['phone']);
 
+// validate phone number: exactly 10 digits
+if (strlen($_POST['phone']) != 10) {
+    $_SESSION['error'] = 'Invalid phone number';
+    header('Location: index.php?page=getinfo');
+    exit();
+}
+
 // get customer_id as session variable if not already stored from profile.php
 if (($_SESSION['role'] == 'customer') && (!isset($_SESSION['customer_id']))) {
 	$stmt = $pdo -> prepare('SELECT id FROM customers WHERE account_id = :account_id'); 
@@ -21,6 +28,40 @@ if (($_SESSION['role'] == 'customer') && (!isset($_SESSION['customer_id']))) {
     $customer = $stmt->fetch(PDO::FETCH_ASSOC);
     $_SESSION['customer_id'] = $customer['id'];
 }
+
+// insert address details into addresses table
+if (isset($_POST['line_1'], $_POST['state'], $_POST['zip_postcode']) && !empty($_POST['line_1']) && !empty($_POST['state']) && !empty($_POST['zip_postcode']) && (strlen($_POST['zip_postcode']) == 5)){
+    if ($stmt = $pdo->prepare('INSERT INTO addresses (line_1, line_2, state, zip_postcode) VALUES (:line_1, :line_2, :state, :zip_postcode)')) {
+        $stmt->bindValue(':line_1', $_POST['line_1'], PDO::PARAM_STR);
+        $stmt->bindValue(':line_2', $_POST['line_2'], PDO::PARAM_STR);
+        $stmt->bindValue(':state', $_POST['state'], PDO::PARAM_STR);
+        $stmt->bindValue(':zip_postcode', $_POST['zip_postcode'], PDO::PARAM_STR);
+        if (!$stmt->execute()) {
+            error_log("Cannot execute sql statement for addresses table.");
+        } else {
+            // get address_id as session variable
+            $address_id = $pdo->lastInsertId();
+            $_SESSION['address_id'] = $address_id;
+            // insert customer_address into customer_addresses table
+            if ($stmt = $pdo->prepare('INSERT INTO customer_addresses (customer_id, address_id) VALUES (:customer_id, :address_id)')) {
+                $stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
+                $stmt->bindValue(':address_id', $address_id, PDO::PARAM_INT);
+                if (!$stmt->execute()) {
+                    error_log("Cannot execute sql statement for customer_addresses table.");
+                }
+            } else {
+                error_log("Cannot prepare sql statement for customer_addresses table.");
+            }
+        }
+    } else {
+        error_log("Cannot prepare sql statement for addresses table.");
+    }
+} else {
+    $_SESSION['error'] = 'Invalid address details';
+    header('Location: index.php?page=getinfo');
+    exit();
+}  
+
 
 // customer_payment_method_id: 1 for cash, 2 for credit card or ewallet
 if (isset($_POST['customer_payment_method_id'], $_POST['date_order_placed'])) {
@@ -68,11 +109,4 @@ if (isset($_POST['customer_payment_method_id'], $_POST['date_order_placed'])) {
         header('Location: index.php?page=confirmorder');
         exit();
     }
-    // prevent form resubmission
-    //header('location: index.php?page=getinfo');
-    //exit;
 }
-
-
-
-?>

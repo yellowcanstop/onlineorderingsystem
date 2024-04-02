@@ -28,22 +28,22 @@
             <label for="state">State/City:</label>
             <select id="state" name="state" required>
                 <option value="">Select State/City:</option>
-                <option value="state1">Johor</option>
-                <option value="state2">Kedah</option>
-                <option value="state3">Kelantan</option>
-                <option value="state4">Kuala Lumpur</option>
-                <option value="state5">Labuan</option>
-                <option value="state6">Melaka</option>
-                <option value="state7">Negeri Sembilan</option>
-                <option value="state8">Pahang</option>
-                <option value="state9">Penang</option>
-                <option value="state10">Perak</option>
-                <option value="state11">Perlis</option>
-                <option value="state12">Putrajaya</option>
-                <option value="state13">Sabah</option>
-                <option value="state14">Sarawak</option>
-                <option value="state15">Selangor</option>
-                <option value="state16">Terengganu</option>
+                <option value="Johor">Johor</option>
+                <option value="Kedah">Kedah</option>
+                <option value="Kelantan">Kelantan</option>
+                <option value="Kuala Lumpur">Kuala Lumpur</option>
+                <option value="Labuan">Labuan</option>
+                <option value="Melaka">Melaka</option>
+                <option value="Negeri Sembilan">Negeri Sembilan</option>
+                <option value="Pahang">Pahang</option>
+                <option value="Penang">Penang</option>
+                <option value="Perak">Perak</option>
+                <option value="Perlis">Perlis</option>
+                <option value="Putrajaya">Putrajaya</option>
+                <option value="Sabah">Sabah</option>
+                <option value="Sarawak">Sarawak</option>
+                <option value="Selangor">Selangor</option>
+                <option value="Terengganu">Terengganu</option>
             </select>
             <br>
             <label for="zip_postcode">Zip/Postcode:</label>

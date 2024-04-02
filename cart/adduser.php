@@ -27,6 +27,13 @@ if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 // sanitize phone number input by removing any non-digit characters
 $_POST['phone'] = preg_replace('/[^0-9]/', '', $_POST['phone']);
 
+// validate phone number: exactly 10 digits
+if (strlen($_POST['phone']) != 10) {
+    $_SESSION['error'] = 'Invalid phone number';
+    header('Location: register.php');
+    exit();
+}
+
 // validate username
 if (preg_match('/^[a-zA-Z0-9]+$/', $_POST['username']) == 0) {
     $_SESSION['error'] = 'Invalid username';
