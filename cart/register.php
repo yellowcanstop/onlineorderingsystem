@@ -19,7 +19,7 @@ include 'functions.php';
 		<!-- when the form is submitted, the data is sent to authenticate.php -->
 		<form action="adduser.php" method="post" autocomplete="off">
             <label for="username">Username:</label>
-			<input type="text" name="username" placeholder="Username" id="username" oninput="checkUsername()" required>
+			<input type="text" name="username" placeholder="Username" id="username" oninput="checkUsername()" autocomplete="username" required>
             <p id="usernameError"></p>
             <br>
             <label for="firstname">Name:</label>
@@ -30,11 +30,11 @@ include 'functions.php';
             
             
 			<label for="password">Password:</label>
-            <input type="password" name="password" placeholder="Password" id="password" oninput="checkPassword()" required>
+            <input type="password" name="password" placeholder="Password" id="password" oninput="checkPassword()" autocomplete="new-password" required>
             <p id="passwordCheck"></p>
             
             <label for="confirm_password">Confirm Password:</label>
-            <input type="password" name="confirm_password" placeholder="Confirm Password" id="confirm_password" oninput="validatePassword()" required>
+            <input type="password" name="confirm_password" placeholder="Confirm Password" id="confirm_password" oninput="validatePassword()" autocomplete="new-password" required>
             <p id="passwordError"></p>
 
 

@@ -48,8 +48,8 @@ if ($stmt = $pdo->prepare('SELECT username FROM accounts WHERE username = :usern
 	$stmt->bindValue(':username', $_POST['username'], PDO::PARAM_STR);
 	$stmt->execute();
 	$account = $stmt->fetch(PDO::FETCH_ASSOC);
-	if ($_POST['username'] == $account['username']) {
-		$_SESSION['error'] = 'Username already exists.';
+    if (!empty($account)) {
+        $_SESSION['error'] = 'Username already exists.';
         header('Location: register.php');
 	    exit();
     }
@@ -60,7 +60,7 @@ if ($stmt = $pdo->prepare('SELECT email FROM accounts WHERE email = :email')) {
 	$stmt->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
 	$stmt->execute();
 	$account = $stmt->fetch(PDO::FETCH_ASSOC);
-	if ($_POST['email'] == $account['email']) {
+	if (!empty($account)) {
 		$_SESSION['error'] = 'Email already exists.';
         header('Location: register.php');
 	    exit();
@@ -89,7 +89,6 @@ if ($stmt = $pdo->prepare('INSERT INTO accounts (username, email, password) VALU
             // hence use date() to format the timestamp as a string in 'Y-m-d H:i:s' format
             $date_of_register = date('Y-m-d H:i:s', $_POST['date_of_register']);
             $stmt->bindValue(':date_of_register', $date_of_register, PDO::PARAM_STR);
-            $stmt->execute();
             if (!$stmt->execute()) {
                 error_log("Cannot execute sql statement for customers table.");
             }

@@ -15,15 +15,10 @@ if (isset($_POST['username'])) {
         $stmt->bindValue(':username', $_POST['username'], PDO::PARAM_STR);
         $stmt->execute();
         $account = $stmt->fetch(PDO::FETCH_ASSOC);
-        // if fetch does not return any resuts, fetch wil return false
-        // this would result in $account being a boolean, not an array
-        // so check if $account is not false or null before accessing $account['username']
         if (empty($account)) {
-            error_log("false, null, not set");
             ob_end_clean();
             echo 'available';
         } else {
-            error_log("it is here" . implode(", ", $account));
             ob_end_clean();
             echo 'taken';
         }     
