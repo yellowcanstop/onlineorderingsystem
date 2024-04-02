@@ -1,5 +1,3 @@
-
-
 <?=template_header('Order Details')?>
 
 <div class="product content-wrapper">
