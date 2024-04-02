@@ -2,8 +2,9 @@
 $products = $_SESSION['cart']['products'];
 $subtotal = $_SESSION['cart']['subtotal'];
 
-// validate name
-if (preg_match('/^[a-zA-Z]+$/', $_POST['name']) == 0) {
+// validate name: string start with at least one alphabet character
+// with zero or more alphabet characters or spaces following it
+if (preg_match('/^[a-zA-Z]+[a-zA-Z ]*$/', $_POST['name']) == 0) {
     $_SESSION['error'] = 'Invalid name';
     header('Location: index.php?page=getinfo');
 	exit();
@@ -43,7 +44,6 @@ if (isset($_POST['customer_payment_method_id'], $_POST['date_order_placed'])) {
                     $stmt->bindValue(':dish_id', $product['id'], PDO::PARAM_INT);
                     $stmt->bindValue(':order_id', $order_id, PDO::PARAM_INT);
                     $stmt->bindValue(':order_quantity', $_SESSION['cart'][$product['id']], PDO::PARAM_INT);
-                    $stmt->execute();
                     if (!$stmt->execute()) {
                         error_log("Cannot execute sql statement for order id: $order_id with product id: " . $product['id']);
                     }

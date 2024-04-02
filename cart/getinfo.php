@@ -1,6 +1,6 @@
 <?=template_header('Order Details')?>
 
-<div class="product content-wrapper">
+<div class="cart content-wrapper">
     <h1>Finalize Order Details</h1>
     <div>
         <?php
@@ -15,14 +15,16 @@
             <h2>Customer Details</h2>
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
+            <br>
             <label for="phone">Phone Number:</label>
             <input type="tel" name="phone" placeholder="Phone" id="phone" pattern="[0-9]{10}" title="Format: 0107998888" required>
+            <br>
             <label for="line_1">Address Line 1:</label>
             <input type="text" id="line_1" name="line_1" required>
-
+            <br>
             <label for="line_2">Address Line 2:</label>
             <input type="text" id="line_2" name="line_2">
-
+            <br>
             <label for="state">State/City:</label>
             <select id="state" name="state" required>
                 <option value="">Select State/City:</option>
@@ -43,7 +45,7 @@
                 <option value="state15">Selangor</option>
                 <option value="state16">Terengganu</option>
             </select>
-
+            <br>
             <label for="zip_postcode">Zip/Postcode:</label>
             <input type="text" id="zip_postcode" name="zip_postcode" required>
         </div>
@@ -53,6 +55,7 @@
                 <input type="radio" id="cash" name="customer_payment_method_id" value="1" required>
                 Cash
             </label>
+            <br>
             <label for="credit-card">
                 <input type="radio" id="credit-card" name="customer_payment_method_id" value="2" required>
                 Credit Card / Ewallet
