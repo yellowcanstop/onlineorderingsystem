@@ -92,6 +92,18 @@ if (isset($_POST['customer_payment_method_id'], $_POST['date_order_placed'])) {
                     error_log("Cannot prepare sql statement for customers_orders_products table.");
                 }
             endforeach;
+            // update quantities for each dish in dishes table
+            foreach ($products as $product):
+                if ($stmt = $pdo->prepare('UPDATE dishes SET quantity = quantity - :order_quantity WHERE id = :dish_id')) {
+                    $stmt->bindValue(':order_quantity', $_SESSION['cart'][$product['id']], PDO::PARAM_INT);
+                    $stmt->bindValue(':dish_id', $product['id'], PDO::PARAM_INT);
+                    if (!$stmt->execute()) {
+                        error_log("Cannot execute sql statement for updating quantity in dishes table for dish id: " . $product['id']);
+                    }
+                } else {
+                    error_log("Cannot prepare sql statement for updating quantity in dishes table.");
+                }
+            endforeach;
             // redirect to different page based on payment method
             if ($_POST['customer_payment_method_id'] == 1) {
                 // if payment method is cash, redirect to placeorder page

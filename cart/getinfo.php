@@ -46,6 +46,8 @@
                 <option value="Terengganu">Terengganu</option>
             </select>
             <br>
+            Country : Malaysia
+            <br>
             <label for="zip_postcode">Zip/Postcode:</label>
             <input type="text" id="zip_postcode" name="zip_postcode" required>
         </div>
