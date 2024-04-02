@@ -69,7 +69,6 @@ function checkUsername() {
         dataType: 'text', // ensure jquery treats response as text (insead of JSON or XML)
         success: function(response) {
             response = response.trim(); // remove any whitespace
-            console.log(response); // to check in console that response is correct
             if (response == 'available') {
                 $('#username').css('border', '3px solid green');
                 usernameError.textContent = 'Username is available!';
@@ -88,11 +87,14 @@ function checkUsername() {
 // send AJAX request to server to check password
 function checkPassword() {
     let password = $('#password').val();
+    let passwordCheck = document.getElementById('passwordCheck');
     $.ajax({
         url: 'checkpassword.php',
         type: 'POST',
         data: {password: password},
+        dataType: 'text',
         success: function(response) {
+            response = response.trim(); // remove any whitespace
             if (response == 'invalid') {
                 $('#password').css('border', '3px solid red');
                 passwordCheck.textContent = 'Password must be between 8 and 20 characters long, contain letters, numbers and at least one special character!';
