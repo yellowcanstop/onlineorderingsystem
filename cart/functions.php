@@ -33,7 +33,7 @@ $profile = isset($_SESSION['loggedin']) ? "<a href=\"index.php?page=profile\">Pr
 $orders = isset($_SESSION['loggedin']) ? "<a href=\"index.php?page=orders\">Orders</a>" : "";
 $register = isset($_SESSION['loggedin']) ? "" : "<a href=\"register.php\">Register</a>";
 $login = isset($_SESSION['loggedin']) ? "" : "<a href=\"login.php\">Login</a>";
-$logout = isset($_SESSION['loggedin']) ? "<a href=\"logout.php\"><i class=\"fas fa-sign-out-alt\"></i>Logout</a>" : "";
+$logout = isset($_SESSION['loggedin']) ? "<a href=\"logout.php\"><i class=\"fas fa-sign-out-alt\"></i> Logout</a>" : "";
 $cart = isset($_SESSION['loggedin']) ? "<a href=\"index.php?page=cart\"><i class=\"fas fa-shopping-cart\"></i><span>$num_items_in_cart</span></a>" : "";
 echo <<<EOT
 <!DOCTYPE html>
