@@ -9,7 +9,7 @@ if (isset($_POST['id'], $_POST['quantity']) && is_numeric($_POST['id']) && is_nu
     $product = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($product && $quantity > 0) {
         // use session variable to remember items in cart
-        // session variable cart is an associated array with key as product id and value as quantity
+        // session variable cart is an associative array with key as product id and value as quantity
         if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
             if (array_key_exists($id, $_SESSION['cart'])) {
                 // if dish already in cart, update the quantity

@@ -7,15 +7,15 @@ if (isset($_SESSION['customer_id'])) {
 		$stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
 		$stmt->execute();
 		$orders = $stmt->fetchALL(PDO::FETCH_ASSOC);
-        // foreach operates on a copy of the array, not the original array
-        // use key of $orders array to get reference to the original array
+        // foreach ($orders as $order) operates on a copy of the array, not the original array
+        // so use key of $orders array to get reference to the original array
         // to directly modify $orders array (no need to use reference with & and unset())
         foreach ($orders as $key => $order):
             if ($stmt = $pdo ->prepare('SELECT dish_id, order_quantity FROM customer_orders_products WHERE order_id = :order_id')) {
                 $stmt->bindValue(':order_id', $order['order_id'], PDO::PARAM_INT);
                 $stmt->execute();
-                // fetchAll returns an array of rows (each row is an associative array)
-                // each associative array is a row from customer_orders_products table
+                // $orders[$key]['dishes'] is an array of associative arrays (used fetchAll), with
+                // each associative array as a row from customer_orders_products table
                 $orders[$key]['dishes'] = $stmt->fetchALL(PDO::FETCH_ASSOC);
             } else {
                 error_log('Cannot prepare sql statement for customer_orders_products table.');
@@ -27,6 +27,17 @@ if (isset($_SESSION['customer_id'])) {
 		error_log('Cannot prepare sql statement for customers table.');
 		exit();
 	}
+}
+
+foreach ($orders as $key => $order) {
+    foreach ($order['dishes'] as $dish) {
+        // img, price
+        $stmt = $pdo->prepare('SELECT name FROM dishes WHERE id = :dish_id');
+        $stmt->bindValue(':dish_id', $dish['dish_id'], PDO::PARAM_INT);
+        $stmt->execute();
+        $dish_name = $stmt->fetch(PDO::FETCH_ASSOC);
+        $dish['name'] = $dish_name['name'];
+    }
 }
 
 
@@ -58,13 +69,25 @@ if (isset($_SESSION['customer_id'])) {
                     <td><?=$order['payment_amount']?></td>
                     <td><?=$order['order_status_code']?></td>   
                 </tr>
-                <tr
+                <tr>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Dish</td>
+                                <td>Quantity</td>
+                            </tr>
+                        </thead>
+                    <tbody>
                     <?php foreach ($order['dishes'] as $dish): ?>
                     <tr>
-                        <td><?=$dish['dish_id']?></td>
+                        <td>
+                            <a href="index.php?page=product&id=<?=$dish['dish_id']?>"><?=$dish['dish_id']?></a>
+                        </td>
+                        
                         <td><?=$dish['order_quantity']?></td>
                     </tr>
                     <?php endforeach; ?>
+                    </tbody>
                 </tr>
                 <?php endforeach; ?>
                 <?php endif; ?>
