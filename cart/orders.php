@@ -29,15 +29,19 @@ if (isset($_SESSION['customer_id'])) {
 	}
 }
 
-foreach ($orders as $key => $order) {
-    foreach ($order['dishes'] as $dish) {
-        // img, price
-        $stmt = $pdo->prepare('SELECT name FROM dishes WHERE id = :dish_id');
-        $stmt->bindValue(':dish_id', $dish['dish_id'], PDO::PARAM_INT);
-        $stmt->execute();
-        $dish_name = $stmt->fetch(PDO::FETCH_ASSOC);
-        $dish['name'] = $dish_name['name'];
+// store all dish names in associative array with key as dish id and value as dish name
+// so display dish names by referencing dish id in orders array
+$names = array();
+if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
+    
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($results as $result) {
+        $names[$result['id']] = $result['name'];
     }
+} else {
+    error_log('Cannot prepare sql statement for dishes table.');
+    exit();
 }
 
 
@@ -81,9 +85,8 @@ foreach ($orders as $key => $order) {
                     <?php foreach ($order['dishes'] as $dish): ?>
                     <tr>
                         <td>
-                            <a href="index.php?page=product&id=<?=$dish['dish_id']?>"><?=$dish['dish_id']?></a>
+                            <a href="index.php?page=product&id=<?=$dish['dish_id']?>"><?=$names[$dish['dish_id']]?></a>
                         </td>
-                        
                         <td><?=$dish['order_quantity']?></td>
                     </tr>
                     <?php endforeach; ?>
