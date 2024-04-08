@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2024 at 07:17 AM
+-- Generation Time: Apr 08, 2024 at 08:50 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,7 +44,11 @@ INSERT INTO `accounts` (`account_id`, `username`, `password`, `role`, `status`, 
 (1, 'admin1', '$2y$10$SfhYIDtn.iOuCW7zfoFLuuZHX6lja4lF4XA4JqNmpiH/.P3zB8JCa', 'admin', 'active', 'admin1@admin.com'),
 (3, 'test', '$2y$10$SfhYIDtn.iOuCW7zfoFLuuZHX6lja4lF4XA4JqNmpiH/.P3zB8JCa', 'customer', 'active', 'test@test.com'),
 (6, 'frodobaggins', '$2y$10$u6lQp5DcYOnN.5K7vM7tJ.p356EV9P9ba8DhJVkKp2vBfP0/n0vzm', 'customer', 'active', 'frodo@test.com'),
-(7, 'voldemort', '$2y$10$I.OMTyEh24YPQD3xO95RJupzC/sZfESjrxUjL6u4ohFjdiyLYjB5e', 'customer', 'active', 'voldemort@test.com');
+(7, 'voldemort', '$2y$10$I.OMTyEh24YPQD3xO95RJupzC/sZfESjrxUjL6u4ohFjdiyLYjB5e', 'customer', 'active', 'voldemort@test.com'),
+(8, 'bellatrix', '$2y$10$YkMOScuhLtagU1BT7KfnEuneN9wGMonXYPIe5KfMf0CsYFjN4TJ6i', 'customer', 'active', 'bella@test.com'),
+(9, 'ron', '$2y$10$7jzb4cIapwTewxVwjJg6j.0KPA1zelwgmmgDQUbmji46csyPSL.di', 'customer', 'active', 'ron@test.com'),
+(10, 'tomriddle', '$2y$10$S69CwSyYX91xxFOR5wTEPO0Sb355cQc0rb..FpVxlAf1LZlLMyhq.', 'customer', 'active', 'tom@test.com'),
+(11, 'shutest', '$2y$10$mE0xVG1Owj8NcnFPdqALpuxuqsK2FRvW.0PUL6AXZBuHBx1szcHey', 'customer', 'active', 'shu@test.com');
 
 -- --------------------------------------------------------
 
@@ -56,11 +60,19 @@ CREATE TABLE `addresses` (
   `id` int(11) NOT NULL,
   `line_1` varchar(255) NOT NULL,
   `line_2` varchar(255) DEFAULT NULL,
-  `city` varchar(255) NOT NULL,
   `zip_postcode` varchar(255) NOT NULL,
-  `state` varchar(255) NOT NULL,
-  `iso_country_code` varchar(255) NOT NULL
+  `state` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `addresses`
+--
+
+INSERT INTO `addresses` (`id`, `line_1`, `line_2`, `zip_postcode`, `state`) VALUES
+(1, '44 Wool\'s Orphanage', 'London', '56000', 'state4'),
+(2, '44 Wool\'s Orphanage', 'London', '56000', 'state4'),
+(3, 'Hogwarts', '', '14000', 'Penang'),
+(4, 'Hogwarts', '', '14000', 'Penang');
 
 -- --------------------------------------------------------
 
@@ -104,7 +116,11 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`id`, `customer_first_name`, `customer_last_name`, `customer_phone`, `date_of_register`, `account_id`) VALUES
 (2, 'Frodo', 'Baggins', '123-420-8888', '2024-03-30 13:31:57', 6),
-(4, 'Vol', 'Mort', '888-888-8888', '2024-04-01 06:46:28', 7);
+(4, 'Vol', 'Mort', '888-888-8888', '2024-04-01 06:46:28', 7),
+(6, 'Bellatrix', 'Lestrange', '1231231234', '2024-04-02 15:51:58', 8),
+(8, 'Ron', 'Weasley', '0107993388', '2024-04-02 16:10:41', 9),
+(10, 'Tom', 'Riddle', '1444444444', '2024-04-02 16:12:09', 10),
+(11, 'shu', 'test', '1111111111', '2024-04-08 08:45:12', 11);
 
 -- --------------------------------------------------------
 
@@ -114,9 +130,17 @@ INSERT INTO `customers` (`id`, `customer_first_name`, `customer_last_name`, `cus
 
 CREATE TABLE `customer_addresses` (
   `customer_id` int(11) NOT NULL,
-  `address_id` int(11) NOT NULL,
-  `address_type_code` int(11) NOT NULL
+  `address_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `customer_addresses`
+--
+
+INSERT INTO `customer_addresses` (`customer_id`, `address_id`) VALUES
+(10, 2),
+(10, 3),
+(10, 4);
 
 -- --------------------------------------------------------
 
@@ -128,11 +152,22 @@ CREATE TABLE `customer_orders` (
   `order_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
   `customer_payment_method_id` int(11) NOT NULL,
-  `order_status_code` int(11) NOT NULL,
+  `order_status_code` enum('unpaid','paid','fulfilled','cancelled') NOT NULL DEFAULT 'unpaid',
   `date_order_placed` datetime NOT NULL,
   `date_order_paid` datetime NOT NULL,
   `payment_amount` decimal(7,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `customer_orders`
+--
+
+INSERT INTO `customer_orders` (`order_id`, `customer_id`, `customer_payment_method_id`, `order_status_code`, `date_order_placed`, `date_order_paid`, `payment_amount`) VALUES
+(1, 10, 1, 'unpaid', '2024-04-02 17:34:38', '0000-00-00 00:00:00', 101.95),
+(2, 10, 2, 'paid', '2024-04-02 17:40:26', '2024-04-02 17:40:49', 49.98),
+(3, 10, 1, 'unpaid', '2024-04-02 18:14:13', '0000-00-00 00:00:00', 29.99),
+(4, 10, 2, 'paid', '2024-04-02 18:17:04', '2024-04-02 18:17:35', 19.99),
+(5, 10, 1, 'unpaid', '2024-04-02 18:34:50', '0000-00-00 00:00:00', 69.97);
 
 -- --------------------------------------------------------
 
@@ -145,6 +180,24 @@ CREATE TABLE `customer_orders_products` (
   `dish_id` int(11) NOT NULL,
   `order_quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `customer_orders_products`
+--
+
+INSERT INTO `customer_orders_products` (`order_id`, `dish_id`, `order_quantity`) VALUES
+(1, 1, 2),
+(1, 1, 2),
+(1, 2, 2),
+(1, 2, 2),
+(1, 4, 1),
+(1, 4, 1),
+(2, 1, 1),
+(2, 4, 1),
+(3, 4, 1),
+(4, 1, 1),
+(5, 1, 2),
+(5, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -167,21 +220,10 @@ CREATE TABLE `dishes` (
 --
 
 INSERT INTO `dishes` (`id`, `name`, `description`, `price`, `quantity`, `img`, `category_id`) VALUES
-(1, 'Signature Tart', '<p>This tart loves you berry much.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for dessert.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Available whole or by slice.</li>\r\n</ul>', 19.99, 10, 'tart.jpg', 3),
+(1, 'Signature Tart', '<p>This tart loves you berry much.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for dessert.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Available whole or by slice.</li>\r\n</ul>', 19.99, 8, 'tart.jpg', 3),
 (2, 'Egg', '<p>Eggs are good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 15.99, 10, 'egg.jpg', 2),
 (3, 'Fish', '<p>Fish is good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 39.99, 0, 'fish.jpg', 2),
-(4, 'Salad', '<p>Salad is good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 29.99, 10, 'salad.jpg', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ref_address_types`
---
-
-CREATE TABLE `ref_address_types` (
-  `address_type_code` int(11) NOT NULL,
-  `address_type_description` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+(4, 'Salad', '<p>Salad is good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 29.99, 9, 'salad.jpg', 1);
 
 --
 -- Indexes for dumped tables
@@ -218,7 +260,6 @@ ALTER TABLE `customers`
 -- Indexes for table `customer_addresses`
 --
 ALTER TABLE `customer_addresses`
-  ADD KEY `address_type_code` (`address_type_code`),
   ADD KEY `customer_id` (`customer_id`),
   ADD KEY `address_id` (`address_id`);
 
@@ -244,12 +285,6 @@ ALTER TABLE `dishes`
   ADD KEY `categoryid` (`category_id`);
 
 --
--- Indexes for table `ref_address_types`
---
-ALTER TABLE `ref_address_types`
-  ADD PRIMARY KEY (`address_type_code`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -257,13 +292,13 @@ ALTER TABLE `ref_address_types`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -275,13 +310,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `customer_orders`
 --
 ALTER TABLE `customer_orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `dishes`
@@ -303,7 +338,6 @@ ALTER TABLE `customers`
 -- Constraints for table `customer_addresses`
 --
 ALTER TABLE `customer_addresses`
-  ADD CONSTRAINT `customer_addresses_ibfk_1` FOREIGN KEY (`address_type_code`) REFERENCES `ref_address_types` (`address_type_code`),
   ADD CONSTRAINT `customer_addresses_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
   ADD CONSTRAINT `customer_addresses_ibfk_3` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`);
 
