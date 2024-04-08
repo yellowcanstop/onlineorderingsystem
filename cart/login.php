@@ -3,6 +3,11 @@ session_start();
 include 'functions.php'; 
 ?>
 <?= template_header('Login') ?>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="login.css">
+</head>
+
 <body>
 	<div class="login">
 		<h1>Login</h1>
@@ -26,7 +31,7 @@ include 'functions.php';
 			<input type="submit" value="Login">
 		</form>
 	</div>
-	<div>
+	<div class="register-link">
 		<p>Don't have an account? <a href="register.php">Register</a></p>
 	</div>
 </body>
