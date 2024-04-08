@@ -3,6 +3,7 @@ session_start();
 include 'functions.php';
 ?>
 <?= template_header('Register') ?>
+
 <body>
     <!-- include jquery to do AJAX requests to server as user types in username field -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

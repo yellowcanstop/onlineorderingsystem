@@ -23,12 +23,18 @@ h1, h2, h3, h4, h5 {
 	width: 1050px;
 	margin: 0 auto;
 }
+
+
 header {
 	border-bottom: 1px solid #EEEEEE;
+	background-color: black;
 }
+
 header .content-wrapper {
-	display: flex;
+    display: flex;
 }
+
+
 header h1 {
 	display: flex;
 	flex-grow: 1;
@@ -335,10 +341,18 @@ main .placeorder h1 {
 main .placeorder p {
 	text-align: center;
 }
+
 footer {
 	position: absolute;
 	bottom: 0;
 	border-top: 1px solid #EEEEEE;
 	padding: 20px 0;
 	width: 100%;
-}
+} 
+
+
+
+
+
+
+
