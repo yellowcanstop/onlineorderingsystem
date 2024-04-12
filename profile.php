@@ -15,6 +15,26 @@ if ($_SESSION['role'] == 'customer') {
 	}
 }
 
+// retrieve address if there exists one which was set as default
+if ($stmt = $pdo -> prepare("SELECT address_id FROM customer_addresses WHERE customer_id = :customer_id AND is_saved = :is_saved")) {
+	$stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
+	$stmt->bindValue(':is_saved', 1, PDO::PARAM_INT);
+	$stmt->execute();
+	$address_id = $stmt->fetch(PDO::FETCH_ASSOC);
+	$_SESSION['address_id'] = $address_id['address_id'];
+	if ($stmt = $pdo -> prepare("SELECT * FROM addresses WHERE id = :address_id")) {
+		$stmt->bindValue(':address_id', $_SESSION['address_id'], PDO::PARAM_INT);
+		$stmt->execute();
+		$address = $stmt->fetch(PDO::FETCH_ASSOC);
+	} else {
+		error_log('Cannot prepare sql statement for addresses table.');
+		exit();
+	}
+} else {
+	error_log('Cannot prepare sql statement for customer_addresses table.');
+	exit();
+}
+
 if (isset($_POST['new_email'])) {
 	$new_email = $_POST['new_email'];
 	// check if email already exists
@@ -97,6 +117,9 @@ if (isset($_POST['new_phone'])) {
 			<table>
 				<tr>
 					<td>Username:</td>
+					<!-- use htmlspecialchars() to output data which were user inputs -->
+					<!-- ENT_QUOTES is used to convert both double and single quotes -->
+					<!-- this is to prevent XSS attacks -->
 					<td><?=htmlspecialchars($_SESSION['username'], ENT_QUOTES)?></td>
 				</tr>
 				<tr>
@@ -153,6 +176,18 @@ if (isset($_POST['new_phone'])) {
 				</tr>
 				<?php endif; ?>
 			</table>
+		</div>
+		<div>
+			<h3>Default Address:</h3>
+			<?=htmlspecialchars($address['line_1'], ENT_QUOTES)?>
+			<br>
+			<?=htmlspecialchars($address['line_2'], ENT_QUOTES)?>
+			<br>
+			<?=htmlspecialchars($address['zip_postcode'], ENT_QUOTES)?>
+			<br>
+			<?=htmlspecialchars($address['state'], ENT_QUOTES)?>
+			<br>
+			Malaysia
 		</div>
 </div>
 <script>

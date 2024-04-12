@@ -51,6 +51,14 @@
             <label for="zip_postcode">Zip/Postcode:</label>
             <input type="text" id="zip_postcode" name="zip_postcode" required>
         </div>
+        <div>
+            <input type="hidden" name="is_saved" value="0">
+            <!-- if radio button is selected, will override above hidden input -->
+            <label for="save_address">
+                <input type="radio" id="save_address" name="is_saved" value="1">
+                Save as default address
+            </label>
+        </div>
         <div class="payment-method">
             <h2>Payment Method</h2>
             <label for="cash">

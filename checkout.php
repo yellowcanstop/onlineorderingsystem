@@ -43,9 +43,10 @@ if (isset($_POST['line_1'], $_POST['state'], $_POST['zip_postcode']) && !empty($
             $address_id = $pdo->lastInsertId();
             $_SESSION['address_id'] = $address_id;
             // insert customer_address into customer_addresses table
-            if ($stmt = $pdo->prepare('INSERT INTO customer_addresses (customer_id, address_id) VALUES (:customer_id, :address_id)')) {
+            if ($stmt = $pdo->prepare('INSERT INTO customer_addresses (customer_id, address_id, is_saved) VALUES (:customer_id, :address_id, :is_saved)')) {
                 $stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
                 $stmt->bindValue(':address_id', $address_id, PDO::PARAM_INT);
+                $stmt->bindValue(':is_saved', $_POST['is_saved'], PDO::PARAM_INT);
                 if (!$stmt->execute()) {
                     error_log("Cannot execute sql statement for customer_addresses table.");
                 }
