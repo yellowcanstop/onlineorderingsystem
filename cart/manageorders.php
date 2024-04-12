@@ -156,7 +156,9 @@ $total_orders_for_month = count($orders);
                 <?php foreach ($orders as $order): ?>
                 <tr>
                     <td><?=$order['date_order_placed']?></td>
-                    <td><?=$order['order_id']?></td>
+                    <td>
+                        <?=$order['order_id']?>
+                    </td>
                     <td><?=$order['customer_id']?></td>
                     <td>
                         <?php if ($order['customer_payment_method_id'] == 1): ?>
@@ -197,13 +199,20 @@ $total_orders_for_month = count($orders);
 
                     <td>
                     <?php if ($order['order_status_code'] == 'unpaid'): ?>
-                        <a href="index.php?page=manageorders&update_order_status_code=paid&order_id=<?=$order['order_id']?>&p=<?=$current_page?>" class="remove">Mark as Paid</a>
+                        <a href="index.php?page=vieworder&order_id=<?=$order['order_id']?>" class="remove">View Order</a>
                         <br>
-                        <a href="index.php?page=manageorders&update_order_status_code=cancelled&order_id=<?=$order['order_id']?>&p=<?=$current_page?>" class="remove">Cancel Order</a>
+                        <!-- void(0) to return undefined since want to run js code, not default behavior of <a> tag -->
+                        <!-- use custom data attribute to store the url for redirection when user confirms action -->
+                        <a href="javascript:void(0);" data-url="index.php?page=manageorders&update_order_status_code=paid&order_id=<?=$order['order_id']?>&p=<?=$current_page?>" class="remove action-confirm">Mark as Paid</a>
+                        <br>
+                        <a href="javascript:void(0);" data-url="index.php?page=manageorders&update_order_status_code=cancelled&order_id=<?=$order['order_id']?>&p=<?=$current_page?>" class="remove action-confirm">Cancel Order</a>
+
                     <?php elseif ($order['order_status_code'] == 'paid'): ?>
-                        <a href="index.php?page=manageorders&update_order_status_code=fulfilled&order_id=<?=$order['order_id']?>&p=<?=$current_page?>" class="remove">Mark as Fulfilled</a>
+                        <a href="index.php?page=vieworder&order_id=<?=$order['order_id']?>" class="remove">View Order</a>
                         <br>
-                        <a href="index.php?page=manageorders&update_order_status_code=cancelled&order_id=<?=$order['order_id']?>&p=<?=$current_page?>" class="remove">Cancel Order</a>
+                        <a href="javascript:void(0);" data-url="index.php?page=manageorders&update_order_status_code=fulfilled&order_id=<?=$order['order_id']?>&p=<?=$current_page?>" class="remove action-confirm">Mark as Fulfilled</a>
+                        <br>
+                        <a href="javascript:void(0);" data-url="index.php?page=manageorders&update_order_status_code=cancelled&order_id=<?=$order['order_id']?>&p=<?=$current_page?>" class="remove action-confirm">Cancel Order</a>
                     <?php elseif ($order['order_status_code'] == 'fulfilled' || $order['order_status_code'] == 'cancelled'): ?>
                         <p>no action available</p>
                     <?php endif; ?>

@@ -43,7 +43,8 @@ echo <<<EOT
 		<title>$title</title>
 		<link href="cartstyle.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-	</head>
+        <script src="main.js" defer></script>
+    </head>
 	<body>
         <header>
             <div class="content-wrapper">
