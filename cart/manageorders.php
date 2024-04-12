@@ -109,15 +109,6 @@ $total_orders_for_month = count($orders);
     <form method="get" action="index.php?page=manageorders">
         <input type="hidden" name="page" value="manageorders">
         <!-- show only if there are GET parameters -->
-        <?php if(isset($_GET['order_status_code'])): ?>
-            <input type="hidden" name="order_status_code" value="<?=$_GET['order_status_code']?>">
-        <?php endif; ?>
-        <?php if(isset($_GET['update_order_status_code'])): ?>
-            <input type="hidden" name="update_order_status_code" value="<?=$_GET['update_order_status_code']?>">
-        <?php endif; ?>
-        <?php if(isset($_GET['order_id'])): ?>
-            <input type="hidden" name="order_id" value="<?=$_GET['order_id']?>">
-        <?php endif; ?>
         <?php if(isset($_GET['p'])): ?>
             <input type="hidden" name="p" value="<?=$_GET['p']?>">
         <?php endif; ?>
