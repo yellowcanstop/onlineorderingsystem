@@ -91,6 +91,7 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
                     </tr>
                     <?php endforeach; ?>
                     </tbody>
+                    </table>
                 </tr>
                 <?php endforeach; ?>
                 <?php endif; ?>
