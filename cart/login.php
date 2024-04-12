@@ -4,10 +4,6 @@ include 'functions.php';
 ?>
 <?= template_header('Login') ?>
 
-<head>
-    <link rel="stylesheet" type="text/css" href="login.css">
-</head>
-
 <body>
 	<div class="login">
 		<h1>Login</h1>
