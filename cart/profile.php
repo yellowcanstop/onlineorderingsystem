@@ -1,10 +1,4 @@
 <?php
-if ($_SESSION['loggedin'] != TRUE) {
-	$_SESSION['error'] = 'You are not logged in.';
-	header('Location: login.php');
-	exit();
-}
-
 // only save less-sensitive information in session variables.
 // hence retrieve more sensitive information from database only when needed
 // customer_id is stored as a session variable to maintain state between requests.

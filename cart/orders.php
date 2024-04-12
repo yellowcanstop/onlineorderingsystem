@@ -1,5 +1,16 @@
 <?php
-
+// get customer_id session variable if not already set
+if (!isset($_SESSION['customer_id'])) {
+    if ($stmt = $pdo -> prepare('SELECT id, customer_first_name, customer_last_name, customer_phone, date_of_register FROM customers WHERE account_id = :account_id')) {
+		$stmt->bindValue(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+		$stmt->execute();
+		$customer = $stmt->fetch(PDO::FETCH_ASSOC);
+		$_SESSION['customer_id'] = $customer['id'];
+	} else {
+		error_log('Cannot prepare sql statement for customers table.');
+		exit();
+	}
+}
 
 if (isset($_SESSION['customer_id'])) {
 	// retrieve order information from database
