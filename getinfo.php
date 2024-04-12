@@ -1,3 +1,40 @@
+<?php
+// retrieve name and phone number from database as needed 
+if ($stmt = $pdo -> prepare('SELECT id, customer_first_name, customer_last_name, customer_phone FROM customers WHERE account_id = :account_id')) {
+    $stmt->bindValue(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+    $stmt->execute();
+    $customer = $stmt->fetch(PDO::FETCH_ASSOC);
+    $_SESSION['customer_id'] = $customer['id'];
+} else {
+    error_log('Cannot prepare sql statement for customers table.');
+    exit();
+}
+
+// retrieve address if there exists one which was set as default
+if ($stmt = $pdo -> prepare("SELECT address_id FROM customer_addresses WHERE customer_id = :customer_id AND is_default = :is_default")) {
+	$stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
+	$stmt->bindValue(':is_default', 1, PDO::PARAM_INT);
+	$stmt->execute();
+	$address_id = $stmt->fetch(PDO::FETCH_ASSOC);
+	if ($address_id) {
+		$_SESSION['address_id'] = $address_id['address_id'];
+		if ($stmt = $pdo -> prepare("SELECT * FROM addresses WHERE id = :address_id")) {
+			$stmt->bindValue(':address_id', $_SESSION['address_id'], PDO::PARAM_INT);
+			$stmt->execute();
+			$address = $stmt->fetch(PDO::FETCH_ASSOC);
+		} else {
+			error_log('Cannot prepare sql statement for addresses table.');
+			exit();
+		}
+	}
+} else {
+	error_log('Cannot prepare sql statement for customer_addresses table.');
+	exit();
+}
+
+$name = $customer['customer_first_name'] . ' ' . $customer['customer_last_name'];
+?>
+
 <?=template_header('Order Details')?>
 
 <div class="cart content-wrapper">
@@ -10,24 +47,30 @@
         }
         ?>
     </div>
-    <form action="index.php?page=checkout" method="post">
+    <form id="getinfo" action="index.php?page=checkout" method="post">
         <div class="customer-details">
             <h2>Customer Details</h2>
             <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
+            <input type="text" id="name" name="name" value="<?=$name ?>" required>
             <br>
             <label for="phone">Phone Number:</label>
-            <input type="tel" name="phone" placeholder="Phone" id="phone" pattern="[0-9]{10}" title="Format: 0107998888" required>
+            <input type="tel" name="phone" placeholder="Phone" id="phone" pattern="[0-9]{10}" title="Format: 0107998888" value="<?=$customer['customer_phone'] ?>" required>
+            <br>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" value="<?=$_SESSION['email'] ?>" required>
             <br>
             <label for="line_1">Address Line 1:</label>
-            <input type="text" id="line_1" name="line_1" required>
+            <input type="text" id="line_1" name="line_1" value="<?=isset($_SESSION['address_id']) ? $address['line_1'] : ''?>"  required>
             <br>
             <label for="line_2">Address Line 2:</label>
-            <input type="text" id="line_2" name="line_2">
+            <input type="text" id="line_2" name="line_2" value="<?=isset($_SESSION['address_id']) ? $address['line_2'] : ''?>">
             <br>
             <label for="state">State/City:</label>
-            <select id="state" name="state" required>
+            <select id="state" name="state">
                 <option value="">Select State/City:</option>
+                <?php if (isset($_SESSION['address_id'])): ?>
+                    <option value="<?=$address['state']?>" selected><?=$address['state']?></option>
+                <?php endif; ?>
                 <option value="Johor">Johor</option>
                 <option value="Kedah">Kedah</option>
                 <option value="Kelantan">Kelantan</option>
@@ -49,13 +92,13 @@
             Country : Malaysia
             <br>
             <label for="zip_postcode">Zip/Postcode:</label>
-            <input type="text" id="zip_postcode" name="zip_postcode" required>
+            <input type="text" id="zip_postcode" name="zip_postcode" value="<?=isset($_SESSION['address_id']) ? $address['zip_postcode'] : ''?>" required>
         </div>
         <div>
-            <input type="hidden" name="is_saved" value="0">
+            <input type="hidden" name="is_default" value="0">
             <!-- if radio button is selected, will override above hidden input -->
             <label for="save_address">
-                <input type="radio" id="save_address" name="is_saved" value="1">
+                <input type="radio" id="save_address" name="is_default" value="1">
                 Save as default address
             </label>
         </div>
@@ -75,8 +118,5 @@
         <input type="submit" value="Confirm order details">
     </form>
 </div>
-
-
-
 
 <?=template_footer()?>
