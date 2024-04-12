@@ -30,6 +30,13 @@ if ($stmt = $pdo->prepare('SELECT account_id, password, email, role, status FROM
             $_SESSION['account_id'] = $user['account_id'];
             $_SESSION['email'] = $user['email'];
             $_SESSION['role'] = $user['role'];
+            // set cookie if remember me is checked
+            // cookie will be available across entire site (path: /)
+            // cookie will expire after 30 days (86400 seconds = 1 day)
+            // since I am using localhost, setcookie() has no additional parameter (specific to https)
+            if (isset($_POST['remember_me'])) {
+                setcookie('remember_me', $user['account_id'], time() + (86400 * 30), "/"); 
+            }
             header('Location: index.php');
         } else {
             $_SESSION['error'] = 'Incorrect credentials!';

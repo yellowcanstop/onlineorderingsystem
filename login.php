@@ -24,6 +24,10 @@ include 'functions.php';
 				<i class="fas fa-lock"></i>
 			</label>
 			<input type="password" name="password" placeholder="Password" id="password" required>
+			<label for="remember_me">
+				<input type="checkbox" name="remember_me" id="remember_me">
+				Remember me
+			</label>
 			<input type="submit" value="Login">
 		</form>
 	</div>
