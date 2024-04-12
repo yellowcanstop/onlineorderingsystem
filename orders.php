@@ -90,6 +90,7 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
                             <tr>
                                 <td>Dish</td>
                                 <td>Quantity</td>
+                                <td>Action</td>
                             </tr>
                         </thead>
                     <tbody>
@@ -99,6 +100,13 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
                             <a href="index.php?page=product&id=<?=$dish['dish_id']?>"><?=$names[$dish['dish_id']]?></a>
                         </td>
                         <td><?=$dish['order_quantity']?></td>
+                        <td>
+                            <form action="index.php?page=cart" method="post">
+                                <input type="hidden" name="id" value="<?=$dish['dish_id']?>">
+                                <input type="hidden" name="quantity" value="<?=$dish['order_quantity']?>">
+                                <input type="submit" class="remove" value="Order Again">
+                            </form>
+                        </td>
                     </tr>
                     <?php endforeach; ?>
                     </tbody>
