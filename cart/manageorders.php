@@ -38,40 +38,40 @@ else {
 } 
 
 // update order_status_code for specific order
-if (isset($_GET['update_order_status_code']) && isset($_GET['order_id'])) {
-    if($_GET['update_order_status_code'] == 'paid') {
+if (isset($_POST['update_order_status_code']) && isset($_POST['order_id'])) {
+    if($_POST['update_order_status_code'] == 'paid') {
         $stmt = $pdo->prepare('UPDATE customer_orders SET order_status_code = :order_status_code, date_order_paid = CURRENT_TIMESTAMP WHERE order_id = :order_id');
-        $stmt->bindValue(':order_status_code', $_GET['update_order_status_code'], PDO::PARAM_STR);
-        $stmt->bindValue(':order_id', $_GET['order_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':order_status_code', $_POST['update_order_status_code'], PDO::PARAM_STR);
+        $stmt->bindValue(':order_id', $_POST['order_id'], PDO::PARAM_INT);
         if (!$stmt->execute()) {
             $_SESSION['update_message'] = '<p>Cannot update order status to paid. Please try again.</p>';
             error_log("Cannot execute sql statement to update customer_orders table.");
         }
-        $_SESSION['update_message'] = "<p>Order ID {$_GET['order_id']} successfully updated to paid.</p>";
+        $_SESSION['update_message'] = "<p>Order ID {$_POST['order_id']} successfully updated to paid.</p>";
         header('Location: index.php?page=manageorders&p=' . $current_page);
         exit();
     }
-    elseif ($_GET['update_order_status_code'] == 'fulfilled') {
+    elseif ($_POST['update_order_status_code'] == 'fulfilled') {
         $stmt = $pdo->prepare('UPDATE customer_orders SET order_status_code = :order_status_code, date_order_fulfilled = CURRENT_TIMESTAMP WHERE order_id = :order_id');
-        $stmt->bindValue(':order_status_code', $_GET['update_order_status_code'], PDO::PARAM_STR);
-        $stmt->bindValue(':order_id', $_GET['order_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':order_status_code', $_POST['update_order_status_code'], PDO::PARAM_STR);
+        $stmt->bindValue(':order_id', $_POST['order_id'], PDO::PARAM_INT);
         if (!$stmt->execute()) {
             $_SESSION['update_message'] = '<p>Cannot update order status to fulfilled. Please try again.</p>';
             error_log("Cannot execute sql statement to update customer_orders table.");
         }
-        $_SESSION['update_message'] = "<p>Order ID {$_GET['order_id']} successfully updated to fulfilled.</p>";
+        $_SESSION['update_message'] = "<p>Order ID {$_POST['order_id']} successfully updated to fulfilled.</p>";
         header('Location: index.php?page=manageorders&p=' . $current_page);
         exit();
     }
-    elseif ($_GET['update_order_status_code'] == 'cancelled') {
+    elseif ($_POST['update_order_status_code'] == 'cancelled') {
         $stmt = $pdo->prepare('UPDATE customer_orders SET order_status_code = :order_status_code, date_order_cancelled = CURRENT_TIMESTAMP WHERE order_id = :order_id');
-        $stmt->bindValue(':order_status_code', $_GET['update_order_status_code'], PDO::PARAM_STR);
-        $stmt->bindValue(':order_id', $_GET['order_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':order_status_code', $_POST['update_order_status_code'], PDO::PARAM_STR);
+        $stmt->bindValue(':order_id', $_POST['order_id'], PDO::PARAM_INT);
         if (!$stmt->execute()) {
             $_SESSION['update_message'] = '<p>Cannot update order status to cancelled. Please try again.</p>';
             error_log("Cannot execute sql statement to update customer_orders table.");
         }
-        $_SESSION['update_message'] = "<p>Order ID {$_GET['order_id']} successfully updated to cancelled.</p>";
+        $_SESSION['update_message'] = "<p>Order ID {$_POST['order_id']} successfully updated to cancelled.</p>";
         header('Location: index.php?page=manageorders&p=' . $current_page);
         exit();
     }
@@ -192,18 +192,39 @@ $total_orders_for_month = count($orders);
                     <?php if ($order['order_status_code'] == 'unpaid'): ?>
                         <a href="index.php?page=vieworder&order_id=<?=$order['order_id']?>" class="remove">View Order</a>
                         <br>
-                        <!-- void(0) to return undefined since want to run js code, not default behavior of <a> tag -->
-                        <!-- use custom data attribute to store the url for redirection when user confirms action -->
-                        <a href="javascript:void(0);" data-url="index.php?page=manageorders&update_order_status_code=paid&order_id=<?=$order['order_id']?>&p=<?=$current_page?>" class="remove action-confirm">Mark as Paid</a>
+                        <form class="action-confirm" method="POST" action="index.php?page=manageorders">
+                            <input type="hidden" name="page" value="manageorders">
+                            <input type="hidden" name="update_order_status_code" value="paid">
+                            <input type="hidden" name="order_id" value="<?=$order['order_id']?>">
+                            <input type="hidden" name="p" value="<?=$current_page?>">
+                            <input type="submit" value="Mark as Paid">
+                        </form>
                         <br>
-                        <a href="javascript:void(0);" data-url="index.php?page=manageorders&update_order_status_code=cancelled&order_id=<?=$order['order_id']?>&p=<?=$current_page?>" class="remove action-confirm">Cancel Order</a>
-
+                        <form class="action-confirm" method="POST" action="index.php?page=manageorders">
+                            <input type="hidden" name="page" value="manageorders">
+                            <input type="hidden" name="update_order_status_code" value="cancelled">
+                            <input type="hidden" name="order_id" value="<?=$order['order_id']?>">
+                            <input type="hidden" name="p" value="<?=$current_page?>">
+                            <input type="submit" value="Cancel Order">
+                        </form>
                     <?php elseif ($order['order_status_code'] == 'paid'): ?>
                         <a href="index.php?page=vieworder&order_id=<?=$order['order_id']?>" class="remove">View Order</a>
                         <br>
-                        <a href="javascript:void(0);" data-url="index.php?page=manageorders&update_order_status_code=fulfilled&order_id=<?=$order['order_id']?>&p=<?=$current_page?>" class="remove action-confirm">Mark as Fulfilled</a>
+                        <form class="action-confirm" method="POST" action="index.php?page=manageorders">
+                            <input type="hidden" name="page" value="manageorders">
+                            <input type="hidden" name="update_order_status_code" value="fulfilled">
+                            <input type="hidden" name="order_id" value="<?=$order['order_id']?>">
+                            <input type="hidden" name="p" value="<?=$current_page?>">
+                            <input type="submit" value="Mark as Fulfilled">
+                        </form>
                         <br>
-                        <a href="javascript:void(0);" data-url="index.php?page=manageorders&update_order_status_code=cancelled&order_id=<?=$order['order_id']?>&p=<?=$current_page?>" class="remove action-confirm">Cancel Order</a>
+                        <form class="action-confirm" method="POST" action="index.php?page=manageorders">
+                            <input type="hidden" name="page" value="manageorders">
+                            <input type="hidden" name="update_order_status_code" value="cancelled">
+                            <input type="hidden" name="order_id" value="<?=$order['order_id']?>">
+                            <input type="hidden" name="p" value="<?=$current_page?>">
+                            <input type="submit" value="Cancel Order">
+                        </form>
                     <?php elseif ($order['order_status_code'] == 'fulfilled' || $order['order_status_code'] == 'cancelled'): ?>
                         <p>no action available</p>
                     <?php endif; ?>
