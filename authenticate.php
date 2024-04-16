@@ -35,7 +35,15 @@ if ($stmt = $pdo->prepare('SELECT account_id, password, email, role, status FROM
             // cookie will expire after 30 days (86400 seconds = 1 day)
             // since I am using localhost, setcookie() has no additional parameter (specific to https)
             if (isset($_POST['remember_me'])) {
-                setcookie('remember_me', $user['account_id'], time() + (86400 * 30), "/"); 
+                // store random token in cookie, associate this random token with user in database
+                // which is more secure than storing user ID in the cookie
+                // cookie will be available across entire site (path: /)
+                // cookie will expire after 30 days (86400 seconds = 1 day)
+                // since I am using localhost, setcookie() has no additional parameter (specific to https)
+                $token = bin2hex(random_bytes(24));
+                setcookie('remember_me', $token, time() + (86400 * 30), "/");
+                $stmt = $pdo->prepare("UPDATE accounts SET remember_me_token = :token WHERE account_id = :account_id");
+                $stmt->execute(['token' => $token, 'account_id' => $user['account_id']]);
             }
             header('Location: index.php');
         } else {

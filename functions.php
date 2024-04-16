@@ -14,11 +14,34 @@ function pdo_connect_mysql() {
 
 
 // start session when already logged in
-function start_session() {
+function start_session($pdo) {
     session_start();
     if (!isset($_SESSION['loggedin'])) {
-        header('Location: login.php');
-        exit();
+        // The user is not logged in. Check if the "remember_me" cookie is set
+        if (isset($_COOKIE['remember_me'])) {
+            // The "remember_me" cookie is set. Look up the user in the database
+            $token = $_COOKIE['remember_me'];
+            $stmt = $pdo->prepare("SELECT * FROM accounts WHERE remember_me_token = :token");
+            $stmt->execute(['token' => $token]);
+            $user = $stmt->fetch();
+            if ($user) {
+                // user found so log them in
+                session_regenerate_id();
+                $_SESSION['loggedin'] = TRUE;
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['account_id'] = $user['account_id'];
+                $_SESSION['email'] = $user['email'];
+                $_SESSION['role'] = $user['role'];
+            } else {
+                // cannot find account based on token so redirect to login
+                header('Location: login.php');
+                exit();
+            }
+        } else {
+            // "remember_me" cookie not set so redirect to login
+            header('Location: login.php');
+            exit();
+        }
     }
 }
 

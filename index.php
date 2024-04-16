@@ -1,7 +1,7 @@
 <?php
 include 'functions.php';
-start_session();
 $pdo = pdo_connect_mysql();
+start_session($pdo);
 
 if ($_SESSION['role'] == 'customer') {
     // upon successful login, page is set to home by default
