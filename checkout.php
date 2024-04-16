@@ -64,7 +64,7 @@ if (isset($_POST['line_1'], $_POST['state'], $_POST['zip_postcode']) && !empty($
 }  
 
 
-// customer_payment_method_id: 1 for cash, 2 for credit card or ewallet
+// customer_payment_method_id: 1 for cash, 2 for credit card, 3 for ewallet
 if (isset($_POST['customer_payment_method_id'], $_POST['date_order_placed'])) {
     // insert new order into customer_orders table
     if ($stmt = $pdo->prepare('INSERT INTO customer_orders (customer_id, customer_payment_method_id, date_order_placed, payment_amount, name, phone, email, address_id) VALUES (:customer_id, :customer_payment_method_id, :date_order_placed, :payment_amount, :name, :phone, :email, :address_id)')) {
@@ -114,9 +114,13 @@ if (isset($_POST['customer_payment_method_id'], $_POST['date_order_placed'])) {
                 // if payment method is cash, redirect to placeorder page
                 header('Location: index.php?page=placeorder');
                 exit();
-            } else {
-                // if payment method is credit card or ewallet, redirect to payment page
-                header('Location: index.php?page=payment');
+            } else if ($_POST['customer_payment_method_id'] == 2) {
+                // if payment method is credit card, redirect to credit card mock payment page
+                header('Location: index.php?page=cardpayment');
+                exit();
+            } else if ($_POST['customer_payment_method_id'] == 3) {
+                // if payment method is ewallet, redirect to ewallet mock payment page
+                header('Location: index.php?page=ewalletpayment');
                 exit();
             }
         } 

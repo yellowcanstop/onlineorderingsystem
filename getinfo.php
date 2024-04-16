@@ -112,14 +112,20 @@ $name = $customer['customer_first_name'] . ' ' . $customer['customer_last_name']
             <br>
             <label for="credit-card">
                 <input type="radio" id="credit-card" name="customer_payment_method_id" value="2" required>
-                Credit Card / Ewallet
+                Credit Card
             </label>
             <img src="imgs/creditcard.jpg" alt="Credit Card" class="credit-card">
+            <br>
+            <label for="ewallet">
+                <input type="radio" id="ewallet" name="customer_payment_method_id" value="3" required>
+                E-wallet
+            </label>
             <img src="imgs/tng.png" alt="TnG" class="tng">
         </div>
         <input type="hidden" name="date_order_placed" value="<?= time() ?>" id="date_order_placed">
         <input type="submit" value="Confirm order details" class="submit-button">
     </form>
+    <a href="index.php?page=cart" class="submit-button">Return to Cart</a>
 </div>
 
 <?=template_footer()?>
