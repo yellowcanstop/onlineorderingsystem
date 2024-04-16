@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2024 at 08:49 AM
+-- Generation Time: Apr 16, 2024 at 05:40 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,22 +33,24 @@ CREATE TABLE `accounts` (
   `password` varchar(255) NOT NULL,
   `role` enum('employee','customer') NOT NULL DEFAULT 'customer',
   `status` enum('active','inactive') NOT NULL DEFAULT 'active',
-  `email` varchar(255) DEFAULT NULL
+  `email` varchar(255) DEFAULT NULL,
+  `remember_me_token` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `accounts`
 --
 
-INSERT INTO `accounts` (`account_id`, `username`, `password`, `role`, `status`, `email`) VALUES
-(1, 'employee1', '$2y$10$SfhYIDtn.iOuCW7zfoFLuuZHX6lja4lF4XA4JqNmpiH/.P3zB8JCa', 'employee', 'active', 'employee1@test.com'),
-(3, 'test', '$2y$10$SfhYIDtn.iOuCW7zfoFLuuZHX6lja4lF4XA4JqNmpiH/.P3zB8JCa', 'customer', 'active', 'test@test.com'),
-(6, 'frodobaggins', '$2y$10$u6lQp5DcYOnN.5K7vM7tJ.p356EV9P9ba8DhJVkKp2vBfP0/n0vzm', 'customer', 'active', 'frodo@test.com'),
-(7, 'voldemort', '$2y$10$I.OMTyEh24YPQD3xO95RJupzC/sZfESjrxUjL6u4ohFjdiyLYjB5e', 'customer', 'active', 'voldemort@test.com'),
-(8, 'bellatrix', '$2y$10$YkMOScuhLtagU1BT7KfnEuneN9wGMonXYPIe5KfMf0CsYFjN4TJ6i', 'customer', 'active', 'bella@test.com'),
-(9, 'ron', '$2y$10$7jzb4cIapwTewxVwjJg6j.0KPA1zelwgmmgDQUbmji46csyPSL.di', 'customer', 'active', 'ron@test.com'),
-(10, 'tomriddle', '$2y$10$S69CwSyYX91xxFOR5wTEPO0Sb355cQc0rb..FpVxlAf1LZlLMyhq.', 'customer', 'active', 'tom@test.com'),
-(11, 'shutest', '$2y$10$mE0xVG1Owj8NcnFPdqALpuxuqsK2FRvW.0PUL6AXZBuHBx1szcHey', 'customer', 'active', 'shu@test.com');
+INSERT INTO `accounts` (`account_id`, `username`, `password`, `role`, `status`, `email`, `remember_me_token`) VALUES
+(1, 'employee1', '$2y$10$SfhYIDtn.iOuCW7zfoFLuuZHX6lja4lF4XA4JqNmpiH/.P3zB8JCa', 'employee', 'active', 'employee1@test.com', NULL),
+(3, 'test', '$2y$10$SfhYIDtn.iOuCW7zfoFLuuZHX6lja4lF4XA4JqNmpiH/.P3zB8JCa', 'customer', 'active', 'test@test.com', NULL),
+(6, 'frodobaggins', '$2y$10$u6lQp5DcYOnN.5K7vM7tJ.p356EV9P9ba8DhJVkKp2vBfP0/n0vzm', 'customer', 'active', 'frodo@test.com', NULL),
+(7, 'voldemort', '$2y$10$I.OMTyEh24YPQD3xO95RJupzC/sZfESjrxUjL6u4ohFjdiyLYjB5e', 'customer', 'active', 'voldemort@test.com', NULL),
+(8, 'bellatrix', '$2y$10$YkMOScuhLtagU1BT7KfnEuneN9wGMonXYPIe5KfMf0CsYFjN4TJ6i', 'customer', 'active', 'bella@test.com', NULL),
+(9, 'ron', '$2y$10$7jzb4cIapwTewxVwjJg6j.0KPA1zelwgmmgDQUbmji46csyPSL.di', 'customer', 'active', 'ron@test.com', NULL),
+(10, 'tomriddle', '$2y$10$S69CwSyYX91xxFOR5wTEPO0Sb355cQc0rb..FpVxlAf1LZlLMyhq.', 'customer', 'active', 'tom@test.com', NULL),
+(11, 'shutest', '$2y$10$mE0xVG1Owj8NcnFPdqALpuxuqsK2FRvW.0PUL6AXZBuHBx1szcHey', 'customer', 'active', 'shu@test.com', NULL),
+(12, 'dracomalfoy', '$2y$10$6XQbnsyfBz94GOk468yV.eXI69.NP4rr5y50RvYUqfV4zh/LX5Txe', 'customer', 'active', 'draco@test.com', 'f9e8bb07a043eedde0e8ec70f7c1ad34c545603f909c207d');
 
 -- --------------------------------------------------------
 
@@ -76,7 +78,12 @@ INSERT INTO `addresses` (`id`, `line_1`, `line_2`, `zip_postcode`, `state`) VALU
 (5, '44 Grimmauld Place', 'London', '56000', 'Pahang'),
 (6, '44 Grimmauld Place', 'London', '56000', ''),
 (7, '44 Grimmauld Place', 'London', '56000', 'Pahang'),
-(8, '44 Grimmauld Place', 'London', '56000', 'Pahang');
+(8, '44 Grimmauld Place', 'London', '56000', 'Pahang'),
+(9, '17 Malfoy Manor', 'Wiltshire', '44444', 'Putrajaya'),
+(10, '17 Malfoy Manor', 'Wiltshire', '44444', 'Putrajaya'),
+(11, '17 Malfoy Manor', 'Wiltshire', '44444', 'Putrajaya'),
+(12, '17 Malfoy Manor', 'Wiltshire', '44444', 'Putrajaya'),
+(13, '17 Malfoy Manor', 'Wiltshire', '44444', 'Putrajaya');
 
 -- --------------------------------------------------------
 
@@ -124,7 +131,8 @@ INSERT INTO `customers` (`id`, `customer_first_name`, `customer_last_name`, `cus
 (6, 'Bellatrix', 'Lestrange', '1231231234', '2024-04-02 15:51:58', 8),
 (8, 'Ron', 'Weasley', '0107993388', '2024-04-02 16:10:41', 9),
 (10, 'Tom', 'Riddle', '1444444444', '2024-04-02 16:12:09', 10),
-(11, 'shu', 'test', '1111111111', '2024-04-08 08:45:12', 11);
+(11, 'shu', 'test', '1111111111', '2024-04-08 08:45:12', 11),
+(12, 'Draco', 'Malfoy', '0107991111', '2024-04-16 09:49:04', 12);
 
 -- --------------------------------------------------------
 
@@ -149,7 +157,12 @@ INSERT INTO `customer_addresses` (`customer_id`, `address_id`, `is_default`) VAL
 (10, 5, 1),
 (10, 6, 0),
 (10, 7, 0),
-(10, 8, 0);
+(10, 8, 0),
+(12, 9, 1),
+(12, 10, 0),
+(12, 11, 0),
+(12, 12, 0),
+(12, 13, 0);
 
 -- --------------------------------------------------------
 
@@ -166,23 +179,32 @@ CREATE TABLE `customer_orders` (
   `date_order_paid` datetime NOT NULL,
   `payment_amount` decimal(7,2) NOT NULL,
   `date_order_fulfilled` datetime NOT NULL,
-  `date_order_cancelled` datetime NOT NULL
+  `date_order_cancelled` datetime NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `address_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `customer_orders`
 --
 
-INSERT INTO `customer_orders` (`order_id`, `customer_id`, `customer_payment_method_id`, `order_status_code`, `date_order_placed`, `date_order_paid`, `payment_amount`, `date_order_fulfilled`, `date_order_cancelled`) VALUES
-(1, 10, 1, 'fulfilled', '2024-04-02 17:34:38', '2024-04-12 14:50:47', 101.95, '2024-04-12 14:51:15', '0000-00-00 00:00:00'),
-(2, 10, 2, 'cancelled', '2024-04-02 17:40:26', '2024-04-02 17:40:49', 49.98, '0000-00-00 00:00:00', '2024-04-12 14:54:53'),
-(3, 10, 1, 'paid', '2024-04-02 18:14:13', '2024-04-12 16:00:29', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 10, 2, 'cancelled', '2024-04-02 18:17:04', '2024-04-02 18:17:35', 19.99, '0000-00-00 00:00:00', '2024-04-12 16:02:55'),
-(5, 10, 1, 'paid', '2024-04-02 18:34:50', '2024-04-12 21:05:35', 69.97, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(6, 10, 1, 'unpaid', '2024-04-12 18:20:16', '0000-00-00 00:00:00', 69.97, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(7, 10, 1, 'unpaid', '2024-04-12 20:22:30', '0000-00-00 00:00:00', 39.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(8, 10, 1, 'unpaid', '2024-04-12 20:50:22', '0000-00-00 00:00:00', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(9, 10, 1, 'unpaid', '2024-04-12 20:51:23', '0000-00-00 00:00:00', 19.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+INSERT INTO `customer_orders` (`order_id`, `customer_id`, `customer_payment_method_id`, `order_status_code`, `date_order_placed`, `date_order_paid`, `payment_amount`, `date_order_fulfilled`, `date_order_cancelled`, `name`, `phone`, `email`, `address_id`) VALUES
+(1, 10, 1, 'fulfilled', '2024-04-02 17:34:38', '2024-04-12 14:50:47', 101.95, '2024-04-12 14:51:15', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
+(2, 10, 2, 'cancelled', '2024-04-02 17:40:26', '2024-04-02 17:40:49', 49.98, '0000-00-00 00:00:00', '2024-04-12 14:54:53', NULL, NULL, NULL, NULL),
+(3, 10, 1, 'paid', '2024-04-02 18:14:13', '2024-04-12 16:00:29', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
+(4, 10, 2, 'cancelled', '2024-04-02 18:17:04', '2024-04-02 18:17:35', 19.99, '0000-00-00 00:00:00', '2024-04-12 16:02:55', NULL, NULL, NULL, NULL),
+(5, 10, 1, 'paid', '2024-04-02 18:34:50', '2024-04-12 21:05:35', 69.97, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
+(6, 10, 1, 'unpaid', '2024-04-12 18:20:16', '0000-00-00 00:00:00', 69.97, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
+(7, 10, 1, 'unpaid', '2024-04-12 20:22:30', '0000-00-00 00:00:00', 39.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
+(8, 10, 1, 'unpaid', '2024-04-12 20:50:22', '0000-00-00 00:00:00', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
+(9, 10, 1, 'unpaid', '2024-04-12 20:51:23', '0000-00-00 00:00:00', 19.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
+(10, 12, 1, 'unpaid', '2024-04-16 16:14:25', '0000-00-00 00:00:00', 119.97, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Draco Malfoy', '0107991111', 'draco@test.com', 9),
+(11, 12, 3, 'unpaid', '2024-04-16 16:31:30', '0000-00-00 00:00:00', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Draco Malfoy', '0107991111', 'draco@test.com', 10),
+(12, 12, 3, 'unpaid', '2024-04-16 16:35:51', '0000-00-00 00:00:00', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Draco Malfoy', '0107991111', 'draco@test.com', 11),
+(13, 12, 2, 'unpaid', '2024-04-16 16:36:05', '0000-00-00 00:00:00', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Draco Malfoy', '0107991111', 'draco@test.com', 12),
+(14, 12, 3, 'paid', '2024-04-16 16:36:59', '2024-04-16 16:37:06', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Draco Malfoy', '0107991111', 'draco@test.com', 13);
 
 -- --------------------------------------------------------
 
@@ -217,7 +239,12 @@ INSERT INTO `customer_orders_products` (`order_id`, `dish_id`, `order_quantity`)
 (6, 4, 1),
 (7, 3, 1),
 (8, 4, 1),
-(9, 1, 1);
+(9, 1, 1),
+(10, 3, 3),
+(11, 4, 1),
+(12, 4, 1),
+(13, 4, 1),
+(14, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -242,8 +269,8 @@ CREATE TABLE `dishes` (
 INSERT INTO `dishes` (`id`, `name`, `description`, `price`, `quantity`, `img`, `category_id`) VALUES
 (1, 'Signature Tart', '<p>This tart loves you berry much.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for dessert.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Available whole or by slice.</li>\r\n</ul>', 19.99, 17, 'tart.jpg', 3),
 (2, 'Egg', '<p>Eggs are good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 15.99, 0, 'egg.jpg', 2),
-(3, 'Fish', '<p>Fish is good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 39.99, 3, 'fish.jpg', 2),
-(4, 'Salad', '<p>Salad is good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 29.99, 8, 'salad.jpg', 1);
+(3, 'Fish', '<p>Fish is good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 39.99, 0, 'fish.jpg', 2),
+(4, 'Salad', '<p>Salad is good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 29.99, 4, 'salad.jpg', 1);
 
 --
 -- Indexes for dumped tables
@@ -288,7 +315,8 @@ ALTER TABLE `customer_addresses`
 --
 ALTER TABLE `customer_orders`
   ADD PRIMARY KEY (`order_id`),
-  ADD KEY `customer_id` (`customer_id`);
+  ADD KEY `customer_id` (`customer_id`),
+  ADD KEY `address_id` (`address_id`);
 
 --
 -- Indexes for table `customer_orders_products`
@@ -312,13 +340,13 @@ ALTER TABLE `dishes`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -330,13 +358,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `customer_orders`
 --
 ALTER TABLE `customer_orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `dishes`
@@ -365,7 +393,8 @@ ALTER TABLE `customer_addresses`
 -- Constraints for table `customer_orders`
 --
 ALTER TABLE `customer_orders`
-  ADD CONSTRAINT `customer_orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`);
+  ADD CONSTRAINT `customer_orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
+  ADD CONSTRAINT `customer_orders_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`);
 
 --
 -- Constraints for table `customer_orders_products`
