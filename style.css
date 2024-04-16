@@ -122,19 +122,6 @@ header .link-icons a span {
 	margin-right: 10px;
 }
 
-/*main .featured {
-	display: flex;
-	flex-direction: column;
-	background-image: url(imgs/banner1.jpg);
-	background-repeat: no-repeat;
-	background-size: cover;
-	height: 500px;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
-	position: relative;
-}*/
-
 main .featured {
 	display: flex;
 	flex-direction: column;
@@ -162,8 +149,6 @@ main .featured {
         background-image: url(imgs/banner2.jpg);
     }
 }
-
-  
 
 main .featured h2 {
     font-family: Rockwell, Courier Bold, Courier, Georgia, Times, Times New Roman, serif;
@@ -200,7 +185,6 @@ main .background-shape {
 
 main .recentlyadded h2 {
 	display: block;
-	font-weight: normal;
     color: white;
     font-weight: bold;
 	margin: 0;
@@ -512,6 +496,41 @@ footer .social-icons i {
 footer .social-icons i:last-child {
     margin-right: 0;
 }
+
+.opening-hours-container {
+    position: absolute;
+    left: 20px; 
+    top: 40px; 
+    display: flex;
+    align-items: flex-start;
+}
+
+.opening-hours {
+    color: #b6a129df;
+    font-weight: bold;
+    padding: 5px 0; 
+}
+
+.opening-hours h3 {
+    color: #b6a129df;
+    font-weight: bold;
+    margin: 0;
+    padding: 10px 0;
+    font-size: 15px;
+    text-align: left;
+    width: auto;
+	border-bottom: 1px solid #b6a129df;
+}
+
+.opening-hours p {
+    font-weight: normal;
+    color: #062e19df;
+    margin: 0 auto;
+    font-size: 15px;
+    text-align: left; 
+    width: auto; 
+}
+
 /* -- end of css for footer -- */
 
 
@@ -870,7 +889,7 @@ footer .social-icons i:last-child {
 }
 
 .payment-method {
-    background-color: #fff; /* Add white background */
+    background-color: #fff; 
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;

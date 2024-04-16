@@ -123,6 +123,15 @@ echo <<<EOT
                 </nav>
                 <p>&copy; $year, Very Good Food Inc, Online Food Ordering System</p>
             </div>
+            <!-- Opening Hours Section -->
+            <div class="opening-hours-container">
+                <div class="opening-hours">
+                    <h3>Opening Hours:</h3>
+                    <p>Monday - Friday: 10:00am - 10:00pm</p>
+                    <p>Saturday: 9:00am - 11:00pm</p>
+                    <p>Sunday: Closed</p>
+                </div>
+            </div>
         </footer>
     </body>
 </html>
