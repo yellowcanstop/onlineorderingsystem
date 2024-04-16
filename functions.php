@@ -31,7 +31,7 @@ $num_items_in_cart = isset($_SESSION['cart']) ? ($_SESSION['cart']['num_items_in
 $name = isset($_SESSION['username']) ? (htmlspecialchars($_SESSION['username'], ENT_QUOTES)) : "";
 $greeting = isset($_SESSION['loggedin']) && ($_SESSION['role'] == 'customer') ? "<h2>Hi $name, what are you craving?</h2>" : "";
 $home = isset($_SESSION['loggedin']) && ($_SESSION['role'] == 'customer') ? "<a href=\"index.php\">Menu</a>" : "";
-$products = isset($_SESSION['loggedin']) && ($_SESSION['role'] == 'customer') ? "<a href=\"index.php?page=products\">Dishes</a>" : "";
+$products = isset($_SESSION['loggedin']) && ($_SESSION['role'] == 'customer') ? "<a href=\"index.php?page=products\">Items</a>" : "";
 $profile = isset($_SESSION['loggedin']) && ($_SESSION['role'] == 'customer') ? "<a href=\"index.php?page=profile\">Profile</a>" : "";
 $orders = isset($_SESSION['loggedin']) && ($_SESSION['role'] == 'customer') ? "<a href=\"index.php?page=orders\">Orders</a>" : "";
 $register = isset($_SESSION['loggedin']) ? "" : "<a href=\"register.php\">Register</a>";
@@ -54,6 +54,7 @@ echo <<<EOT
 	<body>
         <header>
             <div class="content-wrapper">
+                <img src="imgs/logo.png" alt="Logo" style="height: 80px;">
                 <h1>Very Good Food Inc</h1>
                 <nav>
                     $home
@@ -68,7 +69,13 @@ echo <<<EOT
                 <div class="link-icons">$cart</div>
                 <div class="link-icons">$logout</div>
             </div>
-            <div class="content-wrapper">$greeting</div>
+            <div class="content-wrapper">
+                <div class="greeting">
+                    $greeting
+                </div>
+                <a href="https://www.google.com/maps/place/2%C2%B056'37.7%22N+101%C2%B052'24.2%22E/@2.9438054,101.8708251,17z/data=!3m1!4b1!4m4!3m3!8m2!3d2.9438!4d101.8734?hl=en&entry=ttu" class="location-link" id="locationLink" target="_blank"><i class="fas fa-map-marker-alt"></i>Location</a>
+                <a href="" class="phone-link"><i class="fas fa-phone"></i>+60 38924 8000</a>
+            </div>
         </header>
         <main>
 EOT;
@@ -76,11 +83,21 @@ EOT;
 
 
 function template_footer() {
+$about = "<a href=\"about.php\">About</a>";
 $year = date('Y');
 echo <<<EOT
         </main>
         <footer>
             <div class="content-wrapper">
+                <nav>
+                    <div class="social-icons">
+                        <i class="fab fa-facebook"></i>
+                        <i class="fab fa-twitter"></i>
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <p>|</p>
+                    $about
+                </nav>
                 <p>&copy; $year, Very Good Food Inc, Online Food Ordering System</p>
             </div>
         </footer>

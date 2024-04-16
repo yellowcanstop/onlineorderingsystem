@@ -38,7 +38,7 @@ $name = $customer['customer_first_name'] . ' ' . $customer['customer_last_name']
 <?=template_header('Order Details')?>
 
 <div class="cart content-wrapper">
-    <h1>Finalize Order Details</h1>
+    <h1>Finalize Order Details:</h1>
     <div>
         <?php
         if (isset($_SESSION['error'])) {
@@ -49,21 +49,21 @@ $name = $customer['customer_first_name'] . ' ' . $customer['customer_last_name']
     </div>
     <form id="getinfo" action="index.php?page=checkout" method="post">
         <div class="customer-details">
-            <h2>Customer Details</h2>
+            <h2>Customer Details:</h2>
             <label for="name">Name:</label>
-            <input type="text" id="name" name="name" value="<?=$name ?>" required>
+            <input type="text" id="name" placeholder="Name" name="name" value="<?=$name ?>" required>
             <br>
-            <label for="phone">Phone Number:</label>
-            <input type="tel" name="phone" placeholder="Phone" id="phone" pattern="[0-9]{10}" title="Format: 0107998888" value="<?=$customer['customer_phone'] ?>" required>
+            <label for="phone">Phone:</label>
+            <input type="tel" name="phone" placeholder="e.g. 01146138711" id="phone" pattern="[0-9]{10}" title="Format: 0107998888" value="<?=$customer['customer_phone'] ?>" required>
             <br>
             <label for="email">Email:</label>
             <input type="text" id="email" name="email" value="<?=$_SESSION['email'] ?>" required>
             <br>
             <label for="line_1">Address Line 1:</label>
-            <input type="text" id="line_1" name="line_1" value="<?=isset($_SESSION['address_id']) ? $address['line_1'] : ''?>"  required>
+            <input type="text" id="line_1" placeholder="Address Line 1" name="line_1" value="<?=isset($_SESSION['address_id']) ? $address['line_1'] : ''?>"  required>
             <br>
             <label for="line_2">Address Line 2:</label>
-            <input type="text" id="line_2" name="line_2" value="<?=isset($_SESSION['address_id']) ? $address['line_2'] : ''?>">
+            <input type="text" id="line_2" placeholder="Address Line 2" name="line_2" value="<?=isset($_SESSION['address_id']) ? $address['line_2'] : ''?>">
             <br>
             <label for="state">State/City:</label>
             <select id="state" name="state">
@@ -89,10 +89,11 @@ $name = $customer['customer_first_name'] . ' ' . $customer['customer_last_name']
                 <option value="Terengganu">Terengganu</option>
             </select>
             <br>
-            Country : Malaysia
+            <span class="country-label">Country : Malaysia</span>
+            <img src="imgs/myflag.png" alt="Malaysia Flag" class="flag">
             <br>
             <label for="zip_postcode">Zip/Postcode:</label>
-            <input type="text" id="zip_postcode" name="zip_postcode" value="<?=isset($_SESSION['address_id']) ? $address['zip_postcode'] : ''?>" required>
+            <input type="text" id="zip_postcode" placeholder="e.g. 43500" name="zip_postcode" value="<?=isset($_SESSION['address_id']) ? $address['zip_postcode'] : ''?>" required>
         </div>
         <div>
             <input type="hidden" name="is_default" value="0">
@@ -113,9 +114,11 @@ $name = $customer['customer_first_name'] . ' ' . $customer['customer_last_name']
                 <input type="radio" id="credit-card" name="customer_payment_method_id" value="2" required>
                 Credit Card / Ewallet
             </label>
+            <img src="imgs/creditcard.jpg" alt="Credit Card" class="credit-card">
+            <img src="imgs/tng.png" alt="TnG" class="tng">
         </div>
         <input type="hidden" name="date_order_placed" value="<?= time() ?>" id="date_order_placed">
-        <input type="submit" value="Confirm order details">
+        <input type="submit" value="Confirm order details" class="submit-button">
     </form>
 </div>
 

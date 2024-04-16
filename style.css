@@ -1,11 +1,634 @@
+* {
+	box-sizing: border-box;
+	font-family: -apple-system, BlinkMacSystemFont, "segoe ui", roboto, oxygen, ubuntu, cantarell, "fira sans", "droid sans", "helvetica neue", Arial, sans-serif;
+	font-size: 16px;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+html {
+	height: 100%;
+}
 body {
-    font-family: Arial, sans-serif;
-    background-color:white;
-    margin: 0;
-    padding: 0;
+	position: relative;
+	min-height: 100%;
+	color: #555555;
+	background-color: #062e19df;
+	margin: 0;
+	padding-bottom: 150px; 
 }
 
+h1, h2, h3, h4, h5 {
+	color: #394352; 
+} 
+
+.content-wrapper {
+	width: 1050px;
+	margin: 0 auto;
+}
+
+header {
+	border-bottom: 1px solid #EEEEEE;
+	background-color: white;
+}
+
+header .content-wrapper {
+    display: flex;
+}
+
+header h1 {
+	display: flex;
+	flex-grow: 1;
+	flex-basis: 0;
+	font-size: 20px;
+	margin: 0;
+	padding: 24px 0;
+    color: #062e19df;
+}
+header nav {
+	display: flex;
+	flex-grow: 1;
+	flex-basis: 0;
+	justify-content: center;
+	align-items: center;
+}
+header nav a {
+	text-decoration: none;
+	color: #062e19df;
+    font-weight: bold;
+	padding: 10px 10px;
+	margin: 0 10px;
+}
+header nav a:hover {
+	border-bottom: 1px solid #062e19df;
+    color: #b6a129df;
+}
+header .link-icons {
+	display: flex;
+	flex-grow: 1;
+	flex-basis: 0;
+	justify-content: flex-end; 
+	align-items: center;
+	position: relative;
+}
+header .link-icons a {
+	text-decoration: none;
+	color: #394352;
+	padding: 0 10px;
+}
+header .link-icons a:hover {
+	color: #4e5c70;
+}
+header .link-icons a i {
+	font-size: 18px;
+}
+header .link-icons a span {
+	display: inline-block;
+	text-align: center;
+	background-color: #63748e;
+	border-radius: 50%;
+	color: #FFFFFF;
+	font-size: 12px;
+	line-height: 16px;
+	width: 16px;
+	height: 16px;
+	font-weight: bold;
+	position: absolute;
+	top: 22px;
+	right: 0;
+}
+
+.greeting {
+	margin-right: auto;
+}
+
+.location-link {
+	color: #b6a129df;
+	text-decoration: none;
+	margin-right: 25px;
+}
+
+.location-link i {
+	color:#b6a129df;
+	margin-right: 10px;
+}
+
+.phone-link {
+	color: #b6a129df;
+	text-decoration: none;
+}
+
+.phone-link i {
+	color:#b6a129df;
+	margin-right: 10px;
+}
+
+/*main .featured {
+	display: flex;
+	flex-direction: column;
+	background-image: url(imgs/banner1.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 500px;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	position: relative;
+}*/
+
+main .featured {
+	display: flex;
+	flex-direction: column;
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 500px;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	position: relative;
+	animation: backgroundFade 8s infinite; 
+  }
+  
+  @keyframes backgroundFade {
+    0% {
+        background-image: url(imgs/banner2.jpg);
+    }
+    33.33% {
+        background-image: url(imgs/banner3.jpg);
+    }
+    66.66% {
+        background-image: url(imgs/banner4.jpg);
+    }
+    100% {
+        background-image: url(imgs/banner2.jpg);
+    }
+}
+
+  
+
+main .featured h2 {
+    font-family: Rockwell, Courier Bold, Courier, Georgia, Times, Times New Roman, serif;
+    font-size: 68px;
+    color: #062e19df;
+    padding-bottom: 10px;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+main .featured p {
+    font-size: 24px;
+    color: #062e19df;
+    position: absolute;
+    top: 50%; 
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    font-style: italic;
+}
+
+main .background-shape {
+    width: 450px;
+    height: 200px; 
+    background-color: #ffffff; 
+    padding: 20px; 
+    margin: 20px; 
+    opacity: 60%;
+    z-index: 0;
+}
+
+main .recentlyadded h2 {
+	display: block;
+	font-weight: normal;
+    color: white;
+    font-weight: bold;
+	margin: 0;
+	padding: 40px 0;
+	font-size: 24px;
+	text-align: center;
+	width: 100%;
+	border-bottom: 1px solid #ffffff;
+}
+main .recentlyadded .products, main .products .products-wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	padding: 40px 0 0 0;
+}
+main .recentlyadded .products .product, main .products .products-wrapper .product {
+	display: block;
+	overflow: hidden;
+	text-decoration: none;
+	width: 25%;
+	padding-bottom: 60px;
+}
+main .recentlyadded .products .product img, main .products .products-wrapper .product img {
+	transform: scale(1);
+	transition: transform 1s;
+}
+main .recentlyadded .products .product .name, main .products .products-wrapper .product .name {
+	display: block;
+	color: #ffffff;
+    font-weight: bold;
+	padding: 20px 0 2px 0;
+}
+main .recentlyadded .products .product .price, main .products .products-wrapper .product .price {
+	display: block;
+	color: #ffffff;
+}
+main .recentlyadded .products .product .rrp, main .products .products-wrapper .product .rrp {
+	color: #BBBBBB;
+	text-decoration: line-through;
+}
+main .recentlyadded .products .product:hover img, main .products .products-wrapper .product:hover img {
+	transform: scale(1.05);
+	transition: transform 1s;
+}
+main .recentlyadded .products .product:hover .name, main .products .products-wrapper .product:hover .name {
+	text-decoration: underline;
+}
+
+/* -- css for product.php -- */
+main > .product {
+	display: flex;
+	padding: 40px 0;
+	margin-bottom: 40px;
+}
+main > .product > div {
+	padding-left: 15px;
+}
+main > .product h1 {
+	font-size: 34px;
+	color: white;
+	font-weight: normal;
+	margin: 0;
+	padding: 20px 0 10px 0;
+}
+main > .product .price {
+	display: block;
+	font-size: 22px;
+	color: #ffffff;
+}
+main > .product .rrp {
+	color: #BBBBBB;
+	text-decoration: line-through;
+	font-size: 22px;
+	padding-left: 5px;
+}
+main > .product form {
+	display: flex;
+	flex-flow: column;
+	margin: 40px 0;
+}
+main > .product form input[type="number"] {
+	width: 400px;
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid #ccc;
+	color: #555555;
+	border-radius: 5px;
+}
+main > .product form input[type="submit"] {
+	background: #eed5a2df;
+	border: 0;
+	color: #FFFFFF;
+	width: 400px;
+	padding: 12px 0;
+	text-transform: uppercase;
+	font-size: 14px;
+	font-weight: bold;
+	border-radius: 5px;
+	cursor: pointer;
+}
+main > .product form input[type="submit"]:hover {
+	background: #dadadadf; 
+}
+
+main > .products h1 {
+	display: block;
+	font-weight: normal;
+	margin: 0;
+	padding: 40px 0;
+	font-size: 24px;
+	text-align: center;
+	width: 100%;
+}
+main > .products .buttons {
+	text-align: right;
+	padding-bottom: 40px;
+}
+main > .products .buttons a {
+	display: inline-block;
+	text-decoration: none;
+	margin-left: 5px;
+	padding: 12px 20px;
+	border: 0;
+	background: #4e5c70;
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: bold;
+	border-radius: 5px;
+}
+main > .products .buttons a:hover {
+	background: #434f61;
+}
+
+main > .product .description {
+	color: white;
+	max-width: 400px;
+	text-align: justify;
+}
+/* -- end of css for product.php -- */
+
+
+/* -- css for cart.php & confirmorder.php-- */
+main .cart h1 {
+	display: block;
+	font-weight: normal;
+	margin: 0;
+	padding: 40px 0;
+	font-size: 24px;
+	font-weight: bold;
+	text-align: center;
+	width: 100%;
+	color: white;
+}
+
+main .cart p {
+	color: white;
+}
+
+main .cart table {
+	width: 100%;
+}
+main .cart table thead td {
+	padding: 30px 0;
+	border-bottom: 1px solid #ffffff;
+	color: white;
+	font-weight: bold;
+}
+main .cart table thead td:last-child {
+	text-align: right;
+}
+main .cart table tbody td {
+	padding: 20px 0;
+	border-bottom: 1px solid #EEEEEE;
+}
+main .cart table tbody td:last-child {
+	text-align: right;
+
+}
+main .cart table .img {
+	width: 80px;
+}
+main .cart table .remove {
+	color: #ffffff;
+	font-size: 12px;
+	padding-top: 3px;
+}
+main .cart table .remove:hover {
+	text-decoration: underline;
+}
+main .cart table .price {
+	color: #ffffff;
+}
+main .cart table .product-name a {
+    text-decoration: none;
+    color: white; 
+}
+
+main .cart table tbody .quantity {
+	color: white;
+}
+
+main .cart table tbody .product-name a {
+	text-decoration: none;
+	color: white;
+}
+
+main .cart table input[type="number"] {
+	width: 68px;
+	padding: 10px;
+	border: 1px solid #ccc;
+	color: #555555;
+	border-radius: 5px;
+}
+main .cart .subtotal {
+	text-align: right;
+	padding: 40px 0;
+}
+main .cart .subtotal .text {
+	padding-right: 40px;
+	font-size: 18px;
+	color: white;
+}
+main .cart .subtotal .price {
+	font-size: 18px;
+	color: white;
+}
+main .cart .buttons {
+	text-align: right;
+	padding-bottom: 40px;
+}
+main .cart .buttons input[type="submit"] {
+	margin-left: 5px;
+	padding: 12px 20px;
+	border: 0;
+	background: #eed5a2df;
+	color: #062e19df;
+	font-size: 14px;
+	font-weight: bold;
+	cursor: pointer;
+	border-radius: 5px;
+}
+main .cart .buttons input[type="submit"]:hover {
+	background: #dfdfdf;
+}
+main .placeorder h1 {
+	display: block;
+	font-weight: normal;
+	margin: 0;
+	padding: 40px 0;
+	font-size: 24px;
+	text-align: center;
+	width: 100%;
+}
+main .placeorder p {
+	text-align: center;
+}
+/* -- end of css for cart.php & confirmorder.php-- */
+
+
+/* -- css for footer -- */
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center; 
+    background-color: #fff;
+    border-top: 1px solid #EEEEEE; 
+    color: #062e19df;
+    font-weight: bold;
+    padding: 20px 0; 
+}
+
+footer .content-wrapper {
+    max-width: 1050px; 
+    margin: 0 auto; 
+}
+
+footer nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer nav a {
+    text-decoration: none;
+    color: #062e19df;
+    font-weight: bold;
+    padding: 10px 10px;
+    margin: 0 10px;
+}
+
+footer nav a:hover {
+    border-bottom: 1px solid #062e19df;
+    color: #b6a129df;
+}
+
+footer .social-icons {
+    display: flex;
+    align-items: center;
+    margin-right: 15px; 
+}
+
+footer .social-icons i {
+    font-size: 20px; 
+    margin-right: 10px;
+}
+
+footer .social-icons i:last-child {
+    margin-right: 0;
+}
+/* -- end of css for footer -- */
+
+
+/* -- css for profile.php -- */
+.content {
+	margin-bottom: 50px;
+}
+.content h2 {
+	color: white;
+	font-weight: bold;
+	font-size: 24px;
+	text-align: center;
+}
+
+.content h3 {
+	color: white;
+	font-size: 20px;
+}
+
+.content table {
+    width: 50%;
+    border-collapse: collapse;
+}
+
+.content table td {
+    padding: 10px;
+	color: white;
+}
+
+.content input[type="text"],
+.content input[type="password"],
+.content input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid white;
+    border-radius: 5px;
+    color: #333; 
+}
+
+.content input[type="submit"] {
+    background-color: #eed5a2df;
+	color: #062e19df;
+    cursor: pointer;
+	border: none;
+	border-radius: 3px;
+}
+
+.content input[type="submit"]:hover {
+    background-color: #d8d8d8;
+}
+
+.content #passwordCheck {
+    color: red; /* Font color for password check message */
+}
+/* -- end of css for profile.php -- */
+
+
+/* -- css for orders.php -- */
+.orders {
+    width: 100%; 
+    margin: 0 auto;
+    padding: 20px;
+	margin-bottom: 50px;
+}
+
+.orders .order-details {
+	margin-bottom: 20px;
+}
+
+.orders h1 {
+    font-size: 24px;
+    color: #ffffffdf; 
+	text-align: center;
+    margin-bottom: 10px;
+}
+
+.orders p {
+    font-size: 16px;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.orders table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.orders table td, table th {
+    border: 1px solid #062e19df;
+    padding: 8px;
+    text-align: left;
+}
+
+.orders thead {
+    background-color: #f1dbafdf;
+    color: #062e19df; 
+	font-weight: bold;
+}
+
+.orders tbody {
+	background-color: white;
+}
+
+.orders a {
+	color: #062e19df; 
+	text-decoration: none;
+}
+/* -- end of css for orders.php -- */
+
+
+/* -- css for login.php -- */
 .login {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    margin: 0;
+    padding: 0;
     width: 300px;
     margin: 100px auto;
     height: 350px;
@@ -40,8 +663,9 @@ body {
 }
 
 .login input[type="submit"] {
-    background-color: #4caf50;
-    color: #fff;
+    background-color: #eed5a2df;
+    color: #062e19df;
+    font-weight: bold;
     border: none;
     cursor: pointer;
 }
@@ -82,361 +706,252 @@ body {
     position: relative;
     top: -145px; 
 }
-* {
-	box-sizing: border-box;
-	font-family: -apple-system, BlinkMacSystemFont, "segoe ui", roboto, oxygen, ubuntu, cantarell, "fira sans", "droid sans", "helvetica neue", Arial, sans-serif;
-	font-size: 16px;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}
-html {
-	height: 100%;
-}
-body {
-	position: relative;
-	min-height: 100%;
-	color: #555555;
-	background-color: #FFFFFF;
-	margin: 0;
-	padding-bottom: 100px; /* Same height as footer */
-}
-h1, h2, h3, h4, h5 {
-	color: #394352;
-}
-.content-wrapper {
-	width: 1050px;
-	margin: 0 auto;
-}
+/* -- end of css for login.php -- */
 
 
-header {
-	border-bottom: 1px solid #EEEEEE;
-	background-color: black;
+/* -- css for register.php -- */
+.register {
+    width: 400px;
+	height: 750px;
+    margin: 100px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-header .content-wrapper {
-    display: flex;
+.register h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #394352;
+    font-weight: bold;
+    font-size: 20px;
 }
 
+.register form {
+    text-align: center;
+}
 
-header h1 {
-	display: flex;
-	flex-grow: 1;
-	flex-basis: 0;
-	font-size: 20px;
-	margin: 0;
-	padding: 24px 0;
+.register input[type="text"],
+.register input[type="password"],
+.register input[type="email"],
+.register input[type="tel"],
+.register input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
-header nav {
-	display: flex;
-	flex-grow: 1;
-	flex-basis: 0;
-	justify-content: center;
-	align-items: center;
-}
-header nav a {
-	text-decoration: none;
-	color: #555555;
-	padding: 10px 10px;
-	margin: 0 10px;
-}
-header nav a:hover {
-	border-bottom: 1px solid #aaa;
-}
-header .link-icons {
-	display: flex;
-	flex-grow: 1;
-	flex-basis: 0;
-	justify-content: flex-end;
-	align-items: center;
-	position: relative;
-}
-header .link-icons a {
-	text-decoration: none;
-	color: #394352;
-	padding: 0 10px;
-}
-header .link-icons a:hover {
-	color: #4e5c70;
-}
-header .link-icons a i {
-	font-size: 18px;
-}
-header .link-icons a span {
-	display: inline-block;
-	text-align: center;
-	background-color: #63748e;
-	border-radius: 50%;
-	color: #FFFFFF;
-	font-size: 12px;
-	line-height: 16px;
-	width: 16px;
-	height: 16px;
+
+.register input[type="submit"] {
+    background-color: #eed5a2df;
+    color: #062e19df;
 	font-weight: bold;
-	position: absolute;
-	top: 22px;
-	right: 0;
-}
-main .featured {
-	display: flex;
-	flex-direction: column;
-	background-image: url(imgs/banner1.jpg);
-	background-repeat: no-repeat;
-	background-size: cover;
-	height: 500px;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
-}
-main .featured h2 {
-	display: inline-block;
-	margin: 0;
-	width: 1050px;
-	font-family: Rockwell, Courier Bold, Courier, Georgia, Times, Times New Roman, serif;
-	font-size: 68px;
-	color: #FFFFFF;
-	padding-bottom: 10px;
-}
-main .featured p {
-	display: inline-block;
-	margin: 0;
-	width: 1050px;
-	font-size: 24px;
-	color: #FFFFFF;
-}
-main .recentlyadded h2 {
-	display: block;
-	font-weight: normal;
-	margin: 0;
-	padding: 40px 0;
-	font-size: 24px;
-	text-align: center;
-	width: 100%;
-	border-bottom: 1px solid #EEEEEE;
-}
-main .recentlyadded .products, main .products .products-wrapper {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: space-between;
-	padding: 40px 0 0 0;
-}
-main .recentlyadded .products .product, main .products .products-wrapper .product {
-	display: block;
-	overflow: hidden;
-	text-decoration: none;
-	width: 25%;
-	padding-bottom: 60px;
-}
-main .recentlyadded .products .product img, main .products .products-wrapper .product img {
-	transform: scale(1);
-	transition: transform 1s;
-}
-main .recentlyadded .products .product .name, main .products .products-wrapper .product .name {
-	display: block;
-	color: #555555;
-	padding: 20px 0 2px 0;
-}
-main .recentlyadded .products .product .price, main .products .products-wrapper .product .price {
-	display: block;
-	color: #999999;
-}
-main .recentlyadded .products .product .rrp, main .products .products-wrapper .product .rrp {
-	color: #BBBBBB;
-	text-decoration: line-through;
-}
-main .recentlyadded .products .product:hover img, main .products .products-wrapper .product:hover img {
-	transform: scale(1.05);
-	transition: transform 1s;
-}
-main .recentlyadded .products .product:hover .name, main .products .products-wrapper .product:hover .name {
-	text-decoration: underline;
-}
-main > .product {
-	display: flex;
-	padding: 40px 0;
-}
-main > .product > div {
-	padding-left: 15px;
-}
-main > .product h1 {
-	font-size: 34px;
-	font-weight: normal;
-	margin: 0;
-	padding: 20px 0 10px 0;
-}
-main > .product .price {
-	display: block;
-	font-size: 22px;
-	color: #999999;
-}
-main > .product .rrp {
-	color: #BBBBBB;
-	text-decoration: line-through;
-	font-size: 22px;
-	padding-left: 5px;
-}
-main > .product form {
-	display: flex;
-	flex-flow: column;
-	margin: 40px 0;
-}
-main > .product form input[type="number"] {
-	width: 400px;
-	padding: 10px;
-	margin-bottom: 15px;
-	border: 1px solid #ccc;
-	color: #555555;
-	border-radius: 5px;
-}
-main > .product form input[type="submit"] {
-	background: #4e5c70;
-	border: 0;
-	color: #FFFFFF;
-	width: 400px;
-	padding: 12px 0;
-	text-transform: uppercase;
-	font-size: 14px;
-	font-weight: bold;
-	border-radius: 5px;
-	cursor: pointer;
-}
-main > .product form input[type="submit"]:hover {
-	background: #434f61;
-}
-main > .products h1 {
-	display: block;
-	font-weight: normal;
-	margin: 0;
-	padding: 40px 0;
-	font-size: 24px;
-	text-align: center;
-	width: 100%;
-}
-main > .products .buttons {
-	text-align: right;
-	padding-bottom: 40px;
-}
-main > .products .buttons a {
-	display: inline-block;
-	text-decoration: none;
-	margin-left: 5px;
-	padding: 12px 20px;
-	border: 0;
-	background: #4e5c70;
-	color: #FFFFFF;
-	font-size: 14px;
-	font-weight: bold;
-	border-radius: 5px;
-}
-main > .products .buttons a:hover {
-	background: #434f61;
-}
-main .cart h1 {
-	display: block;
-	font-weight: normal;
-	margin: 0;
-	padding: 40px 0;
-	font-size: 24px;
-	text-align: center;
-	width: 100%;
-}
-main .cart table {
-	width: 100%;
-}
-main .cart table thead td {
-	padding: 30px 0;
-	border-bottom: 1px solid #EEEEEE;
-}
-main .cart table thead td:last-child {
-	text-align: right;
-}
-main .cart table tbody td {
-	padding: 20px 0;
-	border-bottom: 1px solid #EEEEEE;
-}
-main .cart table tbody td:last-child {
-	text-align: right;
-}
-main .cart table .img {
-	width: 80px;
-}
-main .cart table .remove {
-	color: #777777;
-	font-size: 12px;
-	padding-top: 3px;
-}
-main .cart table .remove:hover {
-	text-decoration: underline;
-}
-main .cart table .price {
-	color: #999999;
-}
-main .cart table a {
-	text-decoration: none;
-	color: #555555;
-}
-main .cart table input[type="number"] {
-	width: 68px;
-	padding: 10px;
-	border: 1px solid #ccc;
-	color: #555555;
-	border-radius: 5px;
-}
-main .cart .subtotal {
-	text-align: right;
-	padding: 40px 0;
-}
-main .cart .subtotal .text {
-	padding-right: 40px;
-	font-size: 18px;
-}
-main .cart .subtotal .price {
-	font-size: 18px;
-	color: #999999;
-}
-main .cart .buttons {
-	text-align: right;
-	padding-bottom: 40px;
-}
-main .cart .buttons input[type="submit"] {
-	margin-left: 5px;
-	padding: 12px 20px;
-	border: 0;
-	background: #4e5c70;
-	color: #FFFFFF;
-	font-size: 14px;
-	font-weight: bold;
-	cursor: pointer;
-	border-radius: 5px;
-}
-main .cart .buttons input[type="submit"]:hover {
-	background: #434f61;
-}
-main .placeorder h1 {
-	display: block;
-	font-weight: normal;
-	margin: 0;
-	padding: 40px 0;
-	font-size: 24px;
-	text-align: center;
-	width: 100%;
-}
-main .placeorder p {
-	text-align: center;
+    border: none;
+    cursor: pointer;
 }
 
-footer {
-	position: absolute;
-	bottom: 0;
-	border-top: 1px solid #EEEEEE;
-	padding: 20px 0;
-	width: 100%;
+.register input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.register p {
+    text-align: center;
+}
+
+.register label {
+    display: inline-block;
+    width: 150px; 
+    margin-left: -155px; 
+    text-align: left; 
+}
+
+.register label i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 5px;
+}
+
+.register input[type="text"],
+.register input[type="password"] {
+    padding-left: 25px;
+}
+
+.register #passwordCheck,
+.register #passwordError,
+.register #emailError {
+    margin-top: 5px;
+    font-size: 12px;
+    color: red;
 } 
 
+.login-link {
+    text-align: center;
+    position: relative;
+    top: -145px; 
+}
+/* -- end of css for register.php -- */
 
 
+/* -- css for getinfo.php -- */
+.content-wrapper {
+    margin: 0 auto;
+    padding: 20px;
+	justify-content: center;
+	align-items: center;
+}
+
+.cart {
+    margin: 50px auto;
+}
+
+.customer-details {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+	width: 500px;
+	position: relative;
+	left: 250px;
+    margin-bottom: 20px; 
+}
+
+.customer-details h2 {
+    color: #062e19;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.customer-details label {
+    color: #062e19;
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.customer-details input[type="text"],
+.customer-details input[type="tel"],
+.customer-details #zip_postcode {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: calc(100% - 22px);
+}
+
+.customer-details select {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 10px;
+    width: calc(100% - 22px);
+}
+
+.customer-details select:focus {
+    border-color: #062e19;
+    outline: none;
+}
+
+.country-label {
+	color:#062e19; 
+	font-weight: bold;
+}
+
+.flag {
+	position: relative;
+	width: 40px;
+	left: -5px;
+	bottom: -5px;
+}
+
+.payment-method {
+    background-color: #fff; /* Add white background */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+	position: relative;
+	width: 500px;
+	left: 250px;
+}
+
+.payment-method h2 {
+    color: #062e19;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.payment-method label {
+    color: #062e19;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.payment-method input[type="radio"] {
+    margin-right: 5px;
+}
+
+.credit-card {
+	position: relative;
+	width: 30px;
+	right: -190px;
+	top: -35px;
+}
+
+.tng {
+	position: relative;
+	width: 27px;
+	right: -190px;
+	top: -35px;
+}
+
+.submit-button {
+    background-color: #eed5a2;
+    border: none;
+    border-radius: 5px;
+    color: #062e19;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 12px 20px;
+    transition: background-color 0.3s;
+	position: relative;
+	width: 500px;
+	left: 250px;
+	margin-top: 20px;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+}
+/* -- end of css for getinfo.php -- */ 
 
 
+/* -- css for about.php --*/ 
+.about {
+	width: 500px;
+	text-align: justify;
+	position: relative;
+	margin-bottom: 50px;
+}
+.about h1 {
+	color: white;
+	font-size: 24px;
+	font-weight: bold;
+}
+.about p {
+	color: white;
+	font-size: 14px;
+}
 
-
+.about-image {
+    width: 350px;
+    height: auto; 
+    position: absolute; 
+    left: 700px; 
+}
+/* -- end of css for about.php --*/
