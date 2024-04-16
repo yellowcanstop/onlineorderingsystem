@@ -21,11 +21,11 @@ function start_session($pdo) {
         if (isset($_COOKIE['remember_me'])) {
             // The "remember_me" cookie is set. Look up the user in the database
             $token = $_COOKIE['remember_me'];
-            $stmt = $pdo->prepare("SELECT * FROM users WHERE remember_me_token = :token");
+            $stmt = $pdo->prepare("SELECT * FROM accounts WHERE remember_me_token = :token");
             $stmt->execute(['token' => $token]);
             $user = $stmt->fetch();
             if ($user) {
-                // The user was found. Log them in
+                // user found so log them in
                 session_regenerate_id();
                 $_SESSION['loggedin'] = TRUE;
                 $_SESSION['username'] = $user['username'];
@@ -33,12 +33,12 @@ function start_session($pdo) {
                 $_SESSION['email'] = $user['email'];
                 $_SESSION['role'] = $user['role'];
             } else {
-                // The user was not found. Redirect to the login page
+                // cannot find account based on token so redirect to login
                 header('Location: login.php');
                 exit();
             }
         } else {
-            // The "remember_me" cookie is not set. Redirect to the login page
+            // "remember_me" cookie not set so redirect to login
             header('Location: login.php');
             exit();
         }
