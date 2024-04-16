@@ -21,4 +21,5 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endforeach; ?>
     </div>
 </div>
+
 <?=template_footer()?>
