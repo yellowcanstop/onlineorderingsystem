@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 12, 2024 at 03:36 PM
+-- Generation Time: Apr 16, 2024 at 08:49 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -72,7 +72,11 @@ INSERT INTO `addresses` (`id`, `line_1`, `line_2`, `zip_postcode`, `state`) VALU
 (1, '44 Wool\'s Orphanage', 'London', '56000', 'state4'),
 (2, '44 Wool\'s Orphanage', 'London', '56000', 'state4'),
 (3, 'Hogwarts', '', '14000', 'Penang'),
-(4, 'Hogwarts', '', '14000', 'Penang');
+(4, 'Hogwarts', '', '14000', 'Penang'),
+(5, '44 Grimmauld Place', 'London', '56000', 'Pahang'),
+(6, '44 Grimmauld Place', 'London', '56000', ''),
+(7, '44 Grimmauld Place', 'London', '56000', 'Pahang'),
+(8, '44 Grimmauld Place', 'London', '56000', 'Pahang');
 
 -- --------------------------------------------------------
 
@@ -130,17 +134,22 @@ INSERT INTO `customers` (`id`, `customer_first_name`, `customer_last_name`, `cus
 
 CREATE TABLE `customer_addresses` (
   `customer_id` int(11) NOT NULL,
-  `address_id` int(11) NOT NULL
+  `address_id` int(11) NOT NULL,
+  `is_default` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `customer_addresses`
 --
 
-INSERT INTO `customer_addresses` (`customer_id`, `address_id`) VALUES
-(10, 2),
-(10, 3),
-(10, 4);
+INSERT INTO `customer_addresses` (`customer_id`, `address_id`, `is_default`) VALUES
+(10, 2, 0),
+(10, 3, 0),
+(10, 4, 0),
+(10, 5, 1),
+(10, 6, 0),
+(10, 7, 0),
+(10, 8, 0);
 
 -- --------------------------------------------------------
 
@@ -169,7 +178,11 @@ INSERT INTO `customer_orders` (`order_id`, `customer_id`, `customer_payment_meth
 (2, 10, 2, 'cancelled', '2024-04-02 17:40:26', '2024-04-02 17:40:49', 49.98, '0000-00-00 00:00:00', '2024-04-12 14:54:53'),
 (3, 10, 1, 'paid', '2024-04-02 18:14:13', '2024-04-12 16:00:29', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (4, 10, 2, 'cancelled', '2024-04-02 18:17:04', '2024-04-02 18:17:35', 19.99, '0000-00-00 00:00:00', '2024-04-12 16:02:55'),
-(5, 10, 1, 'paid', '2024-04-02 18:34:50', '2024-04-12 21:05:35', 69.97, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(5, 10, 1, 'paid', '2024-04-02 18:34:50', '2024-04-12 21:05:35', 69.97, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(6, 10, 1, 'unpaid', '2024-04-12 18:20:16', '0000-00-00 00:00:00', 69.97, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(7, 10, 1, 'unpaid', '2024-04-12 20:22:30', '0000-00-00 00:00:00', 39.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(8, 10, 1, 'unpaid', '2024-04-12 20:50:22', '0000-00-00 00:00:00', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(9, 10, 1, 'unpaid', '2024-04-12 20:51:23', '0000-00-00 00:00:00', 19.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -199,7 +212,12 @@ INSERT INTO `customer_orders_products` (`order_id`, `dish_id`, `order_quantity`)
 (3, 4, 1),
 (4, 1, 1),
 (5, 1, 2),
-(5, 4, 1);
+(5, 4, 1),
+(6, 1, 2),
+(6, 4, 1),
+(7, 3, 1),
+(8, 4, 1),
+(9, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -222,10 +240,10 @@ CREATE TABLE `dishes` (
 --
 
 INSERT INTO `dishes` (`id`, `name`, `description`, `price`, `quantity`, `img`, `category_id`) VALUES
-(1, 'Signature Tart', '<p>This tart loves you berry much.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for dessert.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Available whole or by slice.</li>\r\n</ul>', 19.99, 20, 'tart.jpg', 3),
+(1, 'Signature Tart', '<p>This tart loves you berry much.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for dessert.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Available whole or by slice.</li>\r\n</ul>', 19.99, 17, 'tart.jpg', 3),
 (2, 'Egg', '<p>Eggs are good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 15.99, 0, 'egg.jpg', 2),
-(3, 'Fish', '<p>Fish is good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 39.99, 4, 'fish.jpg', 2),
-(4, 'Salad', '<p>Salad is good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 29.99, 10, 'salad.jpg', 1);
+(3, 'Fish', '<p>Fish is good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 39.99, 3, 'fish.jpg', 2),
+(4, 'Salad', '<p>Salad is good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 29.99, 8, 'salad.jpg', 1);
 
 --
 -- Indexes for dumped tables
@@ -300,7 +318,7 @@ ALTER TABLE `accounts`
 -- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -318,7 +336,7 @@ ALTER TABLE `customers`
 -- AUTO_INCREMENT for table `customer_orders`
 --
 ALTER TABLE `customer_orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `dishes`
