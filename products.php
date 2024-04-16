@@ -1,6 +1,6 @@
 <?php
 // number of dishes to show per page
-$num_products_on_each_page = 4;
+$num_products_on_each_page = 16;
 // show selected page otherwise default to 1
 $current_page = isset($_GET['p']) && is_numeric($_GET['p']) ? (int)$_GET['p'] : 1;
 // get selected sort option from the GET parameters
@@ -54,8 +54,8 @@ $total_products = count($dishes);
 <?=template_header('Dishes')?>
 
 <div class="products content-wrapper">
-    <h1>Dishes</h1>
-    <p><?=$total_products?> dishes in total</p>
+    <h1 style="color: white; font-weight:bold;">Our Offerings</h1>
+    <p style="color:white;"><?=$total_products?> items in total</p>
     <form method="get" action="index.php?page=products">
         <input type="hidden" name="page" value="products">
         <!-- show category id and page only if there are GET parameters -->
@@ -80,7 +80,7 @@ $total_products = count($dishes);
             <span class="price">
                 &dollar;<?=$dish['price']?>
                 <?php if ($dish['quantity'] === 0): ?>
-                <p>Dish is <span style="font-style:oblique">unavailable</span>.</p>
+                <p><span style="font-style:oblique">Currently unavailable.</span></p>
                 <?php endif; ?>
             </span>
         </a>

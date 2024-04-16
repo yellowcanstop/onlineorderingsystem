@@ -58,10 +58,15 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
 
 ?>
 <?= template_header('Orders') ?>
-<div class="content-wrapper">
+<div class="orders">
     <h1>Orders</h1>
     <p>View your past orders here:</p>
-    <table>
+    <?php if (empty($orders)): ?>
+        <p style="color: white; text-align: center;">You have made no orders.</p>
+    <?php else: ?>
+        <?php foreach ($orders as $order): ?>
+        <div class="order-details">
+        <table>
             <thead>
                 <tr>
                     <td>Order ID</td>
@@ -70,25 +75,19 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
                     <td>Status</td>
                 </tr>
             </thead>
-            
             <tbody>
-                <?php if (empty($orders)): ?>
-                <tr>
-                    <td colspan="5" style="text-align:center;">You have made no orders.</td>
-                </tr>
-                <?php else: ?>
-                <?php foreach ($orders as $order): ?>
                 <tr>
                     <td><?=$order['order_id']?></td>
                     <td><?=$order['date_order_placed']?></td>
                     <td><?=$order['payment_amount']?></td>
                     <td><?=$order['order_status_code']?></td>   
                 </tr>
-                <tr>
+            </tbody>
+        </table>
                     <table>
                         <thead>
                             <tr>
-                                <td>Dish</td>
+                                <td>Item</td>
                                 <td>Quantity</td>
                                 <td>Action</td>
                             </tr>
@@ -111,13 +110,10 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
                     <?php endforeach; ?>
                     </tbody>
                     </table>
-                </tr>
+                    </div>
                 <?php endforeach; ?>
                 <?php endif; ?>
-            </tbody>
-        
-        </table>
-   
-</div>
+                </div>
+            </div>
 
 <?= template_footer() ?>

@@ -102,7 +102,7 @@ if (isset($_POST['confirmorder']) && isset($_SESSION['cart']) && !empty($_SESSIO
             <tbody>
                 <?php if (empty($products)): ?>
                 <tr>
-                    <td colspan="5" style="text-align:center;">You have no dishes added in your cart</td>
+                    <td colspan="5" style="text-align:center; color: white;">You have no dishes added in your cart</td>
                 </tr>
                 <?php else: ?>
                 <?php foreach ($products as $product): ?>
@@ -112,7 +112,7 @@ if (isset($_POST['confirmorder']) && isset($_SESSION['cart']) && !empty($_SESSIO
                             <img src="imgs/<?=$product['img']?>" width="50" height="50" alt="<?=$product['name']?>">
                         </a>
                     </td>
-                    <td>
+                    <td class="product-name">
                         <a href="index.php?page=product&id=<?=$product['id']?>"><?=$product['name']?></a>
                         <br>
                         <a href="index.php?page=cart&remove=<?=$product['id']?>" class="remove">Remove</a>
@@ -128,7 +128,7 @@ if (isset($_POST['confirmorder']) && isset($_SESSION['cart']) && !empty($_SESSIO
             </tbody>
         </table>
         <div class="subtotal">
-            <span class="text">Subtotal</span>
+            <span class="text">Subtotal:</span>
             <span class="price">&dollar;<?=$subtotal?></span>
         </div>
         <div class="buttons">

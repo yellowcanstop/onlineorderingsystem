@@ -25,7 +25,7 @@ $products = $_SESSION['cart']['products'];
                             <img src="imgs/<?=$product['img']?>" width="50" height="50" alt="<?=$product['name']?>">
                         </a>
                     </td>
-                    <td>
+                    <td class="product-name">
                         <a href="index.php?page=product&id=<?=$product['id']?>"><?=$product['name']?></a>
                     </td>
                     <td class="price">&dollar;<?=$product['price']?></td>

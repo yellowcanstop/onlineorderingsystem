@@ -8,9 +8,10 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <div class="featured">
     <h2>Categories</h2>
     <p>Our best offerings for you</p>
+    <div class="background-shape"></div>
 </div>
 <div class="recentlyadded content-wrapper">
-    <h2>Categories</h2>
+    <h2>Select your preference</h2>
     <div class="products">
         <?php foreach ($categories as $category): ?>
         <a href="index.php?page=products&cid=<?=$category['id']?>" class="product">

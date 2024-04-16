@@ -7,7 +7,7 @@ include 'functions.php';
 <body>
     <!-- include jquery to do AJAX requests to server as user types in username field -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<div>
+	<div class="register">
 		<h1>Register</h1>
         <div>
             <?php
@@ -19,34 +19,34 @@ include 'functions.php';
         </div>
 		<!-- when the form is submitted, the data is sent to authenticate.php -->
 		<form action="adduser.php" method="post" autocomplete="off">
-            <label for="username">Username:</label>
+            <label for="username"></label>
 			<input type="text" name="username" placeholder="Username" id="username" oninput="checkUsername()" autocomplete="username" required>
             <p id="usernameError"></p>
             <br>
-            <label for="firstname">Name:</label>
+            <label for="firstname"></label>
 			<input type="text" name="firstname" placeholder="First Name" id="firstname" required>
             <label for="lastname"></label>
 			<input type="text" name="lastname" placeholder="Last Name" id="lastname" required>
             <br>
             
             
-			<label for="password">Password:</label>
+			<label for="password"></label>
             <input type="password" name="password" placeholder="Password" id="password" oninput="checkPassword()" autocomplete="new-password" required>
             <p id="passwordCheck"></p>
             
-            <label for="confirm_password">Confirm Password:</label>
+            <label for="confirm_password"></label>
             <input type="password" name="confirm_password" placeholder="Confirm Password" id="confirm_password" oninput="validatePassword()" autocomplete="new-password" required>
             <p id="passwordError"></p>
 
 
-            <label for="email">Email:</label>
+            <label for="email"></label>
             <input type="email" name="email" placeholder="Email" id="email" required>
             <br>
-            <label for="confirm_email">Confirm Email:</label>
+            <label for="confirm_email"></label>
             <input type="email" name="confirm_email" placeholder="Confirm Email" id="confirm_email" oninput="validateEmail()" required>
             <p id="emailError"></p>
 
-            <label for="phone">Phone:</label>
+            <label for="phone"></label>
             <input type="tel" name="phone" placeholder="Phone" id="phone" pattern="[0-9]{10}" title="Format: 0107998888" required>
 
             <input type="hidden" name="date_of_register" value="<?= time() ?>" id="date_of_register">
@@ -54,7 +54,7 @@ include 'functions.php';
 			<input type="submit" value="Register">
 		</form>
 	</div>
-	<div>
+	<div class="login-link">
 		<p>Already have an account? <a href="login.php">Login</a></p>
 	</div>
 </body>
