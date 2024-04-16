@@ -107,7 +107,7 @@ $name = $customer['customer_first_name'] . ' ' . $customer['customer_last_name']
             <h2>Payment Method</h2>
             <label for="cash">
                 <input type="radio" id="cash" name="customer_payment_method_id" value="1" required>
-                Cash
+                Cash on Delivery
             </label>
             <br>
             <label for="credit-card">
