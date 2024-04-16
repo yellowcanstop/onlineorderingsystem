@@ -78,13 +78,7 @@ INSERT INTO `addresses` (`id`, `line_1`, `line_2`, `zip_postcode`, `state`) VALU
 (5, '44 Grimmauld Place', 'London', '56000', 'Pahang'),
 (6, '44 Grimmauld Place', 'London', '56000', ''),
 (7, '44 Grimmauld Place', 'London', '56000', 'Pahang'),
-(8, '44 Grimmauld Place', 'London', '56000', 'Pahang'),
-(9, 'University of Nottingham Malaysia', 'Semenyih', '43500', 'Selangor'),
-(10, '17 Malfoy Manor', 'Wiltshire', '44444', 'Putrajaya'),
-(11, '17 Malfoy Manor', 'Wiltshire', '44444', 'Putrajaya'),
-(12, '17 Malfoy Manor', 'Wiltshire', '44444', 'Putrajaya'),
-(13, '17 Malfoy Manor', 'Wiltshire', '44444', 'Putrajaya'),
-(14, '17 Malfoy Manor', 'Wiltshire', '44444', 'Putrajaya');
+(8, '44 Grimmauld Place', 'London', '56000', 'Pahang');
 
 -- --------------------------------------------------------
 
@@ -192,22 +186,16 @@ CREATE TABLE `customer_orders` (
 -- Dumping data for table `customer_orders`
 --
 
-INSERT INTO `customer_orders` (`order_id`, `customer_id`, `customer_payment_method_id`, `order_status_code`, `date_order_placed`, `date_order_paid`, `payment_amount`, `date_order_fulfilled`, `date_order_cancelled`, `name`, `phone`, `email`, `address_id`) VALUES
-(1, 10, 1, 'fulfilled', '2024-04-02 17:34:38', '2024-04-12 14:50:47', 101.95, '2024-04-12 14:51:15', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
-(2, 10, 2, 'cancelled', '2024-04-02 17:40:26', '2024-04-02 17:40:49', 49.98, '0000-00-00 00:00:00', '2024-04-12 14:54:53', NULL, NULL, NULL, NULL),
-(3, 10, 1, 'paid', '2024-04-02 18:14:13', '2024-04-12 16:00:29', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
-(4, 10, 2, 'cancelled', '2024-04-02 18:17:04', '2024-04-02 18:17:35', 19.99, '0000-00-00 00:00:00', '2024-04-12 16:02:55', NULL, NULL, NULL, NULL),
-(5, 10, 1, 'paid', '2024-04-02 18:34:50', '2024-04-12 21:05:35', 69.97, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
-(6, 10, 1, 'unpaid', '2024-04-12 18:20:16', '0000-00-00 00:00:00', 69.97, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
-(7, 10, 1, 'unpaid', '2024-04-12 20:22:30', '0000-00-00 00:00:00', 39.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
-(8, 10, 1, 'unpaid', '2024-04-12 20:50:22', '0000-00-00 00:00:00', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
-(9, 10, 1, 'unpaid', '2024-04-12 20:51:23', '0000-00-00 00:00:00', 19.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
-(10, 11, 1, 'unpaid', '2024-04-16 14:36:03', '0000-00-00 00:00:00', 88.68, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
-(11, 12, 1, 'unpaid', '2024-04-16 16:14:25', '0000-00-00 00:00:00', 119.97, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Draco Malfoy', '0107991111', 'draco@test.com', 9),
-(12, 12, 3, 'unpaid', '2024-04-16 16:31:30', '0000-00-00 00:00:00', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Draco Malfoy', '0107991111', 'draco@test.com', 10),
-(13, 12, 3, 'unpaid', '2024-04-16 16:35:51', '0000-00-00 00:00:00', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Draco Malfoy', '0107991111', 'draco@test.com', 11),
-(14, 12, 2, 'unpaid', '2024-04-16 16:36:05', '0000-00-00 00:00:00', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Draco Malfoy', '0107991111', 'draco@test.com', 12),
-(15, 12, 3, 'paid', '2024-04-16 16:36:59', '2024-04-16 16:37:06', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Draco Malfoy', '0107991111', 'draco@test.com', 13);
+INSERT INTO `customer_orders` (`order_id`, `customer_id`, `customer_payment_method_id`, `order_status_code`, `date_order_placed`, `date_order_paid`, `payment_amount`, `date_order_fulfilled`, `date_order_cancelled`) VALUES
+(1, 10, 1, 'fulfilled', '2024-04-02 17:34:38', '2024-04-12 14:50:47', 101.95, '2024-04-12 14:51:15', '0000-00-00 00:00:00'),
+(2, 10, 2, 'cancelled', '2024-04-02 17:40:26', '2024-04-02 17:40:49', 49.98, '0000-00-00 00:00:00', '2024-04-12 14:54:53'),
+(3, 10, 1, 'paid', '2024-04-02 18:14:13', '2024-04-12 16:00:29', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, 10, 2, 'cancelled', '2024-04-02 18:17:04', '2024-04-02 18:17:35', 19.99, '0000-00-00 00:00:00', '2024-04-12 16:02:55'),
+(5, 10, 1, 'paid', '2024-04-02 18:34:50', '2024-04-12 21:05:35', 69.97, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(6, 10, 1, 'unpaid', '2024-04-12 18:20:16', '0000-00-00 00:00:00', 69.97, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(7, 10, 1, 'unpaid', '2024-04-12 20:22:30', '0000-00-00 00:00:00', 39.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(8, 10, 1, 'unpaid', '2024-04-12 20:50:22', '0000-00-00 00:00:00', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(9, 10, 1, 'unpaid', '2024-04-12 20:51:23', '0000-00-00 00:00:00', 19.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -242,15 +230,7 @@ INSERT INTO `customer_orders_products` (`order_id`, `dish_id`, `order_quantity`)
 (6, 4, 1),
 (7, 3, 1),
 (8, 4, 1),
-(9, 1, 1),
-(10, 9, 1),
-(10, 12, 1),
-(10, 16, 1),
-(10, 3, 3),
-(11, 4, 1),
-(12, 4, 1),
-(13, 4, 1),
-(14, 4, 1);
+(9, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -273,22 +253,10 @@ CREATE TABLE `dishes` (
 --
 
 INSERT INTO `dishes` (`id`, `name`, `description`, `price`, `quantity`, `img`, `category_id`) VALUES
-(1, 'Truffle Crostini', '<em>Appetizer</em>\r\n<p>Indulge in the luxurious aroma and flavor of black truffles delicately infused into a creamy spread atop perfectly toasted crostini. Each bite is a harmonious blend of earthy richness and crisp, golden perfection, elevating the senses with every savory sensation.</p>\r\n', 18.35, 17, 'trufflecrostini.jpg', 1),
-(2, 'Michelin\'s Egg', '<em>Main Course</em>\r\n<p>Inspired by the culinary mastery of Michelin-starred chefs, this dish features a perfectly poached egg nestled atop a bed of creamy risotto, enriched with a velvety sauce. With each spoonful, the yolk cascades, mingling with the decadent risotto to create a luxurious symphony of flavors and textures.</p>\r\n', 15.99, 0, 'egg.jpg', 2),
-(3, 'Royal Salmon', '<em>Main Course</em>\r\n<p>Fit for royalty, our Royal Salmon is a majestic presentation of premium, melt-in-your-mouth salmon fillet, delicately seasoned and grilled to perfection. Each forkful reveals tender flakes of salmon, infused with a hint of smoky char and served with a garnish of vibrant seasonal vegetables. A regal feast for the senses.</p>\r\n', 39.99, 3, 'fish.jpg', 2),
-(4, 'Garden Gourmet', '<em>Appetizer</em>\r\n<p>A vibrant and artfully arranged platter showcasing the freshest seasonal produce, delicately prepared to highlight their natural flavors and textures. Each bite is a symphony of colors and tastes, inviting diners on a journey through the garden.</p>\r\n', 29.99, 8, 'garden.png', 1),
-(5, 'Signature Tart', '<em>Dessert</em>\r\n<p>Our Signature Tart is a culinary masterpiece, featuring a delicate, flaky crust filled with a luscious and perfectly balanced blend of seasonal fruits or decadent fillings. Each bite is a symphony of flavors and textures, offering a tantalizing journey for the taste buds that culminates in pure dessert bliss.</p>\r\n', 12.89, 17, 'tart.png', 3),
-(6, 'Caviar Blini', '<em>Appetizer</em>\r\n<p>Experience the epitome of opulence with our exquisite caviar blini. Delicate buckwheat pancakes serve as the perfect canvas for the velvety richness of premium caviar, complemented by a whisper of crème fraîche and the subtle crunch of finely diced shallots. Every bite is a decadent celebration of luxury and sophistication.</p>\r\n', 28.50, 15, 'caviar.png', 1),
-(7, 'Lobster Medallions', '<em>Appetizer</em>\r\n<p>Succulent lobster medallions, expertly seared to tender perfection and served with a delicate drizzle of clarified butter. Each bite offers a burst of sweet, briny flavor, balanced by the buttery richness of the sauce. A true delicacy that embodies the essence of the sea.</p>\r\n', 22.50, 15, 'lobster.png', 1),
-(9, 'Steak Au Poivre', '<em>Main Course</em>\r\n<p>Indulge in the ultimate carnivorous delight with our Steak Au Poivre. Prime cuts of tender beef, expertly seasoned and seared to perfection, are bathed in a rich and peppery cognac sauce. Each bite offers a tantalizing contrast of bold flavors and succulent meat, leaving a lasting impression of pure culinary satisfaction.</p>\r\n', 49.99, 17, 'steak.jpg', 2),
-(10, 'Duck Confit', '<em>Main Course</em>\r\n<p>A timeless classic of French cuisine, our Duck Confit is a celebration of tender duck leg, slow-cooked to perfection in its own succulent juices and aromatic herbs. Crispy on the outside yet tender and flavorful on the inside, each bite is a harmonious balance of richness and depth. Served alongside seasonal accompaniments, this dish is sure to captivate even the most discerning palate.</p>\r\n', 32.99, 18, 'duckconfit.jpg', 2),
-(11, 'Berry Pavlova', '<em>Dessert</em>\r\n<p>A dreamy confection that captures the essence of summer, our Berry Pavlova is a cloud-like meringue base topped with a vibrant assortment of fresh berries and a whisper of whipped cream. The crisp exterior gives way to a soft, marshmallow-like center, creating a delightful contrast of textures that dances on the palate with bursts of fruity sweetness.</p>\r\n', 12.70, 14, 'pavlova.jpg', 3),
-(12, 'Matcha Mousse', '<em>Dessert</em>\r\n<p>Experience the delicate harmony of flavors and textures in our Matcha Mousse. Smooth and velvety green tea-infused mousse is layered atop a buttery biscuit base, creating a dessert that is as visually stunning as it is delicious. Each spoonful is a celebration of the earthy notes of matcha, balanced with the subtle sweetness of cream, culminating in a truly transcendent dessert experience.</p>\r\n', 19.99, 12, 'matchamousse.jpg', 3),
-(13, 'Velvet Noir', '<em>Dessert</em>\r\n<p>Indulge in the ultimate chocolate lover\'s fantasy with our Velvet Noir dessert. Rich, decadent layers of dark chocolate ganache and velvety chocolate mousse are enrobed in a glossy chocolate glaze, creating a dessert that is as elegant as it is indulgent. With each luxurious bite, the intense cocoa flavor melts on the tongue, leaving a lingering impression of pure chocolate perfection.</p>\r\n', 18.70, 13, 'chocolate.jpg', 3),
-(14, 'Majestic Martini', '<em>Beverage</em>\r\n<p>A timeless classic elevated to new heights, our Majestic Martini is a refined blend of premium vodka or gin, meticulously stirred or shaken to icy perfection. Served in a chilled martini glass and garnished with a twist of lemon or olives, this iconic cocktail is the epitome of sophistication, offering a crisp and refreshing sip that tantalizes the senses.</p>\r\n', 18.70, 13, 'majesticmartini.jpg', 4),
-(15, 'Grandiose Gin', '<em>Beverage</em>\r\n<p>Crafted with the finest botanicals and distilled to perfection, our Grandiose Gin cocktail is a celebration of botanical elegance and juniper-forward flavor. Served over ice with a splash of tonic water and garnished with a sprig of fresh herbs or a twist of citrus, each sip is a symphony of complex flavors and aromatic notes, promising a truly indulgent drinking experience.</p>\r\n', 18.70, 13, 'grandiosegin.jpg', 4),
-(16, 'Regal Rum', '<em>Beverage</em>\r\n<p>Embark on a journey of Caribbean delight with our Regal Rum cocktail. Crafted with the finest aged rum, balanced with a hint of sweetness and a splash of citrus, this cocktail is served over ice in a chilled glass, transporting you to sun-kissed shores with every sip. Smooth, sophisticated, and irresistibly delicious, it\'s a drink fit for royalty.</p>\r\n', 18.70, 12, 'regalrum.jpg', 4),
-(17, 'Prestige Punch', '<em>Beverage</em>\r\n<p>A masterpiece of mixology, our Prestige Punch is a delightful fusion of premium spirits, fruit juices, and a hint of effervescence. Served in an elegant punch bowl with a garnish of fresh fruits and edible flowers, this communal cocktail is perfect for sharing amongst friends or savoring solo. With each sip, you\'ll discover a harmonious blend of flavors that is both refreshing and invigorating, leaving you feeling truly pampered.</p>\r\n', 18.70, 13, 'prestigepunch.jpg', 4);
+(1, 'Signature Tart', '<p>This tart loves you berry much.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for dessert.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Available whole or by slice.</li>\r\n</ul>', 19.99, 17, 'tart.jpg', 3),
+(2, 'Egg', '<p>Eggs are good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 15.99, 0, 'egg.jpg', 2),
+(3, 'Fish', '<p>Fish is good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 39.99, 3, 'fish.jpg', 2),
+(4, 'Salad', '<p>Salad is good for you.</p>\r\n<h3>Why?</h3>\r\n<ul>\r\n<li>There is always room for more.</li>\r\n<li>Keto-friendly.</li>\r\n<li>Yes.</li>\r\n</ul>', 29.99, 8, 'salad.jpg', 1);
 
 --
 -- Indexes for dumped tables
