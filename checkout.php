@@ -64,16 +64,20 @@ if (isset($_POST['line_1'], $_POST['state'], $_POST['zip_postcode']) && !empty($
 }  
 
 
-// customer_payment_method_id: 1 for cash, 2 for credit card or ewallet
+// customer_payment_method_id: 1 for cash, 2 for credit card, 3 for ewallet
 if (isset($_POST['customer_payment_method_id'], $_POST['date_order_placed'])) {
     // insert new order into customer_orders table
-    if ($stmt = $pdo->prepare('INSERT INTO customer_orders (customer_id, customer_payment_method_id, date_order_placed, payment_amount) VALUES (:customer_id, :customer_payment_method_id, :date_order_placed, :payment_amount)')) {
+    if ($stmt = $pdo->prepare('INSERT INTO customer_orders (customer_id, customer_payment_method_id, date_order_placed, payment_amount, name, phone, email, address_id) VALUES (:customer_id, :customer_payment_method_id, :date_order_placed, :payment_amount, :name, :phone, :email, :address_id)')) {
         $stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
         $stmt->bindValue(':customer_payment_method_id', $_POST['customer_payment_method_id'], PDO::PARAM_INT);
         $date_order_placed = date('Y-m-d H:i:s', $_POST['date_order_placed']);
         $stmt->bindValue(':date_order_placed', $date_order_placed, PDO::PARAM_STR);
         // payment_amount is of decimal type in database. use PDO::PARAM_STR for all column types which are not of type int or bool
         $stmt->bindValue(':payment_amount', $subtotal, PDO::PARAM_STR);
+        $stmt->bindValue(':name', $_POST['name'], PDO::PARAM_STR);
+        $stmt->bindValue(':phone', $_POST['phone'], PDO::PARAM_STR);
+        $stmt->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
+        $stmt->bindValue(':address_id', $_SESSION['address_id'], PDO::PARAM_INT);
         if (!$stmt->execute()) {
             error_log("Cannot execute sql statement for customers_orders table.");
         } else {
@@ -110,9 +114,13 @@ if (isset($_POST['customer_payment_method_id'], $_POST['date_order_placed'])) {
                 // if payment method is cash, redirect to placeorder page
                 header('Location: index.php?page=placeorder');
                 exit();
-            } else {
-                // if payment method is credit card or ewallet, redirect to payment page
-                header('Location: index.php?page=payment');
+            } else if ($_POST['customer_payment_method_id'] == 2) {
+                // if payment method is credit card, redirect to credit card mock payment page
+                header('Location: index.php?page=cardpayment');
+                exit();
+            } else if ($_POST['customer_payment_method_id'] == 3) {
+                // if payment method is ewallet, redirect to ewallet mock payment page
+                header('Location: index.php?page=ewalletpayment');
                 exit();
             }
         } 

@@ -1,4 +1,4 @@
-<?=template_header('Payment')?>
+<?=template_header('Card Payment')?>
 <div class="product content-wrapper">
     <h1>Payment Details</h1>
     
@@ -16,5 +16,6 @@
 
         <input type="submit" value="Pay Now">
     </form>
+    <a href="index.php?page=checkout" class="submit-button">Return to Checkout</a>
 </div>
 <?=template_footer()?>
