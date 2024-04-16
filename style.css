@@ -565,7 +565,7 @@ footer .social-icons i:last-child {
 }
 
 .content #passwordCheck {
-    color: red; /* Font color for password check message */
+    color: red; 
 }
 /* -- end of css for profile.php -- */
 
