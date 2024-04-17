@@ -12,6 +12,30 @@ if (!isset($_SESSION['customer_id'])) {
 	}
 }
 
+// retrieve orders and order details from database
+if (isset($_SESSION['customer_id'])) {
+    if ($stmt = $pdo->prepare("
+        SELECT co.order_id, co.date_order_placed, co.payment_amount, co.order_status_code, cop.dish_id, cop.order_quantity 
+        FROM customer_orders co 
+        INNER JOIN customer_orders_products cop ON co.order_id = cop.order_id 
+        WHERE co.customer_id = :customer_id 
+        ORDER BY co.date_order_placed DESC
+        ")) {
+        $stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
+        $stmt->execute();
+        // $orders is an associative array with
+        // key: order_id (group by order_id)
+        // value ($order_details): array of associative arrays
+        // each inner assoc array is a row from co and cop tables for a specific order_id
+        // access via foreach ($order_details as $detail) then $detail[]
+        $orders = $stmt->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
+    } else {
+        error_log('Cannot prepare sql statement to get orders and order details.');
+        exit();
+    }
+}
+
+/*
 if (isset($_SESSION['customer_id'])) {
 	// retrieve order information from database
 	if ($stmt = $pdo -> prepare('SELECT order_id, date_order_placed, payment_amount, order_status_code FROM customer_orders WHERE customer_id = :customer_id ORDER BY date_order_placed DESC')) {
@@ -39,6 +63,7 @@ if (isset($_SESSION['customer_id'])) {
 		exit();
 	}
 }
+*/
 
 // store all dish names in associative array with key as dish id and value as dish name
 // so display dish names by referencing dish id in orders array
@@ -64,7 +89,7 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
     <?php if (empty($orders)): ?>
         <p style="color: white; text-align: center;">You have made no orders.</p>
     <?php else: ?>
-        <?php foreach ($orders as $order): ?>
+        <?php foreach ($orders as $order_id => $order_details): ?>
         <div class="order-details">
         <table>
             <thead>
@@ -77,10 +102,11 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
             </thead>
             <tbody>
                 <tr>
-                    <td><?=$order['order_id']?></td>
-                    <td><?=$order['date_order_placed']?></td>
-                    <td><?=$order['payment_amount']?></td>
-                    <td><?=$order['order_status_code']?></td>   
+                    <td><?=$order_id?></td>
+                    <?php foreach ($order_details as $detail): ?>
+                    <td><?=$detail['date_order_placed']?></td>
+                    <td><?=$detail['payment_amount']?></td>
+                    <td><?=$detail['order_status_code']?></td>   
                 </tr>
             </tbody>
         </table>
@@ -93,16 +119,16 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
                             </tr>
                         </thead>
                     <tbody>
-                    <?php foreach ($order['dishes'] as $dish): ?>
+                    
                     <tr>
                         <td>
-                            <a href="index.php?page=product&id=<?=$dish['dish_id']?>"><?=$names[$dish['dish_id']]?></a>
+                            <a href="index.php?page=product&id=<?=$detail['dish_id']?>"><?=$names[$detail['dish_id']]?></a>
                         </td>
-                        <td><?=$dish['order_quantity']?></td>
+                        <td><?=$detail['order_quantity']?></td>
                         <td>
                             <form action="index.php?page=cart" method="post">
-                                <input type="hidden" name="id" value="<?=$dish['dish_id']?>">
-                                <input type="hidden" name="quantity" value="<?=$dish['order_quantity']?>">
+                                <input type="hidden" name="id" value="<?=$detail['dish_id']?>">
+                                <input type="hidden" name="quantity" value="<?=$detail['order_quantity']?>">
                                 <input type="submit" class="remove" value="Order Again">
                             </form>
                         </td>
