@@ -18,7 +18,7 @@ if (isset($_POST['id'], $_POST['quantity']) && is_numeric($_POST['id']) && is_nu
             $stmt->execute(['account_id' => $_SESSION['account_id'], 'dish_id' => $id, 'quantity' => $quantity]);
         } else {
             // add dish to cart if not already in it
-            $stmt = $pdo->prepare("INSERT INTO cart_items (account_id, dish_id, quantity, date_added) VALUES (:account_id, :dish_id, :quantity, CURRENT_TIMESTAMP");
+            $stmt = $pdo->prepare("INSERT INTO cart_items (account_id, dish_id, quantity, date_added) VALUES (:account_id, :dish_id, :quantity, CURRENT_TIMESTAMP)");
             $stmt->execute(['account_id' => $_SESSION['account_id'], 'dish_id' => $id, 'quantity' => $quantity]);
         }
     }
@@ -72,9 +72,9 @@ if ($products) {
     foreach ($products as $product) {
         $subtotal += (float)$product['price'] * (int)$product['id'];
         $_SESSION['cart_subtotal'] = $subtotal;
+        $num_items_in_cart += (int)$product['cart_quantity'];
+        $_SESSION['num_items_in_cart'] = $num_items_in_cart;
     }
-    $num_items_in_cart = count($products);
-    $_SESSION['num_items_in_cart'] = $num_items_in_cart;
 }
 
 // when click place order button, redirect to confirmorder page

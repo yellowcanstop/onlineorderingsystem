@@ -14,7 +14,7 @@ if (!isset($_SESSION['customer_id'])) {
 
 if (isset($_SESSION['customer_id'])) {
 	// retrieve order information from database
-	if ($stmt = $pdo -> prepare('SELECT order_id, date_order_placed, payment_amount, order_status_code FROM customer_orders WHERE customer_id = :customer_id')) {
+	if ($stmt = $pdo -> prepare('SELECT order_id, date_order_placed, payment_amount, order_status_code FROM customer_orders WHERE customer_id = :customer_id ORDER BY date_order_placed DESC')) {
 		$stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
 		$stmt->execute();
 		$orders = $stmt->fetchALL(PDO::FETCH_ASSOC);
