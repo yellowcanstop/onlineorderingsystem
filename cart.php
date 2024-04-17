@@ -31,6 +31,7 @@ if (isset($_POST['id'], $_POST['quantity']) && is_numeric($_POST['id']) && is_nu
 if (isset($_GET['remove']) && is_numeric($_GET['remove'])) {
     $stmt = $pdo->prepare("DELETE FROM cart_items WHERE account_id = :account_id AND dish_id = :dish_id");
     $stmt->execute(['account_id' => $_SESSION['account_id'], 'dish_id' => $_GET['remove']]);
+    
 }
 
 // update quantities in cart
@@ -70,7 +71,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // so don't need to include table name (hence $product['price'] and not $product['dishes.price'])
 if ($products) {
     foreach ($products as $product) {
-        $subtotal += (float)$product['price'] * (int)$product['id'];
+        $subtotal += (float)$product['price'] * (int)$product['cart_quantity'];
         $_SESSION['cart_subtotal'] = $subtotal;
         $num_items_in_cart += (int)$product['cart_quantity'];
         $_SESSION['num_items_in_cart'] = $num_items_in_cart;
@@ -128,7 +129,7 @@ if (isset($_POST['confirmorder']) && !empty($products)) {
         </table>
         <div class="subtotal">
             <span class="text">Subtotal:</span>
-            <span class="price">&dollar;<?=$subtotal?></span>
+            <span class="price">&dollar;<?=$_SESSION['cart_subtotal']?></span>
         </div>
         <div class="buttons">
             <input type="submit" value="Update" name="update">
