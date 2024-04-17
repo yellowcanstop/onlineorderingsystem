@@ -131,6 +131,12 @@ echo <<<EOT
                     <p>Saturday: 9:00am - 11:00pm</p>
                     <p>Sunday: Closed</p>
                 </div>
+                <div class="awards">
+                    <div class="award-images">
+                    <img src="imgs/bestaward.png" alt="Best Award" style="height: 80px";>
+                    <img src="imgs/bestchoice.png" alt="Best Choice" style="height: 80px";>
+                    </div>
+                </div>
             </div>
         </footer>
     </body>

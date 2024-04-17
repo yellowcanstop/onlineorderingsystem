@@ -531,6 +531,21 @@ footer .social-icons i:last-child {
     width: auto; 
 }
 
+.awards {
+    position: absolute;
+    top: 0;
+    left: 1230px;
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-end; 
+	width: 100%;
+}
+
+.award-images img {
+    margin-right: 20px;
+}
+
+
 /* -- end of css for footer -- */
 
 
