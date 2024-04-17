@@ -14,6 +14,8 @@ if (isset($_POST['id'], $_POST['quantity']) && is_numeric($_POST['id']) && is_nu
         $item = $stmt->fetch();
         if ($item) {
             // if already exists, update quantity using ON DUPLICATE KEY UPDATE
+            // combination of account_id and dish_id must have unique constraint in cart_items table
+            // ON DUPLICATE KEY UPDATE: triggered when duplicate key error (when insert a row that causes a duplicate in unique index)
             $stmt = $pdo->prepare("INSERT INTO cart_items (account_id, dish_id, quantity, date_added) VALUES (:account_id, :dish_id, :quantity, CURRENT_TIMESTAMP) ON DUPLICATE KEY UPDATE quantity = quantity + :quantity");
             $stmt->execute(['account_id' => $_SESSION['account_id'], 'dish_id' => $id, 'quantity' => $quantity]);
         } else {
