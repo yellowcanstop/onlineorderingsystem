@@ -31,7 +31,6 @@ if (isset($_POST['id'], $_POST['quantity']) && is_numeric($_POST['id']) && is_nu
 if (isset($_GET['remove']) && is_numeric($_GET['remove'])) {
     $stmt = $pdo->prepare("DELETE FROM cart_items WHERE account_id = :account_id AND dish_id = :dish_id");
     $stmt->execute(['account_id' => $_SESSION['account_id'], 'dish_id' => $_GET['remove']]);
-    
 }
 
 // update quantities in cart
@@ -58,6 +57,7 @@ if (isset($_POST['update'])) {
 // render dishes on page
 $subtotal = 0.00;
 $num_items_in_cart = 0;
+$_SESSION['num_items_in_cart'] = 0;
 // dish_id in cart_items table is a foreign key to dishes table's id
 $stmt = $pdo->prepare("
     SELECT dishes.id, dishes.name, dishes.price, dishes.quantity, dishes.img, cart_items.quantity as cart_quantity 
@@ -129,7 +129,7 @@ if (isset($_POST['confirmorder']) && !empty($products)) {
         </table>
         <div class="subtotal">
             <span class="text">Subtotal:</span>
-            <span class="price">&dollar;<?=$_SESSION['cart_subtotal']?></span>
+            <span class="price">&dollar;<?=$subtotal?></span>
         </div>
         <div class="buttons">
             <input type="submit" value="Update" name="update">
