@@ -1,4 +1,10 @@
 <?php
+// choice of using database to store cart items instead of session
+// is so that when user logs out or closes browser, cart items are still there.
+// data persistence is important for user experience
+// cart data is also valuable for business analytics
+// see: https://stackoverflow.com/a/12569786/
+
 // validate form fields
 if (isset($_POST['id'], $_POST['quantity']) && is_numeric($_POST['id']) && is_numeric($_POST['quantity'])) {
     $id = (int)$_POST['id'];
