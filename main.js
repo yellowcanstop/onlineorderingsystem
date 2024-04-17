@@ -1,3 +1,5 @@
+// most javascript code are in their respective php files
+
 // querySelectorAll returns NodeList (can use forEach)
 // apply confirmation dialog to all forms with class 'action-confirm'
 // loop over and add event listener to each form
