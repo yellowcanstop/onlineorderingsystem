@@ -50,7 +50,7 @@ function template_header($title) {
 if (isset($_COOKIE['remember_me'])) {
     $userId = $_COOKIE['remember_me'];
 }
-$num_items_in_cart = isset($_SESSION['cart']) ? ($_SESSION['cart']['num_items_in_cart']) : 0;
+$num_items_in_cart = isset($_SESSION['num_items_in_cart']) ? ($_SESSION['num_items_in_cart']) : 0;
 $name = isset($_SESSION['username']) ? (htmlspecialchars($_SESSION['username'], ENT_QUOTES)) : "";
 $greeting = isset($_SESSION['loggedin']) && ($_SESSION['role'] == 'customer') ? "<h2>Hi $name, what are you craving?</h2>" : "";
 $home = isset($_SESSION['loggedin']) && ($_SESSION['role'] == 'customer') ? "<a href=\"index.php\">Menu</a>" : "";

@@ -1,6 +1,6 @@
 <?php
-$products = $_SESSION['cart']['products'];
-$subtotal = $_SESSION['cart']['subtotal'];
+$products = $_SESSION['products'];
+$subtotal = $_SESSION['cart_subtotal'];
 
 // validate name: string start with at least one alphabet character
 // with zero or more alphabet characters or spaces following it
@@ -89,7 +89,7 @@ if (isset($_POST['customer_payment_method_id'], $_POST['date_order_placed'])) {
                 if ($stmt = $pdo->prepare('INSERT INTO customer_orders_products (dish_id, order_id, order_quantity) VALUES (:dish_id, :order_id, :order_quantity)')) {
                     $stmt->bindValue(':dish_id', $product['id'], PDO::PARAM_INT);
                     $stmt->bindValue(':order_id', $order_id, PDO::PARAM_INT);
-                    $stmt->bindValue(':order_quantity', $_SESSION['cart'][$product['id']], PDO::PARAM_INT);
+                    $stmt->bindValue(':order_quantity', $product['cart_quantity'], PDO::PARAM_INT);
                     if (!$stmt->execute()) {
                         error_log("Cannot execute sql statement for order id: $order_id with product id: " . $product['id']);
                     }
@@ -100,7 +100,7 @@ if (isset($_POST['customer_payment_method_id'], $_POST['date_order_placed'])) {
             // update quantities for each dish in dishes table
             foreach ($products as $product):
                 if ($stmt = $pdo->prepare('UPDATE dishes SET quantity = quantity - :order_quantity WHERE id = :dish_id')) {
-                    $stmt->bindValue(':order_quantity', $_SESSION['cart'][$product['id']], PDO::PARAM_INT);
+                    $stmt->bindValue(':order_quantity', $product['cart_quantity'], PDO::PARAM_INT);
                     $stmt->bindValue(':dish_id', $product['id'], PDO::PARAM_INT);
                     if (!$stmt->execute()) {
                         error_log("Cannot execute sql statement for updating quantity in dishes table for dish id: " . $product['id']);

@@ -1,5 +1,11 @@
 <?php
-$products = $_SESSION['cart']['products'];
+// for confirmorder.php and checkout.php, which are only accessible from cart.php
+// and not directly from the navbar, so we can assume that $_SESSION['products'] is set
+// hence instead of querying database again, we use $_SESSION['products'] to get products in cart
+// need to consider trade-off between:
+// 1. memory usage from storing cart data in sessions
+// 2. speed of db query (inner join on dishes and cart_items)
+$products = $_SESSION['products']
 ?>
 
 <?=template_header('Place Order')?>
@@ -11,7 +17,7 @@ $products = $_SESSION['cart']['products'];
         <table>
             <thead>
                 <tr>
-                    <td colspan="2">Product</td>
+                    <td colspan="2">Item</td>
                     <td>Price</td>
                     <td>Quantity</td>
                     <td>Total</td>
@@ -29,8 +35,8 @@ $products = $_SESSION['cart']['products'];
                         <a href="index.php?page=product&id=<?=$product['id']?>"><?=$product['name']?></a>
                     </td>
                     <td class="price">&dollar;<?=$product['price']?></td>
-                    <td class="quantity"><?= $_SESSION['cart'][$product['id']]?></td>
-                    <td class="price">&dollar;<?=$product['price'] * $_SESSION['cart'][$product['id']]?></td>
+                    <td class="quantity"><?=$product['cart_quantity']?></td>
+                    <td class="price">&dollar;<?=$product['price'] * $product['cart_quantity']?></td>
                 </tr>
                 <?php endforeach; ?>
                
@@ -38,7 +44,7 @@ $products = $_SESSION['cart']['products'];
         </table>
         <div class="subtotal">
             <span class="text">Subtotal</span>
-            <span class="price">&dollar;<?=$_SESSION['cart']['subtotal']?></span>
+            <span class="price">&dollar;<?=$_SESSION['cart_subtotal']?></span>
         </div>
         <div class="buttons">
             <input type="submit" value="Back To Cart" onclick="setFormAction('cart')" name="backtocart">

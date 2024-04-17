@@ -8,19 +8,18 @@ if (isset($_POST['id'], $_POST['quantity']) && is_numeric($_POST['id']) && is_nu
     $stmt->execute([$_POST['id']]);
     $product = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($product && $quantity > 0) {
-        // use session variable to remember items in cart
-        // session variable cart is an associative array with key as product id and value as quantity
-        if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
-            if (array_key_exists($id, $_SESSION['cart'])) {
-                // if dish already in cart, update the quantity
-                $_SESSION['cart'][$id] += $quantity;
-            } else {
-                // if dish not in cart, add it to cart
-                $_SESSION['cart'][$id] = $quantity;
-            }
+        // check if dish already in cart
+        $stmt = $pdo->prepare("SELECT * FROM cart_items WHERE account_id = :account_id AND dish_id = :dish_id");
+        $stmt->execute(['account_id' => $_SESSION['account_id'], 'dish_id' => $id]);
+        $item = $stmt->fetch();
+        if ($item) {
+            // if already exists, update quantity using ON DUPLICATE KEY UPDATE
+            $stmt = $pdo->prepare("INSERT INTO cart_items (account_id, dish_id, quantity, date_added) VALUES (:account_id, :dish_id, :quantity, CURRENT_TIMESTAMP) ON DUPLICATE KEY UPDATE quantity = quantity + :quantity");
+            $stmt->execute(['account_id' => $_SESSION['account_id'], 'dish_id' => $id, 'quantity' => $quantity]);
         } else {
-            // add first dish to cart
-            $_SESSION['cart'] = array($id => $quantity);
+            // add dish to cart if not already in it
+            $stmt = $pdo->prepare("INSERT INTO cart_items (account_id, dish_id, quantity, date_added) VALUES (:account_id, :dish_id, :quantity, CURRENT_TIMESTAMP");
+            $stmt->execute(['account_id' => $_SESSION['account_id'], 'dish_id' => $id, 'quantity' => $quantity]);
         }
     }
     // prevent form resubmission
@@ -29,12 +28,13 @@ if (isset($_POST['id'], $_POST['quantity']) && is_numeric($_POST['id']) && is_nu
 }
 
 // remove dish in cart by its id. example url: index.php?page=cart&remove=1
-if (isset($_GET['remove']) && is_numeric($_GET['remove']) && isset($_SESSION['cart']) && isset($_SESSION['cart'][$_GET['remove']])) {
-    unset($_SESSION['cart'][$_GET['remove']]);
+if (isset($_GET['remove']) && is_numeric($_GET['remove'])) {
+    $stmt = $pdo->prepare("DELETE FROM cart_items WHERE account_id = :account_id AND dish_id = :dish_id");
+    $stmt->execute(['account_id' => $_SESSION['account_id'], 'dish_id' => $_GET['remove']]);
 }
 
 // update quantities in cart
-if (isset($_POST['update']) && isset($_SESSION['cart'])) {
+if (isset($_POST['update'])) {
     // loop through the post data so we can update the quantities for every product in cart
     foreach ($_POST as $k => $v) {
         // check if the key is quantity and the value is numeric
@@ -42,9 +42,10 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
             // get cleaned up id by removing 'quantity-' from the key
             $id = str_replace('quantity-', '', $k);
             $quantity = (int)$v;
-            if (is_numeric($id) && isset($_SESSION['cart'][$id]) && $quantity > 0) {
+            if (is_numeric($id) && $quantity > 0) {
                 // update new quantity
-                $_SESSION['cart'][$id] = $quantity;
+                $stmt = $pdo->prepare("UPDATE cart_items SET quantity = :quantity WHERE account_id = :account_id AND dish_id = :dish_id");
+                $stmt->execute(['account_id' => $_SESSION['account_id'], 'dish_id' => $id, 'quantity' => $quantity]);
             }
         }
     }
@@ -53,34 +54,32 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
     exit;
 }
 
-// check the session variable for products in cart
-$dishes_in_cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
-$products = array();
+// render dishes on page
 $subtotal = 0.00;
 $num_items_in_cart = 0;
-if ($dishes_in_cart) {
-    // create array of '?' based on the number of dishes in cart
-    // then use implode() to convert an array into a comma separated string
-    $array_to_question_marks = implode(',', array_fill(0, count($dishes_in_cart), '?'));
-    $stmt = $pdo->prepare('SELECT * FROM dishes WHERE id IN (' . $array_to_question_marks . ')');
-    // execute the query using dish ids (key)
-    $stmt->execute(array_keys($dishes_in_cart));
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $_SESSION['cart']['products'] = $products;
-    // calculate the subtotal
+// dish_id in cart_items table is a foreign key to dishes table's id
+$stmt = $pdo->prepare("
+    SELECT dishes.id, dishes.name, dishes.price, dishes.quantity, dishes.img, cart_items.quantity as cart_quantity 
+    FROM dishes 
+    INNER JOIN cart_items ON dishes.id = cart_items.dish_id 
+    WHERE cart_items.account_id = :account_id
+");
+$stmt->execute(['account_id' => $_SESSION['account_id']]);
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// note that $products assoc array's keys are column names
+// so don't need to include table name (hence $product['price'] and not $product['dishes.price'])
+if ($products) {
     foreach ($products as $product) {
-        $subtotal += (float)$product['price'] * (int)$dishes_in_cart[$product['id']];
+        $subtotal += (float)$product['price'] * (int)$product['id'];
+        $_SESSION['cart_subtotal'] = $subtotal;
     }
-    $_SESSION['cart']['subtotal'] = $subtotal;
-    // calculate total quantity (shown in cart icon in header)
-    foreach ($products as $product) {
-        $num_items_in_cart += (int)$dishes_in_cart[$product['id']];
-    }
-    $_SESSION['cart']['num_items_in_cart'] = $num_items_in_cart;
+    $num_items_in_cart = count($products);
+    $_SESSION['num_items_in_cart'] = $num_items_in_cart;
 }
 
 // when click place order button, redirect to confirmorder page
-if (isset($_POST['confirmorder']) && isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+if (isset($_POST['confirmorder']) && !empty($products)) {
+    $_SESSION['products'] = $products;
     header('Location: index.php?page=confirmorder');
     exit;
 }
@@ -119,9 +118,9 @@ if (isset($_POST['confirmorder']) && isset($_SESSION['cart']) && !empty($_SESSIO
                     </td>
                     <td class="price">&dollar;<?=$product['price']?></td>
                     <td class="quantity">
-                        <input type="number" name="quantity-<?=$product['id']?>" value="<?=$dishes_in_cart[$product['id']]?>" min="1" max="<?=$product['quantity']?>" placeholder="Quantity" required>
+                        <input type="number" name="quantity-<?=$product['id']?>" value="<?=$product['cart_quantity']?>" min="1" max="<?=$product['quantity']?>" placeholder="Quantity" required>
                     </td>
-                    <td class="price">&dollar;<?=$product['price'] * $dishes_in_cart[$product['id']]?></td>
+                    <td class="price">&dollar;<?=$product['price'] * $product['cart_quantity']?></td>
                 </tr>
                 <?php endforeach; ?>
                 <?php endif; ?>

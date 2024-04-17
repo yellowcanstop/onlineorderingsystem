@@ -5,6 +5,9 @@
     <p style="color: white;">Thank you for ordering with us!</p>
 </div>
 
-<?php unset($_SESSION['cart']); ?>
+<?php 
+unset($_SESSION['cart_subtotal']); 
+unset($_SESSION['num_items_in_cart']); 
+?>
 
 <?=template_footer()?>
