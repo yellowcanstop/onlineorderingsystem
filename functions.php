@@ -149,9 +149,9 @@ function error_page($title, $message) {
 template_header('Error');
 echo <<<EOT
     <div class="content-wrapper">
-        <h1>Error:</h1>
-        <h2>$title</h2>
-        <p>$message</p>
+        <h1><span style="color: white">Error:</span></h1>
+        <h2><span style="color: white">$title</span></h2>
+        <p><span style="color: white">$message</span></p>
     </div>
 EOT;
 }
