@@ -35,36 +35,6 @@ if (isset($_SESSION['customer_id'])) {
     }
 }
 
-/*
-if (isset($_SESSION['customer_id'])) {
-	// retrieve order information from database
-	if ($stmt = $pdo -> prepare('SELECT order_id, date_order_placed, payment_amount, order_status_code FROM customer_orders WHERE customer_id = :customer_id ORDER BY date_order_placed DESC')) {
-		$stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
-		$stmt->execute();
-		$orders = $stmt->fetchALL(PDO::FETCH_ASSOC);
-        // foreach ($orders as $order) operates on a copy of the array, not the original array
-        // so use key of $orders array to get reference to the original array
-        // to directly modify $orders array (no need to use reference with & and unset())
-        foreach ($orders as $key => $order):
-            if ($stmt = $pdo ->prepare('SELECT dish_id, order_quantity FROM customer_orders_products WHERE order_id = :order_id')) {
-                $stmt->bindValue(':order_id', $order['order_id'], PDO::PARAM_INT);
-                $stmt->execute();
-                // $orders[$key]['dishes'] is an array of associative arrays (used fetchAll), with
-                // each associative array as a row from customer_orders_products table
-                $orders[$key]['dishes'] = $stmt->fetchALL(PDO::FETCH_ASSOC);
-            } else {
-                error_log('Cannot prepare sql statement for customer_orders_products table.');
-                exit();
-            }
-        endforeach;
-        
-	} else {
-		error_log('Cannot prepare sql statement for customers table.');
-		exit();
-	}
-}
-*/
-
 // store all dish names in associative array with key as dish id and value as dish name
 // so display dish names by referencing dish id in orders array
 $names = array();
