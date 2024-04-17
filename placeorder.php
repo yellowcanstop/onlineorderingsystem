@@ -6,6 +6,7 @@
 </div>
 
 <?php 
+// clear cart upon successful order placement
 $stmt = $pdo->prepare("DELETE FROM cart_items WHERE account_id = :account_id");
 $stmt->execute(['account_id' => $_SESSION['account_id']]);
 unset($_SESSION['products']); 

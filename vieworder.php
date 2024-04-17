@@ -16,7 +16,6 @@ if (isset($_GET['order_id'])) {
 // so display dish names by referencing dish id in orders array
 $names = array();
 if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
-    
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     foreach ($results as $result) {
@@ -32,7 +31,6 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
 <?=template_header('View Order')?>
 <div class="cart content-wrapper">
     <div>
-        
         <h1 class="name">Order ID: <?=$_GET['order_id']?></h1>
         <a href="index.php?page=manageorders" class="btn">Back to Manage Orders</a>
         <table>

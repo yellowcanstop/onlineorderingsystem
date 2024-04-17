@@ -156,7 +156,10 @@ $total_orders_for_month = count($orders);
                             <p>cash</p>
                         <?php endif; ?>
                         <?php if ($order['customer_payment_method_id'] == 2): ?>
-                            <p>credit card/ewallet</p>
+                            <p>credit card</p>
+                        <?php endif; ?>
+                        <?php if ($order['customer_payment_method_id'] == 3): ?>
+                            <p>e-wallet</p>
                         <?php endif; ?>
                     </td>
                     

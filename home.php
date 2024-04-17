@@ -1,4 +1,5 @@
 <?php
+// to get categories of dishes to display on home page
 $stmt = $pdo->prepare('SELECT * FROM categories ORDER BY id');
 $stmt->execute();
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);

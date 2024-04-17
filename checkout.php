@@ -31,14 +31,16 @@ if (($_SESSION['role'] == 'customer') && (!isset($_SESSION['customer_id']))) {
 
 // insert address details into addresses table
 if (isset($_POST['line_1'], $_POST['state'], $_POST['zip_postcode']) && !empty($_POST['line_1']) && !empty($_POST['state']) && !empty($_POST['zip_postcode']) && (strlen($_POST['zip_postcode']) == 5)){
-    if ($stmt = $pdo->prepare('INSERT INTO addresses (line_1, line_2, state, zip_postcode) VALUES (:line_1, :line_2, :state, :zip_postcode)')) {
-        $stmt->bindValue(':line_1', $_POST['line_1'], PDO::PARAM_STR);
-        $stmt->bindValue(':line_2', $_POST['line_2'], PDO::PARAM_STR);
-        $stmt->bindValue(':state', $_POST['state'], PDO::PARAM_STR);
-        $stmt->bindValue(':zip_postcode', $_POST['zip_postcode'], PDO::PARAM_STR);
-        if (!$stmt->execute()) {
-            error_log("Cannot execute sql statement for addresses table.");
-        } else {
+    try {
+        $pdo->beginTransaction();
+        if ($stmt = $pdo->prepare('INSERT INTO addresses (line_1, line_2, state, zip_postcode) VALUES (:line_1, :line_2, :state, :zip_postcode)')) {
+            $stmt->bindValue(':line_1', $_POST['line_1'], PDO::PARAM_STR);
+            $stmt->bindValue(':line_2', $_POST['line_2'], PDO::PARAM_STR);
+            $stmt->bindValue(':state', $_POST['state'], PDO::PARAM_STR);
+            $stmt->bindValue(':zip_postcode', $_POST['zip_postcode'], PDO::PARAM_STR);
+            if (!$stmt->execute()) {
+                throw new Exception("Cannot execute sql statement for addresses table.");
+            } 
             // get address_id as session variable
             $address_id = $pdo->lastInsertId();
             $_SESSION['address_id'] = $address_id;
@@ -48,14 +50,21 @@ if (isset($_POST['line_1'], $_POST['state'], $_POST['zip_postcode']) && !empty($
                 $stmt->bindValue(':address_id', $address_id, PDO::PARAM_INT);
                 $stmt->bindValue(':is_default', $_POST['is_default'], PDO::PARAM_INT);
                 if (!$stmt->execute()) {
-                    error_log("Cannot execute sql statement for customer_addresses table.");
+                    throw new Exception("Cannot execute sql statement for customer_addresses table.");
                 }
             } else {
-                error_log("Cannot prepare sql statement for customer_addresses table.");
+                throw new Exception("Cannot prepare sql statement for customer_addresses table.");
             }
+            $pdo->commit();
+        } else {
+            throw new Exception("Cannot prepare sql statement for addresses table.");
         }
-    } else {
-        error_log("Cannot prepare sql statement for addresses table.");
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        error_log("Error occurred: " . $e->getMessage());
+        $_SESSION['error'] = 'Failed to insert address. Please try again.';
+        header('Location: index.php?page=getinfo');
+        exit();
     }
 } else {
     $_SESSION['error'] = 'Invalid address details';

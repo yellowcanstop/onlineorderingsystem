@@ -74,15 +74,20 @@ if ($stmt = $pdo->prepare('SELECT email FROM accounts WHERE email = :email')) {
     }
 }
 
-// pass validation checks so insert new account into accounts table
-if ($stmt = $pdo->prepare('INSERT INTO accounts (username, email, password) VALUES (:username, :email, :password)')) {
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    $stmt->bindValue(':username', $_POST['username'], PDO::PARAM_STR);
-    $stmt->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
-    $stmt->bindValue(':password', $password, PDO::PARAM_STR);
-    if (!$stmt->execute()) {
-        error_log("Cannot execute sql statement for accounts table.");
-    } else {
+try {
+    // transaction to treat multiple related sql statements as a single unit to be executed
+    // because inserting into accounts and customers tables are related
+    $pdo->beginTransaction();
+    
+    // pass validation checks so insert new account into accounts table
+    if ($stmt = $pdo->prepare('INSERT INTO accounts (username, email, password) VALUES (:username, :email, :password)')) {
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $stmt->bindValue(':username', $_POST['username'], PDO::PARAM_STR);
+        $stmt->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
+        $stmt->bindValue(':password', $password, PDO::PARAM_STR);
+        if (!$stmt->execute()) {
+            throw new Exception("Cannot execute sql statement for accounts table.");
+        }
         // use lastInsertId() to get account_id which is a foreign key in customers table
         $account_id = $pdo->lastInsertId();
         // insert new customer into customers table
@@ -97,16 +102,22 @@ if ($stmt = $pdo->prepare('INSERT INTO accounts (username, email, password) VALU
             $date_of_register = date('Y-m-d H:i:s', $_POST['date_of_register']);
             $stmt->bindValue(':date_of_register', $date_of_register, PDO::PARAM_STR);
             if (!$stmt->execute()) {
-                error_log("Cannot execute sql statement for customers table.");
+                throw new Exception("Cannot execute sql statement for customers table.");
             }
         } else {
-            error_log("Cannot prepare sql statement for customers table.");
+            throw new Exception("Cannot prepare sql statement for customers table.");
         }
+        $pdo->commit(); // commit transaction
         header('Location: login.php');
-        exit();
-    } 
-} else {
-    error_log("Cannot prepare sql statement for accounts table.");
+        exit();     
+    } else {
+        throw new Exception("Cannot prepare sql statement for accounts table.");
+    }
+} catch (Exception $e) {
+    // error occured so rollback entire set of transaction (multiple related sql statements)
+    // this ensures consistent state
+    $pdo->rollBack();
+    error_log("Error occurred: " . $e->getMessage());
     $_SESSION['error'] = 'Failed to create account. Please try again.';
     header('Location: register.php');
     exit();

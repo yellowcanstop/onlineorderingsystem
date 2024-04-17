@@ -106,7 +106,6 @@ EOT;
 
 
 function template_footer() {
-$about = "<a href=\"about.php\">About</a>";
 $year = date('Y');
 echo <<<EOT
         </main>
@@ -119,7 +118,7 @@ echo <<<EOT
                         <i class="fab fa-instagram"></i>
                     </div>
                     <p>|</p>
-                    $about
+                    <a href="about.php">About</a>
                 </nav>
                 <p>&copy; $year, Very Good Food Inc, Online Food Ordering System</p>
             </div>

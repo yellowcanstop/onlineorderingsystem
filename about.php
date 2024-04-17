@@ -1,9 +1,8 @@
 <?php
 session_start();
 include 'functions.php'; 
-
-template_header('About');
 ?>
+<?=template_header('About')?>
 <div class="content-wrapper">
     <div class="about">
         <img src="imgs/signature.png" alt="About Us Image" class="about-image">
@@ -15,6 +14,4 @@ template_header('About');
         <p>Thank you for choosing Very Good Food Inc. Let's dine, delight, and discover together.</p>
     </div>
 </div>
-<?php
-template_footer();
-?>
+<?=template_footer()?>
