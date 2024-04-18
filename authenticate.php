@@ -12,11 +12,12 @@ if ( !isset($_POST['username'], $_POST['password']) ) {
 
 // PDO supports named parameters which makes code more readable and maintainable.
 // Hence our choice of using PDO instead of MySQLi to interact with our database.
-if ($stmt = $pdo->prepare('SELECT account_id, password, email, role, status FROM accounts WHERE username = :username')) {
+if ($stmt = $pdo->prepare('SELECT account_id, password, email, role_id, status_id FROM accounts WHERE username = :username')) {
     $stmt->bindValue(':username', $_POST['username'], PDO::PARAM_STR);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($user && $user['status'] == 'active') {
+    // check if account exists and is active
+    if ($user && $user['status_id'] == 1) {
         // verify password using password_verify (corresponding: used password_hash to store hashed passwords)
         if (password_verify($_POST['password'], $user['password'])) {
             // session variables preserved until logout or session expiring
@@ -29,7 +30,7 @@ if ($stmt = $pdo->prepare('SELECT account_id, password, email, role, status FROM
             $_SESSION['username'] = $_POST['username'];
             $_SESSION['account_id'] = $user['account_id'];
             $_SESSION['email'] = $user['email'];
-            $_SESSION['role'] = $user['role'];
+            $_SESSION['role_id'] = $user['role_id'];
             // set cookie if remember me is checked
             // cookie will be available across entire site (path: /)
             // cookie will expire after 30 days (86400 seconds = 1 day)

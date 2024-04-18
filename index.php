@@ -5,13 +5,15 @@ $pdo = pdo_connect_mysql();
 start_session($pdo);
 
 // redirect to different pages based on roles upon login
-if ($_SESSION['role'] == 'customer') {
+// customer
+if ($_SESSION['role_id'] == 1) {
     // upon successful login, page is set to home by default
     $page = isset($_GET['page']) && file_exists($_GET['page'] . '.php') ? $_GET['page'] : 'home';
     // include and show the requested page
     include $page . '.php';
 }
-elseif ($_SESSION['role'] == 'employee') {
+// employee
+elseif ($_SESSION['role_id'] == 2) {
     // upon successful login, page is set to manageorders by default
     $page = isset($_GET['page']) && file_exists($_GET['page'] . '.php') ? $_GET['page'] : 'manageorders';
     // include and show the requested page

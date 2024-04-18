@@ -20,8 +20,8 @@ if (strlen($_POST['phone']) != 10) {
     exit();
 }
 
-// get customer_id as session variable if not already stored from profile.php
-if (($_SESSION['role'] == 'customer') && (!isset($_SESSION['customer_id']))) {
+// get customer_id as session variable if is customer and not already stored from profile.php
+if (($_SESSION['role_id'] == 1) && (!isset($_SESSION['customer_id']))) {
 	$stmt = $pdo -> prepare('SELECT id FROM customers WHERE account_id = :account_id'); 
     $stmt->bindValue(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
     $stmt->execute();

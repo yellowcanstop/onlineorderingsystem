@@ -2,8 +2,8 @@
 // only save less-sensitive information in session variables.
 // hence retrieve more sensitive information from database only when needed
 // customer_id is stored as a session variable to maintain state between requests.
-if ($_SESSION['role'] == 'customer') {
-	// retrieve customer information from database
+if ($_SESSION['role_id'] == 1) { 
+	// if customer, retrieve customer information from database
 	if ($stmt = $pdo -> prepare('SELECT id, customer_first_name, customer_last_name, customer_phone, date_of_register FROM customers WHERE account_id = :account_id')) {
 		$stmt->bindValue(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
 		$stmt->execute();
@@ -150,7 +150,7 @@ if (isset($_POST['new_phone'])) {
 					?>
 					</td>
 				</tr>
-				<?php if ($_SESSION['role'] == 'customer'): ?>
+				<?php if ($_SESSION['role_id'] == 1): ?>
 				<tr>
 					<td>Name:</td>
 					<td><?=htmlspecialchars($customer['customer_first_name'], ENT_QUOTES)?>

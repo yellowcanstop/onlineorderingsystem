@@ -31,7 +31,7 @@ function start_session($pdo) {
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['account_id'] = $user['account_id'];
                 $_SESSION['email'] = $user['email'];
-                $_SESSION['role'] = $user['role'];
+                $_SESSION['role_id'] = $user['role_id'];
             } else {
                 // cannot find account based on token so redirect to login
                 header('Location: login.php');
