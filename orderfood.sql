@@ -42,7 +42,7 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`account_id`, `username`, `password`, `role_id`, `status_id`, `email`, `remember_me_token`) VALUES
-(1, 'employee1', '$2y$10$SfhYIDtn.iOuCW7zfoFLuuZHX6lja4lF4XA4JqNmpiH/.P3zB8JCa', 1, 1, 'employee1@test.com', NULL);
+(1, 'employee1', '$2y$10$SfhYIDtn.iOuCW7zfoFLuuZHX6lja4lF4XA4JqNmpiH/.P3zB8JCa', 2, 1, 'employee1@test.com', NULL);
 
 -- --------------------------------------------------------
 
