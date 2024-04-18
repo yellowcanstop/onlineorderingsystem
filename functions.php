@@ -45,24 +45,24 @@ function start_session($pdo) {
     }
 }
 
-
+// role_id 1 = customer, role_id 2 = employee
 function template_header($title) {
 if (isset($_COOKIE['remember_me'])) {
     $userId = $_COOKIE['remember_me'];
 }
 $num_items_in_cart = isset($_SESSION['num_items_in_cart']) ? ($_SESSION['num_items_in_cart']) : 0;
 $name = isset($_SESSION['username']) ? (htmlspecialchars($_SESSION['username'], ENT_QUOTES)) : "";
-$greeting = isset($_SESSION['loggedin']) && ($_SESSION['role'] == 'customer') ? "<h2>Hi $name, what are you craving?</h2>" : "";
-$home = isset($_SESSION['loggedin']) && ($_SESSION['role'] == 'customer') ? "<a href=\"index.php\">Menu</a>" : "";
-$products = isset($_SESSION['loggedin']) && ($_SESSION['role'] == 'customer') ? "<a href=\"index.php?page=products\">Items</a>" : "";
-$profile = isset($_SESSION['loggedin']) && ($_SESSION['role'] == 'customer') ? "<a href=\"index.php?page=profile\">Profile</a>" : "";
-$orders = isset($_SESSION['loggedin']) && ($_SESSION['role'] == 'customer') ? "<a href=\"index.php?page=orders\">Orders</a>" : "";
+$greeting = isset($_SESSION['loggedin']) && ($_SESSION['role_id'] == 1) ? "<h2>Hi $name, what are you craving?</h2>" : "";
+$home = isset($_SESSION['loggedin']) && ($_SESSION['role_id'] == 1) ? "<a href=\"index.php\">Menu</a>" : "";
+$products = isset($_SESSION['loggedin']) && ($_SESSION['role_id'] == 1) ? "<a href=\"index.php?page=products\">Items</a>" : "";
+$profile = isset($_SESSION['loggedin']) && ($_SESSION['role_id'] == 1) ? "<a href=\"index.php?page=profile\">Profile</a>" : "";
+$orders = isset($_SESSION['loggedin']) && ($_SESSION['role_id'] == 1) ? "<a href=\"index.php?page=orders\">Orders</a>" : "";
 $register = isset($_SESSION['loggedin']) ? "" : "<a href=\"register.php\">Register</a>";
 $login = isset($_SESSION['loggedin']) ? "" : "<a href=\"login.php\">Login</a>";
 $logout = isset($_SESSION['loggedin']) ? "<a href=\"logout.php\"><i class=\"fas fa-sign-out-alt\"></i> Logout</a>" : "";
-$cart = isset($_SESSION['loggedin']) && ($_SESSION['role'] == 'customer') ? "<a href=\"index.php?page=cart\"><i class=\"fas fa-shopping-cart\"></i><span>$num_items_in_cart</span></a>" : "";
-$manageorders = isset($_SESSION['loggedin']) && ($_SESSION['role'] == 'employee') ? "<a href=\"index.php?page=manageorders\">Manage Orders</a>" : "";
-$managedishes = isset($_SESSION['loggedin']) && ($_SESSION['role'] == 'employee') ? "<a href=\"index.php?page=managedishes\">Manage Inventory</a>" : "";
+$cart = isset($_SESSION['loggedin']) && ($_SESSION['role_id'] == 1) ? "<a href=\"index.php?page=cart\"><i class=\"fas fa-shopping-cart\"></i><span>$num_items_in_cart</span></a>" : "";
+$manageorders = isset($_SESSION['loggedin']) && ($_SESSION['role_id'] == 2) ? "<a href=\"index.php?page=manageorders\">Manage Orders</a>" : "";
+$managedishes = isset($_SESSION['loggedin']) && ($_SESSION['role_id'] == 2) ? "<a href=\"index.php?page=managedishes\">Manage Inventory</a>" : "";
 
 echo <<<EOT
 <!DOCTYPE html>
