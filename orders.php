@@ -15,7 +15,7 @@ if (!isset($_SESSION['customer_id'])) {
 // retrieve orders and order details from database
 if (isset($_SESSION['customer_id'])) {
     if ($stmt = $pdo->prepare("
-        SELECT co.order_id, co.date_order_placed, co.payment_amount, co.order_status_code, cop.dish_id, cop.order_quantity 
+        SELECT co.order_id, co.date_order_placed, co.payment_amount, co.order_status_id, cop.dish_id, cop.order_quantity 
         FROM customer_orders co 
         INNER JOIN customer_orders_products cop ON co.order_id = cop.order_id 
         WHERE co.customer_id = :customer_id 
@@ -76,7 +76,7 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
                     <?php foreach ($order_details as $detail): ?>
                     <td><?=$detail['date_order_placed']?></td>
                     <td><?=$detail['payment_amount']?></td>
-                    <td><?=$detail['order_status_code']?></td>   
+                    <td><?=$detail['order_status_id']?></td>   
                 </tr>
             </tbody>
         </table>
