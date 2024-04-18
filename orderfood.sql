@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 17, 2024 at 01:45 AM
+-- Generation Time: Apr 18, 2024 at 09:15 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -31,8 +31,8 @@ CREATE TABLE `accounts` (
   `account_id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` enum('employee','customer') NOT NULL DEFAULT 'customer',
-  `status` enum('active','inactive') NOT NULL DEFAULT 'active',
+  `role_id` int(11) NOT NULL DEFAULT 1,
+  `status_id` int(11) NOT NULL DEFAULT 1,
   `email` varchar(255) DEFAULT NULL,
   `remember_me_token` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -41,16 +41,46 @@ CREATE TABLE `accounts` (
 -- Dumping data for table `accounts`
 --
 
-INSERT INTO `accounts` (`account_id`, `username`, `password`, `role`, `status`, `email`, `remember_me_token`) VALUES
-(1, 'employee1', '$2y$10$SfhYIDtn.iOuCW7zfoFLuuZHX6lja4lF4XA4JqNmpiH/.P3zB8JCa', 'employee', 'active', 'employee1@test.com', NULL),
-(3, 'test', '$2y$10$SfhYIDtn.iOuCW7zfoFLuuZHX6lja4lF4XA4JqNmpiH/.P3zB8JCa', 'customer', 'active', 'test@test.com', NULL),
-(6, 'frodobaggins', '$2y$10$u6lQp5DcYOnN.5K7vM7tJ.p356EV9P9ba8DhJVkKp2vBfP0/n0vzm', 'customer', 'active', 'frodo@test.com', NULL),
-(7, 'voldemort', '$2y$10$I.OMTyEh24YPQD3xO95RJupzC/sZfESjrxUjL6u4ohFjdiyLYjB5e', 'customer', 'active', 'voldemort@test.com', NULL),
-(8, 'bellatrix', '$2y$10$YkMOScuhLtagU1BT7KfnEuneN9wGMonXYPIe5KfMf0CsYFjN4TJ6i', 'customer', 'active', 'bella@test.com', NULL),
-(9, 'ron', '$2y$10$7jzb4cIapwTewxVwjJg6j.0KPA1zelwgmmgDQUbmji46csyPSL.di', 'customer', 'active', 'ron@test.com', NULL),
-(10, 'tomriddle', '$2y$10$S69CwSyYX91xxFOR5wTEPO0Sb355cQc0rb..FpVxlAf1LZlLMyhq.', 'customer', 'active', 'tom@test.com', NULL),
-(11, 'shutest', '$2y$10$mE0xVG1Owj8NcnFPdqALpuxuqsK2FRvW.0PUL6AXZBuHBx1szcHey', 'customer', 'active', 'shu@test.com', NULL),
-(12, 'dracomalfoy', '$2y$10$6XQbnsyfBz94GOk468yV.eXI69.NP4rr5y50RvYUqfV4zh/LX5Txe', 'customer', 'active', 'draco@test.com', 'f9e8bb07a043eedde0e8ec70f7c1ad34c545603f909c207d');
+INSERT INTO `accounts` (`account_id`, `username`, `password`, `role_id`, `status_id`, `email`, `remember_me_token`) VALUES
+(1, 'employee1', '$2y$10$SfhYIDtn.iOuCW7zfoFLuuZHX6lja4lF4XA4JqNmpiH/.P3zB8JCa', 1, 1, 'employee1@test.com', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `account_role`
+--
+
+CREATE TABLE `account_role` (
+  `id` int(11) NOT NULL,
+  `role` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `account_role`
+--
+
+INSERT INTO `account_role` (`id`, `role`) VALUES
+(1, 'customer'),
+(2, 'employee');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `account_status`
+--
+
+CREATE TABLE `account_status` (
+  `id` int(11) NOT NULL,
+  `status` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `account_status`
+--
+
+INSERT INTO `account_status` (`id`, `status`) VALUES
+(1, 'active'),
+(2, 'inactive');
 
 -- --------------------------------------------------------
 
@@ -70,20 +100,20 @@ CREATE TABLE `addresses` (
 -- Dumping data for table `addresses`
 --
 
-INSERT INTO `addresses` (`id`, `line_1`, `line_2`, `zip_postcode`, `state`) VALUES
-(1, '44 Wool\'s Orphanage', 'London', '56000', 'state4'),
-(2, '44 Wool\'s Orphanage', 'London', '56000', 'state4'),
-(3, 'Hogwarts', '', '14000', 'Penang'),
-(4, 'Hogwarts', '', '14000', 'Penang'),
-(5, '44 Grimmauld Place', 'London', '56000', 'Pahang'),
-(6, '44 Grimmauld Place', 'London', '56000', ''),
-(7, '44 Grimmauld Place', 'London', '56000', 'Pahang'),
-(8, '44 Grimmauld Place', 'London', '56000', 'Pahang'),
-(9, '17 Malfoy Manor', 'Wiltshire', '44444', 'Putrajaya'),
-(10, '17 Malfoy Manor', 'Wiltshire', '44444', 'Putrajaya'),
-(11, '17 Malfoy Manor', 'Wiltshire', '44444', 'Putrajaya'),
-(12, '17 Malfoy Manor', 'Wiltshire', '44444', 'Putrajaya'),
-(13, '17 Malfoy Manor', 'Wiltshire', '44444', 'Putrajaya');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart_items`
+--
+
+CREATE TABLE `cart_items` (
+  `id` int(11) NOT NULL,
+  `account_id` int(11) NOT NULL,
+  `dish_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `date_added` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -102,9 +132,9 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`, `img`) VALUES
-(1, 'Appetizer', 'main-appetizer.jpg'),
-(2, 'Main Course', 'main-maincourse.jpg'),
-(3, 'Dessert', 'main-dessert.jpg'),
+(1, 'Appetizer', 'salad.jpg'),
+(2, 'Main Course', 'fish.jpg'),
+(3, 'Dessert', 'tart.jpg'),
 (4, 'Beverage', 'main-beverage.jpg');
 
 -- --------------------------------------------------------
@@ -126,15 +156,6 @@ CREATE TABLE `customers` (
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`id`, `customer_first_name`, `customer_last_name`, `customer_phone`, `date_of_register`, `account_id`) VALUES
-(2, 'Frodo', 'Baggins', '123-420-8888', '2024-03-30 13:31:57', 6),
-(4, 'Vol', 'Mort', '888-888-8888', '2024-04-01 06:46:28', 7),
-(6, 'Bellatrix', 'Lestrange', '1231231234', '2024-04-02 15:51:58', 8),
-(8, 'Ron', 'Weasley', '0107993388', '2024-04-02 16:10:41', 9),
-(10, 'Tom', 'Riddle', '1444444444', '2024-04-02 16:12:09', 10),
-(11, 'shu', 'test', '1111111111', '2024-04-08 08:45:12', 11),
-(12, 'Draco', 'Malfoy', '0107991111', '2024-04-16 09:49:04', 12);
-
 -- --------------------------------------------------------
 
 --
@@ -151,20 +172,6 @@ CREATE TABLE `customer_addresses` (
 -- Dumping data for table `customer_addresses`
 --
 
-INSERT INTO `customer_addresses` (`customer_id`, `address_id`, `is_default`) VALUES
-(10, 2, 0),
-(10, 3, 0),
-(10, 4, 0),
-(10, 5, 1),
-(10, 6, 0),
-(10, 7, 0),
-(10, 8, 0),
-(12, 9, 1),
-(12, 10, 0),
-(12, 11, 0),
-(12, 12, 0),
-(12, 13, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -174,38 +181,23 @@ INSERT INTO `customer_addresses` (`customer_id`, `address_id`, `is_default`) VAL
 CREATE TABLE `customer_orders` (
   `order_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
-  `customer_payment_method_id` int(11) NOT NULL,
-  `order_status_code` enum('unpaid','paid','fulfilled','cancelled') NOT NULL DEFAULT 'unpaid',
-  `date_order_placed` datetime NOT NULL,
-  `date_order_paid` datetime NOT NULL,
-  `payment_amount` decimal(7,2) NOT NULL,
-  `date_order_fulfilled` datetime NOT NULL,
-  `date_order_cancelled` datetime NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `address_id` int(11) DEFAULT NULL
+  `address_id` int(11) DEFAULT NULL,
+  `customer_payment_method_id` int(11) NOT NULL,
+  `payment_amount` decimal(7,2) NOT NULL,
+  `date_order_placed` datetime NOT NULL,
+  `date_order_paid` datetime NOT NULL,
+  `date_order_fulfilled` datetime NOT NULL,
+  `date_order_cancelled` datetime NOT NULL,
+  `order_status_id` int(11) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `customer_orders`
 --
 
-INSERT INTO `customer_orders` (`order_id`, `customer_id`, `customer_payment_method_id`, `order_status_code`, `date_order_placed`, `date_order_paid`, `payment_amount`, `date_order_fulfilled`, `date_order_cancelled`, `name`, `phone`, `email`, `address_id`) VALUES
-(1, 10, 1, 'fulfilled', '2024-04-02 17:34:38', '2024-04-12 14:50:47', 101.95, '2024-04-12 14:51:15', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
-(2, 10, 2, 'cancelled', '2024-04-02 17:40:26', '2024-04-02 17:40:49', 49.98, '0000-00-00 00:00:00', '2024-04-12 14:54:53', NULL, NULL, NULL, NULL),
-(3, 10, 1, 'paid', '2024-04-02 18:14:13', '2024-04-12 16:00:29', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
-(4, 10, 2, 'cancelled', '2024-04-02 18:17:04', '2024-04-02 18:17:35', 19.99, '0000-00-00 00:00:00', '2024-04-12 16:02:55', NULL, NULL, NULL, NULL),
-(5, 10, 1, 'paid', '2024-04-02 18:34:50', '2024-04-12 21:05:35', 69.97, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
-(6, 10, 1, 'unpaid', '2024-04-12 18:20:16', '0000-00-00 00:00:00', 69.97, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
-(7, 10, 1, 'unpaid', '2024-04-12 20:22:30', '0000-00-00 00:00:00', 39.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
-(8, 10, 1, 'unpaid', '2024-04-12 20:50:22', '0000-00-00 00:00:00', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
-(9, 10, 1, 'unpaid', '2024-04-12 20:51:23', '0000-00-00 00:00:00', 19.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, NULL, NULL),
-(10, 12, 1, 'unpaid', '2024-04-16 16:14:25', '0000-00-00 00:00:00', 119.97, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Draco Malfoy', '0107991111', 'draco@test.com', 9),
-(11, 12, 3, 'unpaid', '2024-04-16 16:31:30', '0000-00-00 00:00:00', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Draco Malfoy', '0107991111', 'draco@test.com', 10),
-(12, 12, 3, 'unpaid', '2024-04-16 16:35:51', '0000-00-00 00:00:00', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Draco Malfoy', '0107991111', 'draco@test.com', 11),
-(13, 12, 2, 'unpaid', '2024-04-16 16:36:05', '0000-00-00 00:00:00', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Draco Malfoy', '0107991111', 'draco@test.com', 12),
-(14, 12, 3, 'paid', '2024-04-16 16:36:59', '2024-04-16 16:37:06', 29.99, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Draco Malfoy', '0107991111', 'draco@test.com', 13);
 
 -- --------------------------------------------------------
 
@@ -223,29 +215,26 @@ CREATE TABLE `customer_orders_products` (
 -- Dumping data for table `customer_orders_products`
 --
 
-INSERT INTO `customer_orders_products` (`order_id`, `dish_id`, `order_quantity`) VALUES
-(1, 1, 2),
-(1, 1, 2),
-(1, 2, 2),
-(1, 2, 2),
-(1, 4, 1),
-(1, 4, 1),
-(2, 1, 1),
-(2, 4, 1),
-(3, 4, 1),
-(4, 1, 1),
-(5, 1, 2),
-(5, 4, 1),
-(6, 1, 2),
-(6, 4, 1),
-(7, 3, 1),
-(8, 4, 1),
-(9, 1, 1),
-(10, 3, 3),
-(11, 4, 1),
-(12, 4, 1),
-(13, 4, 1),
-(14, 4, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer_payment_method`
+--
+
+CREATE TABLE `customer_payment_method` (
+  `id` int(11) NOT NULL,
+  `method` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `customer_payment_method`
+--
+
+INSERT INTO `customer_payment_method` (`id`, `method`) VALUES
+(1, 'cash'),
+(2, 'credit card'),
+(3, 'ewallet');
 
 -- --------------------------------------------------------
 
@@ -285,6 +274,27 @@ INSERT INTO `dishes` (`id`, `name`, `description`, `price`, `quantity`, `img`, `
 (15, 'Regal Rum', '<em>Beverage</em>\r\n<p>Embark on a journey of Caribbean delight with our Regal Rum cocktail. Crafted with the finest aged rum, balanced with a hint of sweetness and a splash of citrus, this cocktail is served over ice in a chilled glass, transporting you to sun-kissed shores with every sip. Smooth, sophisticated, and irresistibly delicious, it\'s a drink fit for royalty.</p>\r\n', 18.70, 12, 'regalrum.jpg', 4),
 (16, 'Prestige Punch', '<em>Beverage</em>\r\n<p>A masterpiece of mixology, our Prestige Punch is a delightful fusion of premium spirits, fruit juices, and a hint of effervescence. Served in an elegant punch bowl with a garnish of fresh fruits and edible flowers, this communal cocktail is perfect for sharing amongst friends or savoring solo. With each sip, you\'ll discover a harmonious blend of flavors that is both refreshing and invigorating, leaving you feeling truly pampered.</p>\r\n', 18.70, 13, 'prestigepunch.jpg', 4);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_status_code`
+--
+
+CREATE TABLE `order_status_code` (
+  `id` int(11) NOT NULL,
+  `status` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `order_status_code`
+--
+
+INSERT INTO `order_status_code` (`id`, `status`) VALUES
+(4, 'cancelled'),
+(3, 'fulfilled'),
+(2, 'paid'),
+(1, 'unpaid');
+
 --
 -- Indexes for dumped tables
 --
@@ -294,13 +304,38 @@ INSERT INTO `dishes` (`id`, `name`, `description`, `price`, `quantity`, `img`, `
 --
 ALTER TABLE `accounts`
   ADD PRIMARY KEY (`account_id`),
-  ADD UNIQUE KEY `username` (`username`);
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `role_id` (`role_id`),
+  ADD KEY `status_id` (`status_id`);
+
+--
+-- Indexes for table `account_role`
+--
+ALTER TABLE `account_role`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `role` (`role`);
+
+--
+-- Indexes for table `account_status`
+--
+ALTER TABLE `account_status`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `status` (`status`);
 
 --
 -- Indexes for table `addresses`
 --
 ALTER TABLE `addresses`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `cart_items`
+--
+ALTER TABLE `cart_items`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uc_account_dish` (`account_id`,`dish_id`),
+  ADD KEY `dish_id` (`dish_id`);
 
 --
 -- Indexes for table `categories`
@@ -329,7 +364,9 @@ ALTER TABLE `customer_addresses`
 ALTER TABLE `customer_orders`
   ADD PRIMARY KEY (`order_id`),
   ADD KEY `customer_id` (`customer_id`),
-  ADD KEY `address_id` (`address_id`);
+  ADD KEY `address_id` (`address_id`),
+  ADD KEY `customer_payment_method_id` (`customer_payment_method_id`),
+  ADD KEY `order_status_id` (`order_status_id`);
 
 --
 -- Indexes for table `customer_orders_products`
@@ -339,11 +376,25 @@ ALTER TABLE `customer_orders_products`
   ADD KEY `dish_id` (`dish_id`);
 
 --
+-- Indexes for table `customer_payment_method`
+--
+ALTER TABLE `customer_payment_method`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `method` (`method`);
+
+--
 -- Indexes for table `dishes`
 --
 ALTER TABLE `dishes`
   ADD PRIMARY KEY (`id`),
   ADD KEY `categoryid` (`category_id`);
+
+--
+-- Indexes for table `order_status_code`
+--
+ALTER TABLE `order_status_code`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `status` (`status`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -353,31 +404,55 @@ ALTER TABLE `dishes`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `account_role`
+--
+ALTER TABLE `account_role`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `account_status`
+--
+ALTER TABLE `account_status`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT for table `cart_items`
+--
+ALTER TABLE `cart_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `customer_orders`
 --
 ALTER TABLE `customer_orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT for table `customer_payment_method`
+--
+ALTER TABLE `customer_payment_method`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `dishes`
@@ -386,8 +461,28 @@ ALTER TABLE `dishes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
+-- AUTO_INCREMENT for table `order_status_code`
+--
+ALTER TABLE `order_status_code`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `accounts`
+--
+ALTER TABLE `accounts`
+  ADD CONSTRAINT `accounts_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `account_role` (`id`),
+  ADD CONSTRAINT `accounts_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `account_status` (`id`);
+
+--
+-- Constraints for table `cart_items`
+--
+ALTER TABLE `cart_items`
+  ADD CONSTRAINT `cart_items_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`account_id`),
+  ADD CONSTRAINT `cart_items_ibfk_2` FOREIGN KEY (`dish_id`) REFERENCES `dishes` (`id`);
 
 --
 -- Constraints for table `customers`
@@ -407,7 +502,9 @@ ALTER TABLE `customer_addresses`
 --
 ALTER TABLE `customer_orders`
   ADD CONSTRAINT `customer_orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
-  ADD CONSTRAINT `customer_orders_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`);
+  ADD CONSTRAINT `customer_orders_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`),
+  ADD CONSTRAINT `customer_orders_ibfk_3` FOREIGN KEY (`customer_payment_method_id`) REFERENCES `customer_payment_method` (`id`),
+  ADD CONSTRAINT `customer_orders_ibfk_4` FOREIGN KEY (`order_status_id`) REFERENCES `order_status_code` (`id`);
 
 --
 -- Constraints for table `customer_orders_products`
