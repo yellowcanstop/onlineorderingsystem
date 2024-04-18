@@ -173,7 +173,7 @@ if (isset($_POST['new_phone'])) {
 				<?php endif; ?>
 			</table>
 		</div>
-		<div>
+		<div class="default-address">
 			<?php if ($address): ?>
 			<h3>Default Address:</h3>
 			<?=htmlspecialchars($address['line_1'], ENT_QUOTES)?>

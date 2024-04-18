@@ -89,8 +89,8 @@ $total_dishes = count($dishes);
             <tbody>
                 <?php foreach ($dishes as $dish): ?>
                 <tr>
-                    <td><?=$dish['name']?></td>
-                    <td><?=$dish['quantity']?></td>
+                    <td style="color: white";><?=$dish['name']?></td>
+                    <td style="color: white";><?=$dish['quantity']?></td>
                     <td>
                         <form method="post" action="index.php?page=managedishes">
                             <input type="hidden" name="page" value="managedishes">
@@ -98,7 +98,7 @@ $total_dishes = count($dishes);
                             <input type="hidden" name="name" value="<?=$dish['name']?>">
                             <input type="hidden" name="quantity" value="<?=$dish['quantity']?>">
                             <input type="number" name="update_quantity" value="<?=$dish['quantity']?>" min="0" placeholder="New Qty" required>
-                            <input type="submit" value="Update">
+                            <input type="submit" value="Update" class="update-quantity">
                         </form>
                     </td>
                 </tr>

@@ -144,16 +144,16 @@ $status_name = ['', 'Unpaid', 'Paid', 'Fulfilled', 'Cancelled'];
             <tbody>
                 <?php if (empty($orders)): ?>
                 <tr>
-                    <td colspan="5" style="text-align:center;"><?='No orders found for the current month with selected status code.'?></td>
+                    <td colspan="5" style="text-align:center; color: white;"><?='No orders found for the current month with selected status code.'?></td>
                 </tr>
                 <?php else: ?>
                 <?php foreach ($orders as $order): ?>
                 <tr>
-                    <td><?=$order['date_order_placed']?></td>
-                    <td>
+                    <td style="color: white";><?=$order['date_order_placed']?></td>
+                    <td style="color: white";>
                         <?=$order['order_id']?>
                     </td>
-                    <td><?=$order['customer_id']?></td>
+                    <td style="color: white";><?=$order['customer_id']?></td>
                     <td>
                         <?php if ($order['customer_payment_method_id'] == 1): ?>
                             <p>cash</p>
@@ -166,7 +166,7 @@ $status_name = ['', 'Unpaid', 'Paid', 'Fulfilled', 'Cancelled'];
                         <?php endif; ?>
                     </td>
                     
-                    <td>
+                    <td style="color: white";>
                     <?php if ($order['order_status_id'] == 2 || $order['order_status_id'] == 3): ?>
                         <?=$order['date_order_paid']?>
                     <?php else: ?>
@@ -174,9 +174,9 @@ $status_name = ['', 'Unpaid', 'Paid', 'Fulfilled', 'Cancelled'];
                     <?php endif; ?>
                     </td>
 
-                    <td><?=$order['payment_amount']?></td>
+                    <td style="color: white";><?=$order['payment_amount']?></td>
                     
-                    <td><?=$status_name[$order['order_status_id']]?></td>
+                    <td style="color: white";><?=$status_name[$order['order_status_id']]?></td>
 
                     <td>
                     <?php if ($order['order_status_id'] == 3): ?>
@@ -203,7 +203,7 @@ $status_name = ['', 'Unpaid', 'Paid', 'Fulfilled', 'Cancelled'];
                             <input type="hidden" name="update_order_status_id" value="2">
                             <input type="hidden" name="order_id" value="<?=$order['order_id']?>">
                             <input type="hidden" name="p" value="<?=$current_page?>">
-                            <input type="submit" value="Mark as Paid">
+                            <input type="submit" value="Mark as Paid" class="mark-as-paid-button">
                         </form>
                         <br>
                         <form class="action-confirm" method="POST" action="index.php?page=manageorders">
@@ -221,7 +221,7 @@ $status_name = ['', 'Unpaid', 'Paid', 'Fulfilled', 'Cancelled'];
                             <input type="hidden" name="update_order_status_id" value="3">
                             <input type="hidden" name="order_id" value="<?=$order['order_id']?>">
                             <input type="hidden" name="p" value="<?=$current_page?>">
-                            <input type="submit" value="Mark as Fulfilled">
+                            <input type="submit" value="Mark as Fulfilled" class="mark-as-fulfilled-button">
                         </form>
                         <br>
                         <form class="action-confirm" method="POST" action="index.php?page=manageorders">

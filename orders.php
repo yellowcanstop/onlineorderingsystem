@@ -99,7 +99,7 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
                             <form action="index.php?page=cart" method="post">
                                 <input type="hidden" name="id" value="<?=$detail['dish_id']?>">
                                 <input type="hidden" name="quantity" value="<?=$detail['order_quantity']?>">
-                                <input type="submit" class="remove" value="Order Again">
+                                <input type="submit" class="order-again-button" value="Order Again">
                             </form>
                         </td>
                     </tr>

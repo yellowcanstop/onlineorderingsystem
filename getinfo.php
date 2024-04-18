@@ -121,7 +121,7 @@ $name = $customer['customer_first_name'] . ' ' . $customer['customer_last_name']
         <input type="hidden" name="date_order_placed" value="<?= time() ?>" id="date_order_placed">
         <input type="submit" value="Confirm order details" class="submit-button">
     </form>
-    <a href="index.php?page=confirmorder" class="submit-button">Return to Order</a>
+    <a href="index.php?page=confirmorder" class="return-cart-button">Return to order</a>
 </div>
 
 <?=template_footer()?>

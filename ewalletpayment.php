@@ -2,7 +2,7 @@
 <div class="product content-wrapper">
     <h1>Please scan below QR Code</h1>
     <div>
-        <img src="imgs/tngQR.png" alt="TnG-QR" class="tng-QR">
+        <img src="imgs/qrcode.png" alt="TnG-QR" class="qr-code">
     </div>
     <br>
     <form action="index.php?page=processpayment" method="post">       

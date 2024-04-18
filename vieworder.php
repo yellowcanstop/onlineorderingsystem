@@ -32,7 +32,7 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
 <div class="cart content-wrapper">
     <div>
         <h1 class="name">Order ID: <?=$_GET['order_id']?></h1>
-        <a href="index.php?page=manageorders" class="btn">Back to Manage Orders</a>
+        <a href="index.php?page=manageorders" style="color: white; text-decoration: none;"><i class="fas fa-arrow-left"></i>Back to Manage Orders</a>
         <table>
         <thead>
             <tr>
@@ -44,11 +44,11 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
         <tbody>
         <?php foreach ($customer_order as $item): ?>
         <tr>
-            <td><?=$names[$item['dish_id']]?></td>
-            <td><?=$item['order_quantity']?></td>
+            <td style="color:white";><?=$names[$item['dish_id']]?></td>
+            <td style="color:white";><?=$item['order_quantity']?></td>
             <!-- checkbox's checked attribute is set based on $_SESSION['selected_dishes'] -->
             <!-- to get checkbox state from local storage when page loads, use js -->
-            <td><input type="checkbox" class="dish-checkbox" value="<?=$item['dish_id']?>" onchange="updateLocalStorage(this)" <?php echo (isset($_SESSION['selected_dishes'][$item['dish_id']]) && $_SESSION['selected_dishes'][$item['dish_id']] === true) ? 'checked' : '' ?>></td>
+            <td><input type="checkbox" class="dish-checkbox" style="width: 20px; height: 20px;" value="<?=$item['dish_id']?>" onchange="updateLocalStorage(this)" <?php echo (isset($_SESSION['selected_dishes'][$item['dish_id']]) && $_SESSION['selected_dishes'][$item['dish_id']] === true) ? 'checked' : '' ?>></td>
         </tr>
         <?php endforeach; ?>
         </tbody>

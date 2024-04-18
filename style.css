@@ -544,14 +544,14 @@ footer .social-icons i:last-child {
 .award-images img {
     margin-right: 20px;
 }
-
-
 /* -- end of css for footer -- */
 
 
 /* -- css for profile.php -- */
 .content {
 	margin-bottom: 50px;
+	/*background-color: white;*/
+	/*width: 100%*/
 }
 .content h2 {
 	color: white;
@@ -600,6 +600,10 @@ footer .social-icons i:last-child {
 
 .content #passwordCheck {
     color: red; 
+}
+
+.default-address {
+	color: white;
 }
 /* -- end of css for profile.php -- */
 
@@ -654,6 +658,7 @@ footer .social-icons i:last-child {
 	color: #062e19df; 
 	text-decoration: none;
 }
+
 /* -- end of css for orders.php -- */
 
 
@@ -911,6 +916,7 @@ footer .social-icons i:last-child {
 	position: relative;
 	width: 500px;
 	left: 250px;
+	margin-bottom: 20px;
 }
 
 .payment-method h2 {
@@ -933,33 +939,54 @@ footer .social-icons i:last-child {
 .credit-card {
 	position: relative;
 	width: 30px;
-	right: -190px;
+	right: -120px;
 	top: -35px;
 }
 
 .tng {
 	position: relative;
 	width: 27px;
-	right: -190px;
+	right: -100px;
 	top: -35px;
 }
 
 .submit-button {
+    display: inline-block;
+    width: 500px; 
+    text-align: center; 
+    padding: 12px 0; 
+    margin: 0 250px; 
     background-color: #eed5a2;
     border: none;
     border-radius: 5px;
     color: #062e19;
     cursor: pointer;
     font-weight: bold;
-    padding: 12px 20px;
     transition: background-color 0.3s;
-	position: relative;
-	width: 500px;
-	left: 250px;
-	margin-top: 20px;
+    text-decoration: none;
+}
+
+.return-cart-button {
+    display: inline-block;
+    width: 500px; 
+    text-align: center; 
+    padding: 12px 0; 
+    margin: -5px 250px; 
+    background-color: #eed5a2;
+    border: none;
+    border-radius: 5px;
+    color: #062e19;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    text-decoration: none;
 }
 
 .submit-button:hover {
+    background-color: #45a049;
+}
+
+.return-cart-button:hover {
     background-color: #45a049;
 }
 /* -- end of css for getinfo.php -- */ 
@@ -989,3 +1016,44 @@ footer .social-icons i:last-child {
     left: 700px; 
 }
 /* -- end of css for about.php --*/
+
+
+/* -- css for manageorders.php --*/
+.mark-as-paid-button {
+	background-color: #eed5a2;
+	color: #062e19df;
+}
+
+.mark-as-fulfilled-button {
+	background-color: #eed5a2;
+	color: #062e19df;
+}
+/* -- end of css for manageorders.php --*/
+
+
+/* -- vieworder.php --*/
+/* -- vieworder.php --*/
+
+
+/* -- managedishes.php --*/
+.update-quantity {
+	background-color: #eed5a2;
+	color: #062e19df;
+	padding: 3px;
+}
+/* -- managedishes.php --*/
+
+
+/* -- ewalletpayment.php --*/
+.qr-code {
+	height: 300px;
+	width: 195px;
+}
+/* -- ewalletpayment.php --*/
+
+.returncheckout-button {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    color: white;
+}
