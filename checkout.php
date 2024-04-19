@@ -69,16 +69,32 @@ if (isset($_POST['line_1'], $_POST['city_state'], $_POST['zip_postcode']) && !em
 
 // customer_payment_method_id: 1 for cash, 2 for credit card, 3 for ewallet
 if (isset($_POST['customer_payment_method_id'], $_POST['date_order_placed'])) {
-    // insert recipient details into delivery_recipients table
-    $stmt = $pdo->prepare('INSERT INTO delivery_recipients (recipient_name, recipient_phone, recipient_email) VALUES (:recipient_name, :recipient_phone, :recipient_email)');
-    $stmt->bindValue(':recipient_name', $_POST['name'], PDO::PARAM_STR);
-    $stmt->bindValue(':recipient_phone', $_POST['phone'], PDO::PARAM_STR);
-    $stmt->bindValue(':recipient_email', $_POST['email'], PDO::PARAM_STR);
-    if (!$stmt->execute()) {
-        error_log("Cannot execute sql statement for delivery_recipients table.");
+    // if recipient already exists in delivery_recipients table, get recipient_id
+    if ($stmt = $pdo->prepare('SELECT recipient_id FROM delivery_recipients WHERE recipient_phone = :recipient_phone AND recipient_email = :recipient_email')) {
+        $stmt->bindValue(':recipient_phone', $_POST['phone'], PDO::PARAM_STR);
+        $stmt->bindValue(':recipient_email', $_POST['email'], PDO::PARAM_STR);
+        if ($stmt->execute()) {
+            $recipient = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($recipient) {
+                $recipient_id = $recipient['recipient_id'];
+            } else {
+                // insert new recipient details into delivery_recipients table
+                $stmt = $pdo->prepare('INSERT INTO delivery_recipients (recipient_name, recipient_phone, recipient_email) VALUES (:recipient_name, :recipient_phone, :recipient_email)');
+                $stmt->bindValue(':recipient_name', $_POST['name'], PDO::PARAM_STR);
+                $stmt->bindValue(':recipient_phone', $_POST['phone'], PDO::PARAM_STR);
+                $stmt->bindValue(':recipient_email', $_POST['email'], PDO::PARAM_STR);
+                if (!$stmt->execute()) {
+                    error_log("Cannot execute sql statement for delivery_recipients table.");
+                }
+                $recipient_id = $pdo->lastInsertId(); 
+            }
+        } else {
+            error_log("Cannot execute sql statement for selecting recipient from delivery_recipients table.");
+        }
+    } else {
+        error_log("Cannot prepare sql statement for selecting recipient from delivery_recipients table.");
     }
-    $recipient_id = $pdo->lastInsertId();   
-    
+      
     // insert new order into customer_orders table
     if ($stmt = $pdo->prepare('INSERT INTO customer_orders (customer_id, recipient_id, customer_payment_method_id, date_order_placed, payment_amount, address_id) VALUES (:customer_id, :recipient_id, :customer_payment_method_id, :date_order_placed, :payment_amount, :address_id)')) {
         $stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
