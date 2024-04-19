@@ -15,11 +15,11 @@ if (isset($_GET['order_id'])) {
 // store all dish names in associative array with key as dish id and value as dish name
 // so display dish names by referencing dish id in orders array
 $names = array();
-if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
+if ($stmt = $pdo->prepare('SELECT dish_id, name FROM dishes')) {
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     foreach ($results as $result) {
-        $names[$result['id']] = $result['name'];
+        $names[$result['dish_id']] = $result['name'];
     }
 } else {
     error_log('Cannot prepare sql statement for dishes table.');
@@ -47,7 +47,8 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
             <td style="color:white";><?=$names[$item['dish_id']]?></td>
             <td style="color:white";><?=$item['order_quantity']?></td>
             <!-- checkbox's checked attribute is set based on $_SESSION['selected_dishes'] -->
-            <!-- to get checkbox state from local storage when page loads, use js -->
+            <!-- we use js (see below) to get checkbox state from local storage -->
+            <!-- see our justification to use javascript's local storage below -->
             <td><input type="checkbox" class="dish-checkbox" style="width: 20px; height: 20px;" value="<?=$item['dish_id']?>" onchange="updateLocalStorage(this)" <?php echo (isset($_SESSION['selected_dishes'][$item['dish_id']]) && $_SESSION['selected_dishes'][$item['dish_id']] === true) ? 'checked' : '' ?>></td>
         </tr>
         <?php endforeach; ?>
@@ -65,14 +66,14 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
 // which I think is acceptable for insensitive data like checkbox states 
 // for employees to track progress of individual dishes in an order (communication with kitchen staff)
 
-// set local storage key-value pair based on checkbox state
+// 1) set local storage key-value pair based on checkbox state
 function updateLocalStorage(element) {
     const dishId = element.value;
     const isChecked = element.checked;
     localStorage.setItem(dishId, isChecked);
 }
-// js code that runs when page loads to update checkbox states based on values in local storage
-// get from local storage and set checkbox states
+// below, this runs when page loads to update checkbox states based on values in local storage
+// 2) get from local storage and set checkbox states
 window.onload = function() {
     const checkboxes = document.querySelectorAll('.dish-checkbox');
     checkboxes.forEach((checkbox) => {

@@ -8,7 +8,7 @@ $selected_category = isset($_GET['category_id']) ? $_GET['category_id'] : false;
 
 // get dishes from database
 if ($selected_category) {
-    $stmt = $pdo->prepare('SELECT id, name, quantity FROM dishes WHERE category_id = :category_id LIMIT :current_page, :record_per_page');
+    $stmt = $pdo->prepare('SELECT dish_id, name, quantity FROM dishes WHERE category_id = :category_id LIMIT :current_page, :record_per_page');
     $stmt->bindValue(':category_id', $_GET['category_id'], PDO::PARAM_STR);
     $stmt->bindValue(':current_page', ($current_page - 1) * $num_dishes_on_page, PDO::PARAM_INT);
     $stmt->bindValue(':record_per_page', $num_dishes_on_page, PDO::PARAM_INT);
@@ -21,7 +21,7 @@ if ($selected_category) {
     }
 }
 else {
-    $stmt = $pdo->prepare('SELECT id, name, quantity FROM dishes ORDER BY quantity LIMIT :current_page, :record_per_page');
+    $stmt = $pdo->prepare('SELECT dish_id, name, quantity FROM dishes ORDER BY quantity LIMIT :current_page, :record_per_page');
     $stmt->bindValue(':current_page', ($current_page - 1) * $num_dishes_on_page, PDO::PARAM_INT);
     $stmt->bindValue(':record_per_page', $num_dishes_on_page, PDO::PARAM_INT);
     $stmt->execute();
@@ -35,7 +35,7 @@ else {
 
 // update quantity for specific dish
 if (isset($_POST['update_quantity']) && isset($_POST['id']) && is_numeric($_POST['update_quantity']) && isset($_POST['quantity']) && isset($_POST['name'])) {
-    $stmt = $pdo->prepare('UPDATE dishes SET quantity = :quantity WHERE id = :id');
+    $stmt = $pdo->prepare('UPDATE dishes SET quantity = :quantity WHERE dish_id = :id');
     $stmt->bindValue(':quantity', $_POST['update_quantity'], PDO::PARAM_INT);
     $stmt->bindValue(':id', $_POST['id'], PDO::PARAM_INT);
     if (!$stmt->execute()) {
@@ -76,6 +76,7 @@ $total_dishes = count($dishes);
             <option value="1">Appetizer</option>
             <option value="2">Main Course</option>
             <option value="3">Dessert</option>
+            <option value="4">Beverage</option>
         </select>
     </form>
     <table>
@@ -94,7 +95,7 @@ $total_dishes = count($dishes);
                     <td>
                         <form method="post" action="index.php?page=managedishes">
                             <input type="hidden" name="page" value="managedishes">
-                            <input type="hidden" name="id" value="<?=$dish['id']?>">
+                            <input type="hidden" name="id" value="<?=$dish['dish_id']?>">
                             <input type="hidden" name="name" value="<?=$dish['name']?>">
                             <input type="hidden" name="quantity" value="<?=$dish['quantity']?>">
                             <input type="number" name="update_quantity" value="<?=$dish['quantity']?>" min="0" placeholder="New Qty" required>

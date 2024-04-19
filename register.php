@@ -17,7 +17,6 @@ include 'functions.php';
             }
             ?>
         </div>
-		<!-- when the form is submitted, the data is sent to authenticate.php -->
 		<form action="adduser.php" method="post" autocomplete="off">
             <label for="username"></label>
 			<input type="text" name="username" placeholder="Username" id="username" oninput="checkUsername()" autocomplete="username" required>
@@ -27,7 +26,6 @@ include 'functions.php';
 			<input type="text" name="name" placeholder="Name" id="name" required>
             <br>
             
-            
 			<label for="password"></label>
             <input type="password" name="password" placeholder="Password" id="password" oninput="checkPassword()" autocomplete="new-password" required>
             <p id="passwordCheck"></p>
@@ -35,7 +33,6 @@ include 'functions.php';
             <label for="confirm_password"></label>
             <input type="password" name="confirm_password" placeholder="Confirm Password" id="confirm_password" oninput="validatePassword()" autocomplete="new-password" required>
             <p id="passwordError"></p>
-
 
             <label for="email"></label>
             <input type="email" name="email" placeholder="Email" id="email" required>
@@ -72,7 +69,6 @@ function checkUsername() {
                 $('#username').css('border', '3px solid green');
                 usernameError.textContent = 'Username is available!';
                 usernameError.style.color = 'green';
-                
             } else {
                 $('#username').css('border', '3px solid red');
                 usernameError.textContent = 'Username is already taken!';

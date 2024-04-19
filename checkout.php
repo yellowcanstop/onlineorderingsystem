@@ -69,17 +69,25 @@ if (isset($_POST['line_1'], $_POST['city_state'], $_POST['zip_postcode']) && !em
 
 // customer_payment_method_id: 1 for cash, 2 for credit card, 3 for ewallet
 if (isset($_POST['customer_payment_method_id'], $_POST['date_order_placed'])) {
+    // insert recipient details into delivery_recipients table
+    $stmt = $pdo->prepare('INSERT INTO delivery_recipients (recipient_name, recipient_phone, recipient_email) VALUES (:recipient_name, :recipient_phone, :recipient_email)');
+    $stmt->bindValue(':recipient_name', $_POST['name'], PDO::PARAM_STR);
+    $stmt->bindValue(':recipient_phone', $_POST['phone'], PDO::PARAM_STR);
+    $stmt->bindValue(':recipient_email', $_POST['email'], PDO::PARAM_STR);
+    if (!$stmt->execute()) {
+        error_log("Cannot execute sql statement for delivery_recipients table.");
+    }
+    $recipient_id = $pdo->lastInsertId();   
+    
     // insert new order into customer_orders table
-    if ($stmt = $pdo->prepare('INSERT INTO customer_orders (customer_id, customer_payment_method_id, date_order_placed, payment_amount, name, phone, email, address_id) VALUES (:customer_id, :customer_payment_method_id, :date_order_placed, :payment_amount, :name, :phone, :email, :address_id)')) {
+    if ($stmt = $pdo->prepare('INSERT INTO customer_orders (customer_id, recipient_id, customer_payment_method_id, date_order_placed, payment_amount, address_id) VALUES (:customer_id, :recipient_id, :customer_payment_method_id, :date_order_placed, :payment_amount, :address_id)')) {
         $stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':recipient_id', $recipient_id, PDO::PARAM_INT);
         $stmt->bindValue(':customer_payment_method_id', $_POST['customer_payment_method_id'], PDO::PARAM_INT);
         $date_order_placed = date('Y-m-d H:i:s', $_POST['date_order_placed']);
         $stmt->bindValue(':date_order_placed', $date_order_placed, PDO::PARAM_STR);
         // payment_amount is of decimal type in database. use PDO::PARAM_STR for all column types which are not of type int or bool
         $stmt->bindValue(':payment_amount', $subtotal, PDO::PARAM_STR);
-        $stmt->bindValue(':name', $_POST['name'], PDO::PARAM_STR);
-        $stmt->bindValue(':phone', $_POST['phone'], PDO::PARAM_STR);
-        $stmt->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
         $stmt->bindValue(':address_id', $_SESSION['address_id'], PDO::PARAM_INT);
         if (!$stmt->execute()) {
             error_log("Cannot execute sql statement for customers_orders table.");

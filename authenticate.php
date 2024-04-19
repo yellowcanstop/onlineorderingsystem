@@ -28,8 +28,8 @@ if ($stmt = $pdo->prepare('SELECT customer_id, password, email, account_status_i
             // // only save less-sensitive information in session variables to maintain state between requests
             $_SESSION['loggedin'] = TRUE;
             $_SESSION['username'] = $_POST['username'];
-            $_SESSION['customer_id'] = $user['customer_id'];
             $_SESSION['email'] = $user['email'];
+            $_SESSION['customer_id'] = $user['customer_id'];
             $_SESSION['role_id'] = 1;
             // set cookie if remember me is checked
             // cookie will be available across entire site (path: /)

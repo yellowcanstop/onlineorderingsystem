@@ -51,7 +51,7 @@ if (isset($_POST['update_order_status_id']) && isset($_POST['order_id'])) {
         header('Location: index.php?page=manageorders&p=' . $current_page);
         exit();
     }
-    elseif ($_POST['update_order_status_id'] == 3) {
+    else if ($_POST['update_order_status_id'] == 3) {
         $stmt = $pdo->prepare('UPDATE customer_orders SET order_status_id = :order_status_id, date_order_fulfilled = CURRENT_TIMESTAMP WHERE order_id = :order_id');
         $stmt->bindValue(':order_status_id', $_POST['update_order_status_id'], PDO::PARAM_INT);
         $stmt->bindValue(':order_id', $_POST['order_id'], PDO::PARAM_INT);
@@ -63,7 +63,7 @@ if (isset($_POST['update_order_status_id']) && isset($_POST['order_id'])) {
         header('Location: index.php?page=manageorders&p=' . $current_page);
         exit();
     }
-    elseif ($_POST['update_order_status_id'] == 4) {
+    else if ($_POST['update_order_status_id'] == 4) {
         $stmt = $pdo->prepare('UPDATE customer_orders SET order_status_id = :order_status_id, date_order_cancelled = CURRENT_TIMESTAMP WHERE order_id = :order_id');
         $stmt->bindValue(':order_status_id', $_POST['update_order_status_id'], PDO::PARAM_INT);
         $stmt->bindValue(':order_id', $_POST['order_id'], PDO::PARAM_INT);

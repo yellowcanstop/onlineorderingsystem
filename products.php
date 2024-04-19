@@ -1,6 +1,6 @@
 <?php
 // number of dishes to show per page
-$num_products_on_each_page = 16;
+$num_products_on_each_page = 10;
 // show selected page otherwise default to 1
 $current_page = isset($_GET['p']) && is_numeric($_GET['p']) ? (int)$_GET['p'] : 1;
 // get selected sort option from the GET parameters
@@ -74,7 +74,7 @@ $total_products = count($dishes);
     </form>
     <div class="products-wrapper">
         <?php foreach ($dishes as $dish): ?>
-        <a href="index.php?page=product&id=<?=$dish['id']?>" class="product">
+        <a href="index.php?page=product&id=<?=$dish['dish_id']?>" class="product">
             <img src="imgs/<?=$dish['img']?>" width="200" height="200" alt="<?=$dish['name']?>">
             <span class="name"><?=$dish['name']?></span>
             <span class="price">

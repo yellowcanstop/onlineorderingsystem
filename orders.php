@@ -1,16 +1,4 @@
 <?php
-// get customer_id session variable if not already set
-if (!isset($_SESSION['customer_id'])) {
-    if ($stmt = $pdo -> prepare('SELECT id, customer_first_name, customer_last_name, customer_phone, date_of_register FROM customers WHERE account_id = :account_id')) {
-		$stmt->bindValue(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
-		$stmt->execute();
-		$customer = $stmt->fetch(PDO::FETCH_ASSOC);
-		$_SESSION['customer_id'] = $customer['id'];
-	} else {
-		error_log('Cannot prepare sql statement for customers table.');
-		exit();
-	}
-}
 
 // retrieve orders and order details from database
 if (isset($_SESSION['customer_id'])) {
@@ -38,18 +26,19 @@ if (isset($_SESSION['customer_id'])) {
 // store all dish names in associative array with key as dish id and value as dish name
 // so display dish names by referencing dish id in orders array
 $names = array();
-if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
-    
+if ($stmt = $pdo->prepare('SELECT dish_id, name FROM dishes')) {
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     foreach ($results as $result) {
-        $names[$result['id']] = $result['name'];
+        $names[$result['dish_id']] = $result['name'];
     }
 } else {
     error_log('Cannot prepare sql statement for dishes table.');
     exit();
 }
 
+// simple array: unpaid '1', paid '2', fulfilled '3', cancelled '4'
+$status_name = ['', 'Unpaid', 'Paid', 'Fulfilled', 'Cancelled'];
 
 ?>
 <?= template_header('Orders') ?>
@@ -76,7 +65,7 @@ if ($stmt = $pdo->prepare('SELECT id, name FROM dishes')) {
                     <?php foreach ($order_details as $detail): ?>
                     <td><?=$detail['date_order_placed']?></td>
                     <td><?=$detail['payment_amount']?></td>
-                    <td><?=$detail['order_status_id']?></td>   
+                    <td><?=$status_name[$detail['order_status_id']]?></td>   
                 </tr>
             </tbody>
         </table>
