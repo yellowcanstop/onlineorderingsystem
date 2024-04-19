@@ -51,7 +51,7 @@ if (preg_match('/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,20}$/', $_POST['p
 
 // check if username already exists
 // checkusername.php: dynamically checked in the form using javascript
-if ($stmt = $pdo->prepare('SELECT username FROM accounts WHERE username = :username')) {
+if ($stmt = $pdo->prepare('SELECT username FROM customer_accounts WHERE username = :username')) {
 	$stmt->bindValue(':username', $_POST['username'], PDO::PARAM_STR);
 	$stmt->execute();
 	$account = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -63,7 +63,7 @@ if ($stmt = $pdo->prepare('SELECT username FROM accounts WHERE username = :usern
 }
 
 // check if email already exists
-if ($stmt = $pdo->prepare('SELECT email FROM accounts WHERE email = :email')) {
+if ($stmt = $pdo->prepare('SELECT email FROM customer_accounts WHERE email = :email')) {
 	$stmt->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
 	$stmt->execute();
 	$account = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -75,46 +75,32 @@ if ($stmt = $pdo->prepare('SELECT email FROM accounts WHERE email = :email')) {
 }
 
 try {
-    // transaction to treat multiple related sql statements as a single unit to be executed
-    // because inserting into accounts and customers tables are related
     $pdo->beginTransaction();
     
     // pass validation checks so insert new account into accounts table
-    if ($stmt = $pdo->prepare('INSERT INTO accounts (username, email, password) VALUES (:username, :email, :password)')) {
+    if ($stmt = $pdo->prepare('INSERT INTO customer_accounts (username, email, password, name, phone, date_of_register) VALUES (:username, :email, :password, :name, :phone, :date_of_register)')) {
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $stmt->bindValue(':username', $_POST['username'], PDO::PARAM_STR);
         $stmt->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
         $stmt->bindValue(':password', $password, PDO::PARAM_STR);
+        $stmt->bindValue(':name', $_POST['name'], PDO::PARAM_STR);
+        $stmt->bindValue(':phone', $_POST['phone'], PDO::PARAM_STR);
+        // time() returns the current time in seconds since Jan 1, 1970
+        // date_of_register is stored as a DATETIME type in the database
+        // hence use date() to format the timestamp as a string in 'Y-m-d H:i:s' format
+        $date_of_register = date('Y-m-d H:i:s', $_POST['date_of_register']);
+        $stmt->bindValue(':date_of_register', $date_of_register, PDO::PARAM_STR);
         if (!$stmt->execute()) {
-            throw new Exception("Cannot execute sql statement for accounts table.");
-        }
-        // use lastInsertId() to get account_id which is a foreign key in customers table
-        $account_id = $pdo->lastInsertId();
-        // insert new customer into customers table
-        if ($stmt = $pdo->prepare('INSERT INTO customers (account_id, customer_first_name, customer_last_name, customer_phone, date_of_register) VALUES (:account_id, :firstname, :lastname, :phone, :date_of_register)')) {
-            $stmt->bindValue(':account_id', $account_id, PDO::PARAM_INT);
-            $stmt->bindValue(':firstname', $_POST['firstname'], PDO::PARAM_STR);
-            $stmt->bindValue(':lastname', $_POST['lastname'], PDO::PARAM_STR);
-            $stmt->bindValue(':phone', $_POST['phone'], PDO::PARAM_STR);
-            // time() returns the current time in seconds since Jan 1, 1970
-            // date_of_register is stored as a DATETIME type in the database
-            // hence use date() to format the timestamp as a string in 'Y-m-d H:i:s' format
-            $date_of_register = date('Y-m-d H:i:s', $_POST['date_of_register']);
-            $stmt->bindValue(':date_of_register', $date_of_register, PDO::PARAM_STR);
-            if (!$stmt->execute()) {
-                throw new Exception("Cannot execute sql statement for customers table.");
-            }
-        } else {
-            throw new Exception("Cannot prepare sql statement for customers table.");
+            throw new Exception("Cannot execute sql statement for customer_accounts table.");
         }
         $pdo->commit(); // commit transaction
         header('Location: login.php');
         exit();     
     } else {
-        throw new Exception("Cannot prepare sql statement for accounts table.");
+        throw new Exception("Cannot prepare sql statement for customer_accounts table.");
     }
 } catch (Exception $e) {
-    // error occured so rollback entire set of transaction (multiple related sql statements)
+    // error occured so rollback entire set of transaction (better use case: if multiple related sql statements)
     // this ensures consistent state
     $pdo->rollBack();
     error_log("Error occurred: " . $e->getMessage());

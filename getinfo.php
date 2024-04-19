@@ -63,11 +63,11 @@ $name = $customer['customer_first_name'] . ' ' . $customer['customer_last_name']
             <label for="line_2">Address Line 2:</label>
             <input type="text" id="line_2" placeholder="Address Line 2" name="line_2" value="<?=isset($_SESSION['address_id']) ? $address['line_2'] : ''?>">
             <br>
-            <label for="state">State/City:</label>
-            <select id="state" name="state">
+            <label for="city_state">State/City:</label>
+            <select id="city_state" name="city_state">
                 <option value="">Select State/City:</option>
                 <?php if (isset($_SESSION['address_id'])): ?>
-                    <option value="<?=$address['state']?>" selected><?=$address['state']?></option>
+                    <option value="<?=$address['city_state']?>" selected><?=$address['city_state']?></option>
                 <?php endif; ?>
                 <option value="Johor">Johor</option>
                 <option value="Kedah">Kedah</option>
@@ -92,10 +92,10 @@ $name = $customer['customer_first_name'] . ' ' . $customer['customer_last_name']
             <br>
             <label for="zip_postcode">Zip/Postcode:</label>
             <input type="text" id="zip_postcode" placeholder="e.g. 43500" name="zip_postcode" value="<?=isset($_SESSION['address_id']) ? $address['zip_postcode'] : ''?>" required>
-            <input type="hidden" name="is_default" value="0">
+            <input type="hidden" name="save_default" value="0">
             <!-- if radio button is selected, will override above hidden input -->
             <label for="save_address">
-                <input type="radio" id="save_address" name="is_default" value="1">
+                <input type="radio" id="save_address" name="save_default" value="1">
                 Save as default address
             </label> 
         </div>

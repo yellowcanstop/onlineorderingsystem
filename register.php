@@ -23,10 +23,8 @@ include 'functions.php';
 			<input type="text" name="username" placeholder="Username" id="username" oninput="checkUsername()" autocomplete="username" required>
             <p id="usernameError"></p>
             <br>
-            <label for="firstname"></label>
-			<input type="text" name="firstname" placeholder="First Name" id="firstname" required>
-            <label for="lastname"></label>
-			<input type="text" name="lastname" placeholder="Last Name" id="lastname" required>
+            <label for="name"></label>
+			<input type="text" name="name" placeholder="Name" id="name" required>
             <br>
             
             
