@@ -16,6 +16,5 @@
 
         <input type="submit" value="Pay Now">
     </form>
-    <a href="index.php?page=checkout" class="returncheckout-button">Return to Checkout</a>
 </div>
 <?=template_footer()?>

@@ -9,6 +9,5 @@
         <input type="hidden" name="date_order_paid" value="<?= time() ?>" id="date_order_paid">
         <input type="submit" value="Continue">
     </form>
-    <a href="index.php?page=checkout" class="submit-button">Return to Checkout</a>
 </div>
 <?=template_footer()?>
