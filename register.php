@@ -69,6 +69,7 @@ function checkUsername() {
                 $('#username').css('border', '3px solid green');
                 usernameError.textContent = 'Username is available!';
                 usernameError.style.color = 'green';
+                usernameError.style.fontSize = '12px';
             } else {
                 $('#username').css('border', '3px solid red');
                 usernameError.textContent = 'Username is already taken!';
