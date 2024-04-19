@@ -255,7 +255,7 @@ CREATE TABLE `order_status` (
 -- Dumping data for table `order_status_code`
 --
 
-INSERT INTO `order_status_code` (`order_status_id`, `order_status`) VALUES
+INSERT INTO `order_status` (`order_status_id`, `order_status`) VALUES
 (4, 'cancelled'),
 (3, 'fulfilled'),
 (2, 'paid'),
