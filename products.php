@@ -1,6 +1,6 @@
 <?php
 // number of dishes to show per page
-$num_products_on_each_page = 10;
+$num_products_on_each_page = 20;
 // show selected page otherwise default to 1
 $current_page = isset($_GET['p']) && is_numeric($_GET['p']) ? (int)$_GET['p'] : 1;
 // get selected sort option from the GET parameters

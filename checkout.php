@@ -110,7 +110,7 @@ if (isset($_POST['customer_payment_method_id'], $_POST['date_order_placed'])) {
             endforeach;
             // update quantities for each dish in dishes table
             foreach ($products as $product):
-                if ($stmt = $pdo->prepare('UPDATE dishes SET quantity = quantity - :order_quantity WHERE id = :dish_id')) {
+                if ($stmt = $pdo->prepare('UPDATE dishes SET quantity = quantity - :order_quantity WHERE dish_id = :dish_id')) {
                     $stmt->bindValue(':order_quantity', $product['cart_quantity'], PDO::PARAM_INT);
                     $stmt->bindValue(':dish_id', $product['id'], PDO::PARAM_INT);
                     if (!$stmt->execute()) {
