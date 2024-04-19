@@ -4,7 +4,7 @@ include 'functions.php';
 $pdo = pdo_connect_mysql();
 
 // check if form fields are set
-if (!isset($_POST['username'], $_POST['password'], $_POST['email'], $_POST['firstname'], $_POST['lastname'], $_POST['phone'], $_POST['date_of_register'])) {
+if (!isset($_POST['username'], $_POST['password'], $_POST['email'], $_POST['name'], $_POST['phone'], $_POST['date_of_register'])) {
     $_SESSION['error'] = 'Please complete the registration form!';
     header('Location: register.php');
 	exit();
