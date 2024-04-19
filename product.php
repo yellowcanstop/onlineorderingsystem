@@ -1,6 +1,6 @@
 <?php
 if (isset($_GET['id'])) {
-    $stmt = $pdo->prepare('SELECT * FROM dishes WHERE id = ?');
+    $stmt = $pdo->prepare('SELECT * FROM dishes WHERE dish_id = ?');
     $stmt->execute([$_GET['id']]);
     $dish = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$dish) {
@@ -26,7 +26,7 @@ if (isset($_GET['id'])) {
         </span>
         <form action="index.php?page=cart" method="post">
             <input type="number" name="quantity" value="1" min="1" max="<?=$dish['quantity']?>" placeholder="Quantity" required>
-            <input type="hidden" name="id" value="<?=$dish['id']?>">
+            <input type="hidden" name="id" value="<?=$dish['dish_id']?>">
             <input type="submit" value="Add To Cart">
         </form>
         <div class="description">

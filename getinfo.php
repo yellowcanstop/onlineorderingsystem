@@ -1,36 +1,32 @@
 <?php
-// retrieve name and phone number from database as needed 
-if ($stmt = $pdo -> prepare('SELECT id, customer_first_name, customer_last_name, customer_phone FROM customers WHERE account_id = :account_id')) {
-    $stmt->bindValue(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+// retrieve personal info of customer from database only as needed 
+if ($stmt = $pdo -> prepare('SELECT name, phone, email FROM customer_accounts WHERE customer_id = :customer_id')) {
+    $stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
     $stmt->execute();
     $customer = $stmt->fetch(PDO::FETCH_ASSOC);
-    $_SESSION['customer_id'] = $customer['id'];
 } else {
-    error_log('Cannot prepare sql statement for customers table.');
+    error_log('Cannot prepare sql statement for customer_accounts table.');
     exit();
 }
 
 // retrieve address if there exists one which was set as default
 if ($stmt = $pdo->prepare("
     SELECT a.* 
-    FROM addresses a
-    INNER JOIN customer_addresses ca ON a.id = ca.address_id
-    WHERE ca.customer_id = :customer_id AND ca.is_default = :is_default
+    FROM delivery_addresses a
+    INNER JOIN customer_accounts ca ON a.address_id = ca.default_address_id
+    WHERE ca.customer_id = :customer_id
 ")) {
 	$stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
-	$stmt->bindValue(':is_default', 1, PDO::PARAM_INT);
 	$stmt->execute();
     $address = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($address) {
-        $_SESSION['address_id'] = $address['id'];
+        $_SESSION['address_id'] = $address['address_id'];
     } 
 } else {
 	error_log('Cannot prepare sql statement to retrieve default address.');
 	exit();
 }
 
-// get full name of customer
-$name = $customer['customer_first_name'] . ' ' . $customer['customer_last_name'];
 ?>
 
 <?=template_header('Order Details')?>
@@ -49,13 +45,13 @@ $name = $customer['customer_first_name'] . ' ' . $customer['customer_last_name']
         <div class="customer-details">
             <h2>Customer Details:</h2>
             <label for="name">Name:</label>
-            <input type="text" id="name" placeholder="Name" name="name" value="<?=$name ?>" required>
+            <input type="text" id="name" placeholder="Name" name="name" value="<?=$customer['name'] ?>" required>
             <br>
             <label for="phone">Phone:</label>
-            <input type="tel" name="phone" placeholder="e.g. 01146138711" id="phone" pattern="[0-9]{10}" title="Format: 0107998888" value="<?=$customer['customer_phone'] ?>" required>
+            <input type="tel" name="phone" placeholder="e.g. 01146138711" id="phone" pattern="[0-9]{10}" title="Format: 0107998888" value="<?=$customer['phone'] ?>" required>
             <br>
             <label for="email">Email:</label>
-            <input type="text" id="email" name="email" value="<?=$_SESSION['email'] ?>" required>
+            <input type="text" id="email" name="email" value="<?=$customer['email'] ?>" required>
             <br>
             <label for="line_1">Address Line 1:</label>
             <input type="text" id="line_1" placeholder="Address Line 1" name="line_1" value="<?=isset($_SESSION['address_id']) ? $address['line_1'] : ''?>"  required>
@@ -63,11 +59,11 @@ $name = $customer['customer_first_name'] . ' ' . $customer['customer_last_name']
             <label for="line_2">Address Line 2:</label>
             <input type="text" id="line_2" placeholder="Address Line 2" name="line_2" value="<?=isset($_SESSION['address_id']) ? $address['line_2'] : ''?>">
             <br>
-            <label for="state">State/City:</label>
-            <select id="state" name="state">
+            <label for="city_state">State/City:</label>
+            <select id="city_state" name="city_state">
                 <option value="">Select State/City:</option>
                 <?php if (isset($_SESSION['address_id'])): ?>
-                    <option value="<?=$address['state']?>" selected><?=$address['state']?></option>
+                    <option value="<?=$address['city_state']?>" selected><?=$address['city_state']?></option>
                 <?php endif; ?>
                 <option value="Johor">Johor</option>
                 <option value="Kedah">Kedah</option>
@@ -92,10 +88,10 @@ $name = $customer['customer_first_name'] . ' ' . $customer['customer_last_name']
             <br>
             <label for="zip_postcode">Zip/Postcode:</label>
             <input type="text" id="zip_postcode" placeholder="e.g. 43500" name="zip_postcode" value="<?=isset($_SESSION['address_id']) ? $address['zip_postcode'] : ''?>" required>
-            <input type="hidden" name="is_default" value="0">
+            <input type="hidden" name="save_default" value="0">
             <!-- if radio button is selected, will override above hidden input -->
             <label for="save_address">
-                <input type="radio" id="save_address" name="is_default" value="1">
+                <input type="radio" id="save_address" name="save_default" value="1">
                 Save as default address
             </label> 
         </div>

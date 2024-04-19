@@ -3,7 +3,7 @@ function pdo_connect_mysql() {
     $DATABASE_HOST = 'localhost';
     $DATABASE_USER = 'root';
     $DATABASE_PASS = '';
-    $DATABASE_NAME = 'orderfood';
+    $DATABASE_NAME = 'sysorder';
     try {
     	return new PDO('mysql:host=' . $DATABASE_HOST . ';dbname=' . $DATABASE_NAME . ';charset=utf8', $DATABASE_USER, $DATABASE_PASS);
     } catch (PDOException $exception) {
@@ -17,11 +17,11 @@ function pdo_connect_mysql() {
 function start_session($pdo) {
     session_start();
     if (!isset($_SESSION['loggedin'])) {
-        // The user is not logged in. Check if the "remember_me" cookie is set
+        // check if the "remember_me" cookie is set
         if (isset($_COOKIE['remember_me'])) {
-            // The "remember_me" cookie is set. Look up the user in the database
+            // look up user in the database
             $token = $_COOKIE['remember_me'];
-            $stmt = $pdo->prepare("SELECT * FROM accounts WHERE remember_me_token = :token");
+            $stmt = $pdo->prepare("SELECT * FROM customer_accounts WHERE remember_me_token = :token");
             $stmt->execute(['token' => $token]);
             $user = $stmt->fetch();
             if ($user) {
@@ -29,9 +29,9 @@ function start_session($pdo) {
                 session_regenerate_id();
                 $_SESSION['loggedin'] = TRUE;
                 $_SESSION['username'] = $user['username'];
-                $_SESSION['account_id'] = $user['account_id'];
+                $_SESSION['customer_id'] = $user['customer_id'];
                 $_SESSION['email'] = $user['email'];
-                $_SESSION['role_id'] = $user['role_id'];
+                $_SESSION['role_id'] = 1;
             } else {
                 // cannot find account based on token so redirect to login
                 header('Location: login.php');

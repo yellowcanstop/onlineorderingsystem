@@ -12,12 +12,12 @@ if ( !isset($_POST['username'], $_POST['password']) ) {
 
 // PDO supports named parameters which makes code more readable and maintainable.
 // Hence our choice of using PDO instead of MySQLi to interact with our database.
-if ($stmt = $pdo->prepare('SELECT account_id, password, email, role_id, status_id FROM accounts WHERE username = :username')) {
+if ($stmt = $pdo->prepare('SELECT customer_id, password, email, account_status_id FROM customer_accounts WHERE username = :username')) {
     $stmt->bindValue(':username', $_POST['username'], PDO::PARAM_STR);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     // check if account exists and is active
-    if ($user && $user['status_id'] == 1) {
+    if ($user && $user['account_status_id'] == 1) {
         // verify password using password_verify (corresponding: used password_hash to store hashed passwords)
         if (password_verify($_POST['password'], $user['password'])) {
             // session variables preserved until logout or session expiring
@@ -28,9 +28,9 @@ if ($stmt = $pdo->prepare('SELECT account_id, password, email, role_id, status_i
             // // only save less-sensitive information in session variables to maintain state between requests
             $_SESSION['loggedin'] = TRUE;
             $_SESSION['username'] = $_POST['username'];
-            $_SESSION['account_id'] = $user['account_id'];
             $_SESSION['email'] = $user['email'];
-            $_SESSION['role_id'] = $user['role_id'];
+            $_SESSION['customer_id'] = $user['customer_id'];
+            $_SESSION['role_id'] = 1;
             // set cookie if remember me is checked
             // cookie will be available across entire site (path: /)
             // cookie will expire after 30 days (86400 seconds = 1 day)
@@ -43,8 +43,8 @@ if ($stmt = $pdo->prepare('SELECT account_id, password, email, role_id, status_i
                 // since I am using localhost, setcookie() has no additional parameter (specific to https)
                 $token = bin2hex(random_bytes(24));
                 setcookie('remember_me', $token, time() + (86400 * 30), "/");
-                $stmt = $pdo->prepare("UPDATE accounts SET remember_me_token = :token WHERE account_id = :account_id");
-                $stmt->execute(['token' => $token, 'account_id' => $user['account_id']]);
+                $stmt = $pdo->prepare("UPDATE customer_accounts SET remember_me_token = :token WHERE customer_id = :customer_id");
+                $stmt->execute(['token' => $token, 'customer_id' => $user['customer_id']]);
             }
             header('Location: index.php');
         } else {
@@ -52,12 +52,36 @@ if ($stmt = $pdo->prepare('SELECT account_id, password, email, role_id, status_i
             header('Location: login.php');
             exit();
         }
+    } else if ($stmt = $pdo->prepare('SELECT employee_id, password, email, account_status_id FROM employee_accounts WHERE username = :username')) {
+        $stmt->bindValue(':username', $_POST['username'], PDO::PARAM_STR);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($user && $user['account_status_id'] == 1) {
+            if (password_verify($_POST['password'], $user['password'])) {
+                session_regenerate_id();
+                $_SESSION['loggedin'] = TRUE;
+                $_SESSION['username'] = $_POST['username'];
+                $_SESSION['email'] = $user['email'];
+                $_SESSION['role_id'] = 2;
+                if (isset($_POST['remember_me'])) {
+                    $token = bin2hex(random_bytes(24));
+                    setcookie('remember_me', $token, time() + (86400 * 30), "/");
+                    $stmt = $pdo->prepare("UPDATE employee_accounts SET remember_me_token = :token WHERE employee_id = :employee_id");
+                    $stmt->execute(['token' => $token, 'employee_id' => $user['employee_id']]);
+                }
+                header('Location: index.php');
+            } else {
+                $_SESSION['error'] = 'Incorrect credentials!';
+                header('Location: login.php');
+                exit();
+            }
+        }
     } else {
         $_SESSION['error'] = 'Account is not active or does not exist!';
         header('Location: login.php');
         exit();  
     }
 } else {
-    error_log("Cannot prepare sql statement for accounts table.");
+    error_log("Cannot prepare sql statement for accounts tables to authenticate login.");
     exit();
 }

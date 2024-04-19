@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2024 at 09:15 AM
+-- Generation Time: Apr 19, 2024 at 11:02 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,44 +24,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `accounts`
---
-
-CREATE TABLE `employee_accounts` (
-  `employee_id` int(11) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `account_status_id` int(11) NOT NULL DEFAULT 1,
-  `name` varchar(255) NOT NULL,
-  `phone` varchar(255) NOT NULL,
-  `date_of_register` datetime NOT NULL,
-  `remember_me_token` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `accounts`
---
-
-INSERT INTO `employee_accounts` (`employee_id`, `username`, `password`, `email`, `account_status_id`, `name`, `phone`, `date_of_register`,`remember_me_token`) VALUES
-(1, 'employee1', '$2y$10$SfhYIDtn.iOuCW7zfoFLuuZHX6lja4lF4XA4JqNmpiH/.P3zB8JCa', 'employee1@test.com', 1, 'Bilbo Baggins', '0105663394', '2024-04-02 16:10:41', NULL);
-
-
-CREATE TABLE `customer_accounts` (
-  `customer_id` int(11) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `account_status_id` int(11) NOT NULL DEFAULT 1,
-  `name` varchar(255) NOT NULL,
-  `phone` varchar(255) NOT NULL,
-  `date_of_register` datetime NOT NULL,
-  `remember_me_token` varchar(255) DEFAULT NULL,
-  `default_address_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
--- --------------------------------------------------------
-
---
 -- Table structure for table `account_status`
 --
 
@@ -77,26 +39,6 @@ CREATE TABLE `account_status` (
 INSERT INTO `account_status` (`account_status_id`, `account_status`) VALUES
 (1, 'active'),
 (2, 'inactive');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `addresses`
---
-
-CREATE TABLE `delivery_addresses` (
-  `address_id` int(11) NOT NULL,
-  `line_1` varchar(255) NOT NULL,
-  `line_2` varchar(255) DEFAULT NULL,
-  `zip_postcode` varchar(255) NOT NULL,
-  `city_state` varchar(255) NOT NULL,
-  `iso_country_code` varchar(255) NOT NULL DEFAULT 'MY'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `addresses`
---
-
 
 -- --------------------------------------------------------
 
@@ -121,7 +63,7 @@ CREATE TABLE `cart_items` (
 CREATE TABLE `categories` (
   `category_id` int(11) NOT NULL,
   `name` varchar(200) NOT NULL,
-  `img` text
+  `img` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -136,8 +78,22 @@ INSERT INTO `categories` (`category_id`, `name`, `img`) VALUES
 
 -- --------------------------------------------------------
 
+--
+-- Table structure for table `customer_accounts`
+--
 
--- --------------------------------------------------------
+CREATE TABLE `customer_accounts` (
+  `customer_id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `account_status_id` int(11) NOT NULL DEFAULT 1,
+  `name` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `date_of_register` datetime NOT NULL,
+  `remember_me_token` varchar(255) DEFAULT NULL,
+  `default_address_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -159,11 +115,6 @@ CREATE TABLE `customer_orders` (
   `order_status_id` int(11) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Dumping data for table `customer_orders`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -176,11 +127,6 @@ CREATE TABLE `customer_orders_products` (
   `dish_id` int(11) NOT NULL,
   `order_quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `customer_orders_products`
---
-
 
 -- --------------------------------------------------------
 
@@ -201,6 +147,34 @@ INSERT INTO `customer_payment_method` (`customer_payment_method_id`, `payment_me
 (1, 'cash'),
 (2, 'credit card'),
 (3, 'ewallet');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `delivery_addresses`
+--
+
+CREATE TABLE `delivery_addresses` (
+  `address_id` int(11) NOT NULL,
+  `line_1` varchar(255) NOT NULL,
+  `line_2` varchar(255) DEFAULT NULL,
+  `zip_postcode` varchar(255) NOT NULL,
+  `city_state` varchar(255) NOT NULL,
+  `iso_country_code` varchar(255) NOT NULL DEFAULT 'MY'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `delivery_recipients`
+--
+
+CREATE TABLE `delivery_recipients` (
+  `recipient_id` int(11) NOT NULL,
+  `recipient_name` varchar(255) NOT NULL,
+  `recipient_phone` varchar(255) NOT NULL,
+  `recipient_email` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -243,7 +217,32 @@ INSERT INTO `dishes` (`dish_id`, `name`, `description`, `price`, `quantity`, `im
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order_status_code`
+-- Table structure for table `employee_accounts`
+--
+
+CREATE TABLE `employee_accounts` (
+  `employee_id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `account_status_id` int(11) NOT NULL DEFAULT 1,
+  `name` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `date_of_register` datetime NOT NULL,
+  `remember_me_token` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `employee_accounts`
+--
+
+INSERT INTO `employee_accounts` (`employee_id`, `username`, `password`, `email`, `account_status_id`, `name`, `phone`, `date_of_register`, `remember_me_token`) VALUES
+(1, 'employee1', '$2y$10$SfhYIDtn.iOuCW7zfoFLuuZHX6lja4lF4XA4JqNmpiH/.P3zB8JCa', 'employee1@test.com', 1, 'Bilbo Baggins', '0105663394', '2024-04-02 16:10:41', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_status`
 --
 
 CREATE TABLE `order_status` (
@@ -252,45 +251,18 @@ CREATE TABLE `order_status` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Dumping data for table `order_status_code`
+-- Dumping data for table `order_status`
 --
 
-INSERT INTO `order_status_code` (`order_status_id`, `order_status`) VALUES
+INSERT INTO `order_status` (`order_status_id`, `order_status`) VALUES
 (4, 'cancelled'),
 (3, 'fulfilled'),
 (2, 'paid'),
 (1, 'unpaid');
 
-
-CREATE TABLE `delivery_recipients` (
-  `recipient_id` int(11) NOT NULL,
-  `recipient_name` varchar(255) NOT NULL,
-  `recipient_phone` varchar(255) NOT NULL,
-  `recipient_email` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
-
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `accounts`
---
-ALTER TABLE `employee_accounts`
-  ADD PRIMARY KEY (`employee_id`),
-  ADD UNIQUE KEY `username` (`username`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD UNIQUE KEY `phone` (`phone`),
-  ADD KEY `account_status_id` (`account_status_id`);
-
-ALTER TABLE `customer_accounts`
-  ADD PRIMARY KEY (`customer_id`),
-  ADD UNIQUE KEY `username` (`username`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD UNIQUE KEY `phone` (`phone`),
-  ADD KEY `account_status_id` (`account_status_id`),
-  ADD KEY `default_address_id` (`default_address_id`);
 
 --
 -- Indexes for table `account_status`
@@ -298,20 +270,6 @@ ALTER TABLE `customer_accounts`
 ALTER TABLE `account_status`
   ADD PRIMARY KEY (`account_status_id`),
   ADD UNIQUE KEY `account_status` (`account_status`);
-
-ALTER TABLE `customer_payment_method`
-  ADD PRIMARY KEY (`customer_payment_method_id`),
-  ADD UNIQUE KEY `payment_method` (`payment_method`);
-
-ALTER TABLE `order_status`
-  ADD PRIMARY KEY (`order_status_id`),
-  ADD UNIQUE KEY `order_status` (`order_status`);
-
---
--- Indexes for table `addresses`
---
-ALTER TABLE `delivery_addresses`
-  ADD PRIMARY KEY (`address_id`);
 
 --
 -- Indexes for table `cart_items`
@@ -329,14 +287,15 @@ ALTER TABLE `categories`
   ADD PRIMARY KEY (`category_id`);
 
 --
--- Indexes for table `customers`
+-- Indexes for table `customer_accounts`
 --
-ALTER TABLE `delivery_recipients`
-  ADD PRIMARY KEY (`recipient_id`),
-  ADD UNIQUE KEY `recipient_name` (`recipient_name`),
-  ADD UNIQUE KEY `recipient_phone` (`recipient_phone`),
-  ADD UNIQUE KEY `recipient_email` (`recipient_email`);
-
+ALTER TABLE `customer_accounts`
+  ADD PRIMARY KEY (`customer_id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `phone` (`phone`),
+  ADD KEY `account_status_id` (`account_status_id`),
+  ADD KEY `default_address_id` (`default_address_id`);
 
 --
 -- Indexes for table `customer_orders`
@@ -357,6 +316,27 @@ ALTER TABLE `customer_orders_products`
   ADD KEY `order_id` (`order_id`),
   ADD KEY `dish_id` (`dish_id`);
 
+--
+-- Indexes for table `customer_payment_method`
+--
+ALTER TABLE `customer_payment_method`
+  ADD PRIMARY KEY (`customer_payment_method_id`),
+  ADD UNIQUE KEY `payment_method` (`payment_method`);
+
+--
+-- Indexes for table `delivery_addresses`
+--
+ALTER TABLE `delivery_addresses`
+  ADD PRIMARY KEY (`address_id`);
+
+--
+-- Indexes for table `delivery_recipients`
+--
+ALTER TABLE `delivery_recipients`
+  ADD PRIMARY KEY (`recipient_id`),
+  ADD UNIQUE KEY `recipient_name` (`recipient_name`),
+  ADD UNIQUE KEY `recipient_phone` (`recipient_phone`),
+  ADD UNIQUE KEY `recipient_email` (`recipient_email`);
 
 --
 -- Indexes for table `dishes`
@@ -365,19 +345,27 @@ ALTER TABLE `dishes`
   ADD PRIMARY KEY (`dish_id`),
   ADD KEY `category_id` (`category_id`);
 
+--
+-- Indexes for table `employee_accounts`
+--
+ALTER TABLE `employee_accounts`
+  ADD PRIMARY KEY (`employee_id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `phone` (`phone`),
+  ADD KEY `account_status_id` (`account_status_id`);
+
+--
+-- Indexes for table `order_status`
+--
+ALTER TABLE `order_status`
+  ADD PRIMARY KEY (`order_status_id`),
+  ADD UNIQUE KEY `order_status` (`order_status`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
---
--- AUTO_INCREMENT for table `accounts`
---
-ALTER TABLE `employee_accounts`
-  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
-ALTER TABLE `customer_accounts`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT for table `account_status`
 --
@@ -385,16 +373,10 @@ ALTER TABLE `account_status`
   MODIFY `account_status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `addresses`
---
-ALTER TABLE `delivery_addresses`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
-
---
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `cart_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `cart_item_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -403,25 +385,40 @@ ALTER TABLE `categories`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `customers`
+-- AUTO_INCREMENT for table `customer_accounts`
 --
-ALTER TABLE `delivery_recipients`
-  MODIFY `recipient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
-
+ALTER TABLE `customer_accounts`
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `customer_orders`
 --
 ALTER TABLE `customer_orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- AUTO_INCREMENT for table `customer_orders_products`
+--
 ALTER TABLE `customer_orders_products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `customer_payment_method`
 --
 ALTER TABLE `customer_payment_method`
   MODIFY `customer_payment_method_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `delivery_addresses`
+--
+ALTER TABLE `delivery_addresses`
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `delivery_recipients`
+--
+ALTER TABLE `delivery_recipients`
+  MODIFY `recipient_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `dishes`
@@ -430,7 +427,13 @@ ALTER TABLE `dishes`
   MODIFY `dish_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT for table `order_status_code`
+-- AUTO_INCREMENT for table `employee_accounts`
+--
+ALTER TABLE `employee_accounts`
+  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `order_status`
 --
 ALTER TABLE `order_status`
   MODIFY `order_status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
@@ -440,21 +443,18 @@ ALTER TABLE `order_status`
 --
 
 --
--- Constraints for table `accounts`
---
-ALTER TABLE `employee_accounts`
-  ADD CONSTRAINT `employee_accounts_ibfk_1` FOREIGN KEY (`account_status_id`) REFERENCES `account_status` (`account_status_id`);
-
-ALTER TABLE `customer_accounts`
-  ADD CONSTRAINT `customer_accounts_ibfk_1` FOREIGN KEY (`account_status_id`) REFERENCES `account_status` (`account_status_id`),
-  ADD CONSTRAINT `customer_accounts_ibfk_2` FOREIGN KEY (`default_address_id`) REFERENCES `delivery_addresses` (`address_id`);
---
 -- Constraints for table `cart_items`
 --
 ALTER TABLE `cart_items`
   ADD CONSTRAINT `cart_items_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer_accounts` (`customer_id`),
   ADD CONSTRAINT `cart_items_ibfk_2` FOREIGN KEY (`dish_id`) REFERENCES `dishes` (`dish_id`);
 
+--
+-- Constraints for table `customer_accounts`
+--
+ALTER TABLE `customer_accounts`
+  ADD CONSTRAINT `customer_accounts_ibfk_1` FOREIGN KEY (`account_status_id`) REFERENCES `account_status` (`account_status_id`),
+  ADD CONSTRAINT `customer_accounts_ibfk_2` FOREIGN KEY (`default_address_id`) REFERENCES `delivery_addresses` (`address_id`);
 
 --
 -- Constraints for table `customer_orders`
@@ -479,7 +479,11 @@ ALTER TABLE `customer_orders_products`
 ALTER TABLE `dishes`
   ADD CONSTRAINT `category_id` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`);
 
-
+--
+-- Constraints for table `employee_accounts`
+--
+ALTER TABLE `employee_accounts`
+  ADD CONSTRAINT `employee_accounts_ibfk_1` FOREIGN KEY (`account_status_id`) REFERENCES `account_status` (`account_status_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

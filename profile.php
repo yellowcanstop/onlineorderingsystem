@@ -1,31 +1,28 @@
 <?php
-// only save less-sensitive information in session variables.
-// hence retrieve more sensitive information from database only when needed
-// customer_id is stored as a session variable to maintain state between requests.
-if ($_SESSION['role_id'] == 1) { 
-	// if customer, retrieve customer information from database
-	if ($stmt = $pdo -> prepare('SELECT id, customer_first_name, customer_last_name, customer_phone, date_of_register FROM customers WHERE account_id = :account_id')) {
-		$stmt->bindValue(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
-		$stmt->execute();
-		$customer = $stmt->fetch(PDO::FETCH_ASSOC);
-		$_SESSION['customer_id'] = $customer['id'];
-	} else {
-		error_log('Cannot prepare sql statement for customers table.');
-		exit();
-	}
+// only save less-sensitive information in session variables
+// retrieve personal info of customer from database only as needed 
+if ($stmt = $pdo -> prepare('SELECT name, phone, email, date_of_register FROM customer_accounts WHERE customer_id = :customer_id')) {
+    $stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
+    $stmt->execute();
+    $customer = $stmt->fetch(PDO::FETCH_ASSOC);
+} else {
+    error_log('Cannot prepare sql statement for customer_accounts table.');
+    exit();
 }
 
 // retrieve address if there exists one which was set as default
 if ($stmt = $pdo->prepare("
     SELECT a.* 
-    FROM addresses a
-    INNER JOIN customer_addresses ca ON a.id = ca.address_id
-    WHERE ca.customer_id = :customer_id AND ca.is_default = :is_default
+    FROM delivery_addresses a
+    INNER JOIN customer_accounts ca ON a.address_id = ca.default_address_id
+    WHERE ca.customer_id = :customer_id
 ")) {
 	$stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
-	$stmt->bindValue(':is_default', 1, PDO::PARAM_INT);
 	$stmt->execute();
     $address = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($address) {
+        $_SESSION['address_id'] = $address['address_id'];
+    } 
 } else {
 	error_log('Cannot prepare sql statement to retrieve default address.');
 	exit();
@@ -39,7 +36,7 @@ if (isset($_POST['new_email'])) {
 		header('Location: index.php?page=profile');
 		exit();
 	}
-	if ($stmt = $pdo->prepare('SELECT email FROM accounts WHERE email = :email')) {
+	if ($stmt = $pdo->prepare('SELECT email FROM customer_accounts WHERE email = :email')) {
 		$stmt->bindValue(':email', $_POST['new_email'], PDO::PARAM_STR);
 		$stmt->execute();
 		$email = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -48,9 +45,9 @@ if (isset($_POST['new_email'])) {
 			header('Location: index.php/page=profile');
 			exit();
 		} else {
-			if ($stmt = $pdo -> prepare('UPDATE accounts SET email = :email WHERE account_id = :account_id')) {
+			if ($stmt = $pdo -> prepare('UPDATE customer_accounts SET email = :email WHERE customer_id = :customer_id')) {
 				$stmt->bindValue(':email', $new_email, PDO::PARAM_STR);
-				$stmt->bindValue(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+				$stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
 				$stmt->execute();
 				$_SESSION['email'] = $new_email;
 			} else {
@@ -67,14 +64,14 @@ if (isset($_POST['new_email'])) {
 if (isset($_POST['new_password'])) {
 	$current_password = $_POST['current_password'];
 	$new_password = $_POST['new_password'];
-	if ($stmt = $pdo -> prepare('SELECT password FROM accounts WHERE account_id = :account_id')) {
-		$stmt->bindValue(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+	if ($stmt = $pdo -> prepare('SELECT password FROM customer_accounts WHERE customer_id = :customer_id')) {
+		$stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
 		$stmt->execute();
 		$password = $stmt->fetch(PDO::FETCH_ASSOC);
 		if (password_verify($current_password, $password['password']) && ($current_password != $new_password)) {
-			if ($stmt = $pdo -> prepare('UPDATE accounts SET password = :password WHERE account_id = :account_id')) {
+			if ($stmt = $pdo -> prepare('UPDATE customer_accounts SET password = :password WHERE customer_id = :customer_id')) {
 				$stmt->bindValue(':password', password_hash($new_password, PASSWORD_DEFAULT), PDO::PARAM_STR);
-				$stmt->bindValue(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+				$stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
 				$stmt->execute();
 			} else {
 				$_SESSION['error'] = 'Cannot update password. Please try again.';
@@ -92,13 +89,13 @@ if (isset($_POST['new_password'])) {
 
 if (isset($_POST['new_phone'])) {
 	$new_phone = $_POST['new_phone'];
-	if ($stmt = $pdo -> prepare('UPDATE customers SET customer_phone = :phone WHERE account_id = :account_id')) {
+	if ($stmt = $pdo -> prepare('UPDATE customer_accounts SET phone = :phone WHERE customer_id = :customer_id')) {
 		$stmt->bindValue(':phone', $new_phone, PDO::PARAM_STR);
-		$stmt->bindValue(':account_id', $_SESSION['account_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
 		$stmt->execute();
-		$customer['customer_phone'] = $new_phone;
+		$customer['phone'] = $new_phone;
 	} else {
-		error_log('Cannot prepare sql statement for customers table.');
+		error_log('Cannot prepare sql statement for customer_accounts table.');
 		exit();
 	}
 }
@@ -150,15 +147,13 @@ if (isset($_POST['new_phone'])) {
 					?>
 					</td>
 				</tr>
-				<?php if ($_SESSION['role_id'] == 1): ?>
 				<tr>
 					<td>Name:</td>
-					<td><?=htmlspecialchars($customer['customer_first_name'], ENT_QUOTES)?>
-					<?=htmlspecialchars($customer['customer_last_name'], ENT_QUOTES)?></td>
+					<td><?=htmlspecialchars($customer['name'], ENT_QUOTES)?></td>
 				</tr>
 				<tr>
 					<td>Phone:</td>
-					<td><?=htmlspecialchars($customer['customer_phone'], ENT_QUOTES)?>
+					<td><?=htmlspecialchars($customer['phone'], ENT_QUOTES)?>
 					<br>
 						<form action="index.php?page=profile" method="post">
 							<input type="text" name="new_phone" placeholder="New Phone" id="new_phone">
@@ -170,7 +165,6 @@ if (isset($_POST['new_phone'])) {
 					<td>Date of Registration:</td>
 					<td><?=htmlspecialchars($customer['date_of_register'], ENT_QUOTES)?></td>
 				</tr>
-				<?php endif; ?>
 			</table>
 		</div>
 		<div class="default-address">
@@ -182,7 +176,7 @@ if (isset($_POST['new_phone'])) {
 			<br>
 			<?=htmlspecialchars($address['zip_postcode'], ENT_QUOTES)?>
 			<br>
-			<?=htmlspecialchars($address['state'], ENT_QUOTES)?>
+			<?=htmlspecialchars($address['city_state'], ENT_QUOTES)?>
 			<br>
 			Malaysia
 			<?php endif ?>

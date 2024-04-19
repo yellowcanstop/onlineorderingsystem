@@ -1,6 +1,6 @@
 <?php
 // number of orders to show per page
-$num_orders_on_each_page = 10;
+$num_orders_on_each_page = 20;
 // show selected page otherwise default to 1
 $current_page = isset($_GET['p']) && is_numeric($_GET['p']) ? (int)$_GET['p'] : 1;
 
@@ -51,7 +51,7 @@ if (isset($_POST['update_order_status_id']) && isset($_POST['order_id'])) {
         header('Location: index.php?page=manageorders&p=' . $current_page);
         exit();
     }
-    elseif ($_POST['update_order_status_id'] == 3) {
+    else if ($_POST['update_order_status_id'] == 3) {
         $stmt = $pdo->prepare('UPDATE customer_orders SET order_status_id = :order_status_id, date_order_fulfilled = CURRENT_TIMESTAMP WHERE order_id = :order_id');
         $stmt->bindValue(':order_status_id', $_POST['update_order_status_id'], PDO::PARAM_INT);
         $stmt->bindValue(':order_id', $_POST['order_id'], PDO::PARAM_INT);
@@ -63,7 +63,7 @@ if (isset($_POST['update_order_status_id']) && isset($_POST['order_id'])) {
         header('Location: index.php?page=manageorders&p=' . $current_page);
         exit();
     }
-    elseif ($_POST['update_order_status_id'] == 4) {
+    else if ($_POST['update_order_status_id'] == 4) {
         $stmt = $pdo->prepare('UPDATE customer_orders SET order_status_id = :order_status_id, date_order_cancelled = CURRENT_TIMESTAMP WHERE order_id = :order_id');
         $stmt->bindValue(':order_status_id', $_POST['update_order_status_id'], PDO::PARAM_INT);
         $stmt->bindValue(':order_id', $_POST['order_id'], PDO::PARAM_INT);
@@ -81,7 +81,7 @@ if (isset($_POST['update_order_status_id']) && isset($_POST['order_id'])) {
 $total_orders_for_month = count($orders);
 
 // simple array: unpaid '1', paid '2', fulfilled '3', cancelled '4'
-$status_name = ['', 'Unpaid', 'Paid', 'Fulfilled', 'Cancelled'];
+$status_name = ['', 'unpaid', 'paid', 'fulfilled', 'cancelled'];
 
 ?>
 
@@ -99,7 +99,7 @@ $status_name = ['', 'Unpaid', 'Paid', 'Fulfilled', 'Cancelled'];
     </div>
     <p><?=$total_orders_for_month?> 
     <?php if(isset($_GET['order_status_id']) && !empty($_GET['order_status_id'])): ?>
-        <?=$_GET['order_status_id']?> 
+        <?=$status_name[$_GET['order_status_id']]?> 
     <?php else: ?>
         total
     <?php endif; ?>
