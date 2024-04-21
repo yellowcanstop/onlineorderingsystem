@@ -748,7 +748,7 @@ footer .social-icons i:last-child {
 /* -- end of css for login.php -- */
 
 
-/* -- css for register.php -- */
+/* -- register.php -- */
 .register {
     width: 400px;
 	height: 800px;
@@ -790,6 +790,7 @@ footer .social-icons i:last-child {
 	font-weight: bold;
     border: none;
     cursor: pointer;
+	margin-top: 20px;
 }
 
 .register input[type="submit"]:hover {
@@ -830,9 +831,9 @@ footer .social-icons i:last-child {
 .login-link {
     text-align: center;
     position: relative;
-    top: -145px; 
+    top: -250px; 
 }
-/* -- end of css for register.php -- */
+/* -- register.php -- */
 
 
 /* -- css for getinfo.php -- */
