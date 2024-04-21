@@ -234,7 +234,7 @@ main .recentlyadded .products .product:hover .name, main .products .products-wra
 	text-decoration: underline;
 }
 
-/* -- css for product.php -- */
+/* -- product.php -- */
 main > .product {
 	display: flex;
 	padding: 40px 0;
@@ -324,10 +324,10 @@ main > .product .description {
 	max-width: 400px;
 	text-align: justify;
 }
-/* -- end of css for product.php -- */
+/* -- product.php -- */
 
 
-/* -- css for cart.php & confirmorder.php-- */
+/* -- cart.php & confirmorder.php-- */
 main .cart h1 {
 	display: block;
 	font-weight: normal;
@@ -442,10 +442,10 @@ main .placeorder h1 {
 main .placeorder p {
 	text-align: center;
 }
-/* -- end of css for cart.php & confirmorder.php-- */
+/* -- cart.php & confirmorder.php-- */
 
 
-/* -- css for footer -- */
+/* -- footer -- */
 footer {
     position: absolute;
     bottom: 0;
@@ -544,14 +544,12 @@ footer .social-icons i:last-child {
 .award-images img {
     margin-right: 20px;
 }
-/* -- end of css for footer -- */
+/* -- footer -- */
 
 
-/* -- css for profile.php -- */
+/* -- profile.php -- */
 .content {
 	margin-bottom: 50px;
-	/*background-color: white;*/
-	/*width: 100%*/
 }
 .content h2 {
 	color: white;
@@ -563,10 +561,11 @@ footer .social-icons i:last-child {
 .content h3 {
 	color: white;
 	font-size: 20px;
+	text-decoration: underline;
 }
 
 .content table {
-    width: 50%;
+    width: 70%;
     border-collapse: collapse;
 }
 
@@ -605,10 +604,23 @@ footer .social-icons i:last-child {
 .default-address {
 	color: white;
 }
-/* -- end of css for profile.php -- */
+
+.address-details {
+	margin-left: 10px;
+}
+
+.error-container {
+    width: 250px; /* Adjust the width as needed */
+    overflow: hidden; /* Hide any overflowing content */
+}
+
+.error-message {
+    color: white;
+}
+/* -- profile.php -- */
 
 
-/* -- css for orders.php -- */
+/* -- orders.php -- */
 .orders {
     width: 100%; 
     margin: 0 auto;
@@ -659,10 +671,10 @@ footer .social-icons i:last-child {
 	text-decoration: none;
 }
 
-/* -- end of css for orders.php -- */
+/* -- orders.php -- */
 
 
-/* -- css for login.php -- */
+/* -- login.php -- */
 .login {
     font-family: Arial, sans-serif;
     background-color: white;
@@ -745,7 +757,7 @@ footer .social-icons i:last-child {
     position: relative;
     top: -145px; 
 }
-/* -- end of css for login.php -- */
+/* -- login.php -- */
 
 
 /* -- register.php -- */
@@ -836,7 +848,7 @@ footer .social-icons i:last-child {
 /* -- register.php -- */
 
 
-/* -- css for getinfo.php -- */
+/* -- getinfo.php -- */
 .content-wrapper {
     margin: 0 auto;
     padding: 20px;
@@ -990,10 +1002,10 @@ footer .social-icons i:last-child {
 .return-cart-button:hover {
     background-color: #45a049;
 }
-/* -- end of css for getinfo.php -- */ 
+/* -- getinfo.php -- */ 
 
 
-/* -- css for about.php --*/ 
+/* -- about.php --*/ 
 .about {
 	width: 500px;
 	text-align: justify;
@@ -1016,10 +1028,10 @@ footer .social-icons i:last-child {
     position: absolute; 
     left: 700px; 
 }
-/* -- end of css for about.php --*/
+/* -- about.php --*/
 
 
-/* -- css for manageorders.php --*/
+/* -- manageorders.php --*/
 .mark-as-paid-button {
 	background-color: #eed5a2;
 	color: #062e19df;
@@ -1029,12 +1041,7 @@ footer .social-icons i:last-child {
 	background-color: #eed5a2;
 	color: #062e19df;
 }
-/* -- end of css for manageorders.php --*/
-
-
-/* -- vieworder.php --*/
-/* -- vieworder.php --*/
-
+/* -- manageorders.php --*/
 
 /* -- managedishes.php --*/
 .update-quantity {

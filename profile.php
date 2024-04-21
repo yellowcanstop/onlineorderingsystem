@@ -139,12 +139,14 @@ if (isset($_POST['new_phone'])) {
 						</form>
 					</td>
 					<td>
+						<div class="error-container">
 					<?php
 						if (isset($_SESSION['error'])) {
 							echo $_SESSION['error'];
 							unset($_SESSION['error']); // unset error message after display
 						}
 					?>
+						</div>
 					</td>
 				</tr>
 				<tr>
@@ -170,6 +172,7 @@ if (isset($_POST['new_phone'])) {
 		<div class="default-address">
 			<?php if ($address): ?>
 			<h3>Default Address:</h3>
+			<div class="address-details">
 			<?=htmlspecialchars($address['line_1'], ENT_QUOTES)?>
 			<br>
 			<?=htmlspecialchars($address['line_2'], ENT_QUOTES)?>
@@ -179,6 +182,7 @@ if (isset($_POST['new_phone'])) {
 			<?=htmlspecialchars($address['city_state'], ENT_QUOTES)?>
 			<br>
 			Malaysia
+			</div>
 			<?php endif ?>
 		</div>
 </div>
