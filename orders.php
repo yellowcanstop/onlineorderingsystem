@@ -49,56 +49,54 @@ $status_name = ['', 'Unpaid', 'Paid', 'Fulfilled', 'Cancelled'];
         <p style="color: white; text-align: center;">You have made no orders.</p>
     <?php else: ?>
         <?php foreach ($orders as $order_id => $order_details): ?>
-        <div class="order-details">
-        <table>
-            <thead>
-                <tr>
-                    <td>Order ID</td>
-                    <td>Date Ordered</td>
-                    <td>Amount</td>
-                    <td>Status</td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><?=$order_id?></td>
-                    <?php foreach ($order_details as $detail): ?>
-                    <td><?=$detail['date_order_placed']?></td>
-                    <td><?=$detail['payment_amount']?></td>
-                    <td><?=$status_name[$detail['order_status_id']]?></td>   
-                </tr>
-            </tbody>
-        </table>
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>Item</td>
-                                <td>Quantity</td>
-                                <td>Action</td>
-                            </tr>
-                        </thead>
+            <div class="order-details">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Order ID</td>
+                            <td>Date Ordered</td>
+                            <td>Amount</td>
+                            <td>Status</td>
+                        </tr>
+                    </thead>
                     <tbody>
-                    
-                    <tr>
-                        <td>
-                            <a href="index.php?page=product&id=<?=$detail['dish_id']?>"><?=$names[$detail['dish_id']]?></a>
-                        </td>
-                        <td><?=$detail['order_quantity']?></td>
-                        <td>
-                            <form action="index.php?page=cart" method="post">
-                                <input type="hidden" name="id" value="<?=$detail['dish_id']?>">
-                                <input type="hidden" name="quantity" value="<?=$detail['order_quantity']?>">
-                                <input type="submit" class="order-again-button" value="Order Again">
-                            </form>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
+                        <tr>
+                            <td><?= $order_id ?></td>
+                            <?php $first_detail = reset($order_details); ?>
+                            <td><?= $first_detail['date_order_placed'] ?></td>
+                            <td><?= $first_detail['payment_amount'] ?></td>
+                            <td><?= $status_name[$first_detail['order_status_id']] ?></td>
+                        </tr>
                     </tbody>
-                    </table>
-                    </div>
-                <?php endforeach; ?>
-                <?php endif; ?>
-                </div>
+                </table>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Item</td>
+                            <td>Quantity</td>
+                            <td>Action</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($order_details as $detail): ?>
+                            <tr>
+                                <td>
+                                    <a href="index.php?page=product&id=<?= $detail['dish_id'] ?>"><?= $names[$detail['dish_id']] ?></a>
+                                </td>
+                                <td><?= $detail['order_quantity'] ?></td>
+                                <td>
+                                    <form action="index.php?page=cart" method="post">
+                                        <input type="hidden" name="id" value="<?= $detail['dish_id'] ?>">
+                                        <input type="hidden" name="quantity" value="<?= $detail['order_quantity'] ?>">
+                                        <input type="submit" class="order-again-button" value="Order Again">
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
-
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>
 <?= template_footer() ?>
