@@ -11,14 +11,14 @@ html {
 body {
 	position: relative;
 	min-height: 100%;
-	color: #555555;
+	*color: #555555;
 	background-color: #062e19df;
 	margin: 0;
 	padding-bottom: 150px; 
 }
 
 h1, h2, h3, h4, h5 {
-	color: #394352; 
+	color: #394352;
 } 
 
 .content-wrapper {
@@ -668,6 +668,11 @@ footer .social-icons i:last-child {
 
 .orders a {
 	color: #062e19df; 
+	text-decoration: none;
+}
+
+.orders a:hover {
+	color: #ebc881df; 
 	text-decoration: none;
 }
 
