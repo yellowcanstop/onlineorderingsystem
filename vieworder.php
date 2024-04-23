@@ -32,7 +32,7 @@ if ($stmt = $pdo->prepare('SELECT dish_id, name FROM dishes')) {
 <div class="cart content-wrapper">
     <div>
         <h1 class="name">Order ID: <?=$_GET['order_id']?></h1>
-        <a href="index.php?page=manageorders" style="color: white; text-decoration: none;"><i class="fas fa-arrow-left"></i>Back to Manage Orders</a>
+        <a href="index.php?page=manageorders" style="color: white; text-decoration: none;"><i class="fas fa-arrow-left"></i>   Back to Manage Orders</a>
         <table>
         <thead>
             <tr>

@@ -1,7 +1,7 @@
 <?=template_header('Card Payment')?>
 <div class="product content-wrapper">
-    <h1>Payment Details</h1>
-    
+    <h1 style="font-size: 24px; font-weight: bold; margin-right: 100px;">Payment Details</h1>
+
     <form action="index.php?page=processpayment" method="post">
         <label for="card_number" style="color: white;">Card Number:</label>
         <input type="text" id="card_number" name="card_number" required><br>

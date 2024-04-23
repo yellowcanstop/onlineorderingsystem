@@ -178,7 +178,7 @@ $status_name = ['', 'unpaid', 'paid', 'fulfilled', 'cancelled'];
                     
                     <td style="color: white";><?=$status_name[$order['order_status_id']]?></td>
 
-                    <td>
+                    <td style="color: white";>
                     <?php if ($order['order_status_id'] == 3): ?>
                         <?=$order['date_order_fulfilled']?>
                     <?php else: ?>
@@ -186,7 +186,7 @@ $status_name = ['', 'unpaid', 'paid', 'fulfilled', 'cancelled'];
                     <?php endif; ?>
                     </td>
 
-                    <td>
+                    <td style="color: white";>
                     <?php if ($order['order_status_id'] == 4): ?>
                         <?=$order['date_order_cancelled']?>
                     <?php else: ?>

@@ -33,7 +33,7 @@ if ($stmt = $pdo->prepare("
 
 <div class="cart content-wrapper">
     <h1>Finalize Order Details:</h1>
-    <div>
+    <div style="color: white;">
         <?php
         if (isset($_SESSION['error'])) {
             echo $_SESSION['error'];
