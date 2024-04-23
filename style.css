@@ -11,7 +11,7 @@ html {
 body {
 	position: relative;
 	min-height: 100%;
-	*color: #555555;
+	color: #555555;
 	background-color: #062e19df;
 	margin: 0;
 	padding-bottom: 150px; 
