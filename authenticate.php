@@ -10,19 +10,19 @@ if ( !isset($_POST['username'], $_POST['password']) ) {
     exit();
 }
 
-// PDO supports named parameters which makes code more readable and maintainable.
-// Hence our choice of using PDO instead of MySQLi to interact with our database.
 if ($stmt = $pdo->prepare('SELECT customer_id, password, email, account_status_id FROM customer_accounts WHERE username = :username')) {
     $stmt->bindValue(':username', $_POST['username'], PDO::PARAM_STR);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if (!$user) {
+    $stmt = $pdo->prepare('SELECT employee_id, password, email, account_status_id FROM employee_accounts WHERE username = :username');
+    $stmt->bindValue(':username', $_POST['username'], PDO::PARAM_STR);
+    $stmt->execute();
+    $employee = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$user && !$employee) {
         $_SESSION['error'] = 'Incorrect credentials!';
         header('Location: login.php');
         exit();  
     }
-    
     // check if account exists and is active
     if ($user && $user['account_status_id'] == 1) {
         // verify password using password_verify (corresponding: used password_hash to store hashed passwords)
@@ -59,29 +59,24 @@ if ($stmt = $pdo->prepare('SELECT customer_id, password, email, account_status_i
             header('Location: login.php');
             exit();
         }
-    } else if ($stmt = $pdo->prepare('SELECT employee_id, password, email, account_status_id FROM employee_accounts WHERE username = :username')) {
-        $stmt->bindValue(':username', $_POST['username'], PDO::PARAM_STR);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($user && $user['account_status_id'] == 1) {
-            if (password_verify($_POST['password'], $user['password'])) {
-                session_regenerate_id();
-                $_SESSION['loggedin'] = TRUE;
-                $_SESSION['username'] = $_POST['username'];
-                $_SESSION['email'] = $user['email'];
-                $_SESSION['role_id'] = 2;
-                if (isset($_POST['remember_me'])) {
-                    $token = bin2hex(random_bytes(24));
-                    setcookie('remember_me', $token, time() + (86400 * 30), "/");
-                    $stmt = $pdo->prepare("UPDATE employee_accounts SET remember_me_token = :token WHERE employee_id = :employee_id");
-                    $stmt->execute(['token' => $token, 'employee_id' => $user['employee_id']]);
-                }
-                header('Location: index.php');
-            } else {
-                $_SESSION['error'] = 'Incorrect credentials!';
-                header('Location: login.php');
-                exit();
+    } else if ($employee && $employee['account_status_id'] == 1) {
+        if (password_verify($_POST['password'], $employee['password'])) {
+            session_regenerate_id();
+            $_SESSION['loggedin'] = TRUE;
+            $_SESSION['username'] = $_POST['username'];
+            $_SESSION['email'] = $employee['email'];
+            $_SESSION['role_id'] = 2;
+            if (isset($_POST['remember_me'])) {
+                $token = bin2hex(random_bytes(24));
+                setcookie('remember_me', $token, time() + (86400 * 30), "/");
+                $stmt = $pdo->prepare("UPDATE employee_accounts SET remember_me_token = :token WHERE employee_id = :employee_id");
+                $stmt->execute(['token' => $token, 'employee_id' => $employee['employee_id']]);
             }
+            header('Location: index.php');
+        } else {
+            $_SESSION['error'] = 'Incorrect credentials!';
+            header('Location: login.php');
+            exit();
         }
     } else {
         $_SESSION['error'] = 'Account is not active or does not exist!';
