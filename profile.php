@@ -64,6 +64,13 @@ if (isset($_POST['new_email'])) {
 if (isset($_POST['new_password'])) {
 	$current_password = $_POST['current_password'];
 	$new_password = $_POST['new_password'];
+	// validate new password
+	if (preg_match('/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,20}$/', $_POST['new_password']) == 0) {
+		$_SESSION['error'] = 'Password is not valid! It must be between 8 and 20 characters long, contain letters, numbers and at least one special character!';
+		header('Location: index.php?page=profile');
+		exit();
+	}
+	// check if current password is correct or new password is same as old password
 	if ($stmt = $pdo -> prepare('SELECT password FROM customer_accounts WHERE customer_id = :customer_id')) {
 		$stmt->bindValue(':customer_id', $_SESSION['customer_id'], PDO::PARAM_INT);
 		$stmt->execute();

@@ -16,6 +16,11 @@ if ($stmt = $pdo->prepare('SELECT customer_id, password, email, account_status_i
     $stmt->bindValue(':username', $_POST['username'], PDO::PARAM_STR);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$user) {
+        $_SESSION['error'] = 'Incorrect credentials!';
+        header('Location: login.php');
+        exit();  
+    }
     // check if account exists and is active
     if ($user && $user['account_status_id'] == 1) {
         // verify password using password_verify (corresponding: used password_hash to store hashed passwords)
