@@ -41,6 +41,14 @@ if (preg_match('/^[a-zA-Z0-9]+$/', $_POST['username']) == 0) {
 	exit();
 }
 
+// validate name: string start with at least one alphabet character
+// with zero or more alphabet characters or spaces following it
+if (preg_match('/^[a-zA-Z]+[a-zA-Z ]*$/', $_POST['name']) == 0) {
+    $_SESSION['error'] = 'Invalid name';
+    header('Location: register.php');
+	exit();
+}
+
 // validate password
 // checkpassword.php: dynamically checked in the form using javascript
 if (preg_match('/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,20}$/', $_POST['password']) == 0) {
