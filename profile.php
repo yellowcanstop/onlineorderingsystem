@@ -30,19 +30,20 @@ if ($stmt = $pdo->prepare("
 
 if (isset($_POST['new_email'])) {
 	$new_email = $_POST['new_email'];
-	// check if email already exists
+	// check if email is the same as old one
 	if ($new_email == $_SESSION['email']) {
 		$_SESSION['error'] = 'Email is the same as your old one. Please try again.';
 		header('Location: index.php?page=profile');
 		exit();
 	}
+	
 	if ($stmt = $pdo->prepare('SELECT email FROM customer_accounts WHERE email = :email')) {
 		$stmt->bindValue(':email', $_POST['new_email'], PDO::PARAM_STR);
 		$stmt->execute();
 		$email = $stmt->fetch(PDO::FETCH_ASSOC);
-		if (!empty($email)) {
+		if ($email) {
 			$_SESSION['error'] = 'Email already exists.';
-			header('Location: index.php/page=profile');
+			header('Location: index.php?page=profile');
 			exit();
 		} else {
 			if ($stmt = $pdo -> prepare('UPDATE customer_accounts SET email = :email WHERE customer_id = :customer_id')) {
